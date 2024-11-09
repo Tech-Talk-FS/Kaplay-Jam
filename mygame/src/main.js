@@ -24,6 +24,8 @@ kaplay({
   font: "monospace",
 });
 
+debug.inspect = true;
+
 // Mod keys:
 const isPressed = {
   ctrl: false,
@@ -86,7 +88,7 @@ loadSprite("dino", "/assests/Soldier/Soldier/Soldier.png", {
 const SPEED = 120;
 const JUMP_FORCE = 240;
 
-setGravity(100);
+// setGravity(100);
 
 // Add our player character
 const player = add([
@@ -155,7 +157,7 @@ onKeyDown("left", () => {
 
   player.flipX = true;
   // .play() will reset to the first frame of the anim, so we want to make sure it only runs when the current animation is not "run"
-  if (player.isGrounded() && player.curAnim() !== "run") {
+  if (player.curAnim() !== "run") {
     player.play("run");
   }
 });
@@ -170,7 +172,7 @@ onKeyDown("right", () => {
   //   player.move(SPEED, 0);
   player.flipX = false;
   console.log("player.isGrounded()", player.isGrounded());
-  if (player.isGrounded() && player.curAnim() !== "run") {
+  if (player.curAnim() !== "run") {
     player.play("run");
   }
 });
@@ -183,15 +185,32 @@ onKeyDown("up", () => {
   player.move(0, -100);
   //   }
   console.log("player.isGrounded()", player.isGrounded());
-  if (player.isGrounded() && player.curAnim() !== "run") {
+  if (player.curAnim() !== "run") {
+    player.play("run");
+  }
+});
+onKeyDown("down", () => {
+  //   console.log("is Shift?", isPressed.shift);
+  //   if (isPressed.shift) {
+  //     player.move(new Vec2(0, -SPEED * 1.5), 0);
+  //   } else {
+  player.move(0, 100);
+  //   }
+  console.log("player.isGrounded()", player.isGrounded());
+  if (player.curAnim() !== "run") {
     player.play("run");
   }
 });
 
-["left", "right"].forEach((key) => {
+["left", "right", "up", "down"].forEach((key) => {
   onKeyRelease(key, () => {
     // Only reset to "idle" if player is not holding any of these keys
-    if (player.isGrounded() && !isKeyDown("left") && !isKeyDown("right")) {
+    if (
+      !isKeyDown("left") &&
+      !isKeyDown("right") &&
+      !isKeyDown("up") &&
+      !isKeyDown("down")
+    ) {
       player.play("idle");
     }
   });
