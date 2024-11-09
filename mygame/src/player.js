@@ -3,6 +3,9 @@ import { damage } from "./damage";
 export function createPlayer() {
     const SPEED = 120;
     const SPEED_MOD = 1.5;
+    const upgrade_modifiers = {
+        speed: 1.0,
+    };
 
     // Loading a multi-frame sprite
     // Each row is 9 cells wide, count for empty cells
@@ -43,14 +46,25 @@ export function createPlayer() {
             shape: new Rect(vec2(0, -2), 13, 19)
         }),
         body(),
+        "player",
     ]);
 
-    // Attaches attack hurtbox onto player
+    // Attaches attack hitbox onto player
     const attack = player.add([
         anchor("left"),
         rotate(0),
         damage(2),
         "player_attack",
+    ]);
+
+    // Attaches interactable hitbox onto player
+    const interact = player.add([
+        anchor("left"),
+        rotate(0),
+        area({
+            shape: new Rect(vec2(0, 0), 20, 22)
+        }),
+        "player_interact",
     ]);
 
     player.onButtonDown(["left", "right", "up", "down"], (button) => {
@@ -64,12 +78,14 @@ export function createPlayer() {
             xMod = -1;
             player.flipX = true;
             attack.rotateTo(180);
+            interact.rotateTo(180);
         }
         // Move and face character right if the "right" button is pressed
         else if (button === "right") {
             xMod = 1;
             player.flipX = false;
             attack.rotateTo(0);
+            interact.rotateTo(0);
         }
 
         // Move character up if the "up" button is pressed
@@ -82,8 +98,8 @@ export function createPlayer() {
         }
 
         player.move(
-            SPEED * shiftMod * xMod,
-            SPEED * shiftMod * yMod
+            SPEED * shiftMod * xMod * upgrade_modifiers.speed,
+            SPEED * shiftMod * yMod * upgrade_modifiers.speed
         );
 
         // If the animation isn't already playing, play the "run" animation
@@ -138,6 +154,12 @@ export function createPlayer() {
             shape: new Rect(vec2(0, 0), 22, 23)
         }));
     }
+
+    // Adds an upgrade event for the player to be called
+    // from other locations.
+    on("upgrade", "player", (obj, field, value) => {
+        upgrade_modifiers[field] = value;
+    });
 
     debug.inspect = true;
 

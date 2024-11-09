@@ -2,6 +2,7 @@ import kaplay from "kaplay";
 import "kaplay/global";
 import { createPlayer } from "./player";
 import { createTestEnemy } from "./test_enemy";
+import { createTestInteractable } from "./test_interactable";
 
 // Start a kaboom game
 kaplay({
@@ -26,12 +27,16 @@ kaplay({
     },
     attack: {
       keyboard: ["space"],
-    }
+    },
+    interact: {
+      keyboard: ["e"],
+    },
   }
 });
 
 const player = createPlayer();
 const enemy = createTestEnemy();
+const interactable = createTestInteractable();
 
 // Add a platform
 add([
