@@ -86,7 +86,7 @@ loadSprite("dino", "/assests/Soldier/Soldier/Soldier.png", {
 const SPEED = 120;
 const JUMP_FORCE = 240;
 
-setGravity(640);
+setGravity(100);
 
 // Add our player character
 const player = add([
@@ -99,6 +99,10 @@ const player = add([
 
 // .play is provided by sprite() component, it starts playing the specified animation (the animation information of "idle" is defined above in loadSprite)
 player.play("idle");
+
+player.onUpdate(() => {
+  camPos(player.pos);
+});
 
 // Add a platform
 add([
@@ -127,6 +131,7 @@ player.onAnimEnd((anim) => {
 // let SHIFT = false;
 
 onKeyPress("space", () => {
+  setGravity(100);
   if (player.isGrounded()) {
     player.jump(JUMP_FORCE);
     player.play("jump");
@@ -164,10 +169,25 @@ onKeyDown("right", () => {
   }
   //   player.move(SPEED, 0);
   player.flipX = false;
+  console.log("player.isGrounded()", player.isGrounded());
   if (player.isGrounded() && player.curAnim() !== "run") {
     player.play("run");
   }
 });
+
+onKeyDown("up", () => {
+  //   console.log("is Shift?", isPressed.shift);
+  //   if (isPressed.shift) {
+  //     player.move(new Vec2(0, -SPEED * 1.5), 0);
+  //   } else {
+  player.move(0, -100);
+  //   }
+  console.log("player.isGrounded()", player.isGrounded());
+  if (player.isGrounded() && player.curAnim() !== "run") {
+    player.play("run");
+  }
+});
+
 ["left", "right"].forEach((key) => {
   onKeyRelease(key, () => {
     // Only reset to "idle" if player is not holding any of these keys
