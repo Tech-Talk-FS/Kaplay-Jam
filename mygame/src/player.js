@@ -45,12 +45,9 @@ export function createPlayer() {
 
     // Attaches attack hurtbox onto player
     const attack = player.add([
-        named("player_attack"),
         anchor("left"),
         rotate(0),
-        area({
-            shape: new Rect(vec2(0, 0), 22, 23)
-        }),
+        "player_attack",
     ]);
 
     player.onButtonDown(["left", "right", "up", "down"], (button) => {
@@ -100,8 +97,6 @@ export function createPlayer() {
     })
 
     player.onUpdate(() => {
-        attack.hidden = true;
-
         // If no movement button is pressed and no "attack" animation is playing,
         // play the "idle" animation
         if (player.getCurAnim()?.name !== "idle" &&
@@ -116,12 +111,30 @@ export function createPlayer() {
         if (player.getCurAnim()?.name === "attack" &&
         (player.animFrame === 3 ||
         player.animFrame === 4)) {
-            attack.hidden = false;
+            enableAttack();
+        }
+        // If the "attack" animation is no longer playing,
+        // disable the attack hitbox.
+        else if (attack.is("area")) {
+            disableAttack();
         }
 
         // Set camera to the player's position
         camPos(player.pos);
     });
+
+    // Removes the area component from attack
+    function disableAttack() {
+        attack.unuse("area");
+    }
+
+    // Adds the area component to attack
+    // Allows the attack hitbox to be active
+    function enableAttack() {
+        attack.use(area({
+            shape: new Rect(vec2(0, 0), 22, 23)
+        }));
+    }
 
     debug.inspect = true;
 

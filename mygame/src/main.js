@@ -1,6 +1,7 @@
 import kaplay from "kaplay";
 import "kaplay/global";
 import { createPlayer } from "./player";
+import { createTestEnemy } from "./test_enemy";
 
 // Start a kaboom game
 kaplay({
@@ -30,6 +31,7 @@ kaplay({
 });
 
 const player = createPlayer();
+const enemy = createTestEnemy();
 
 // Add a platform
 add([
