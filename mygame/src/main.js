@@ -21,7 +21,10 @@ kaplay({
       keyboard: ["up", "w"],
     },
     down: {
-      keyboard: ["down", "s"]
+      keyboard: ["down", "s"],
+    },
+    attack: {
+      keyboard: ["space"],
     }
   }
 });

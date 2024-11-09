@@ -10,26 +10,25 @@ export function createPlayer() {
         sliceY: 7,
         // Define animations
         anims: {
-        idle: {
-            // Starts from frame 0, ends at frame 5
-            from: 0,
-            to: 5,
-            // Frame per second
-            speed: 3,
-            loop: true,
-        },
-        run: {
-            from: 9,
-            to: 16,
-            speed: 10,
-            loop: true,
-        },
-        jump: {
-            from: 27,
-            to: 29,
-            speed: 10,
-            loop: false,
-        },
+            idle: {
+                // Starts from frame 0, ends at frame 5
+                from: 0,
+                to: 5,
+                // Frame per second
+                speed: 3,
+                loop: true,
+            },
+            run: {
+                from: 9,
+                to: 16,
+                speed: 10,
+                loop: true,
+            },
+            attack: {
+                from: 18,
+                to: 23,
+                speed: 15,
+            }
         },
     });
 
@@ -40,9 +39,6 @@ export function createPlayer() {
         area(),
         body(),
     ]);
-
-    // .play is provided by sprite() component, it starts playing the specified animation (the animation information of "idle" is defined above in loadSprite)
-    player.play("idle");
 
     player.onButtonDown(["left", "right", "up", "down"], (button) => {
         let xMod = 0;
@@ -76,14 +72,24 @@ export function createPlayer() {
         );
 
         // If the animation isn't already playing, play the "run" animation
-        if (player.getCurAnim().name !== "run") {
+        if (player.getCurAnim().name !== "run" && player.getCurAnim().name !== "attack") {
             player.play("run");
         }
     });
 
+    player.onButtonDown("attack", (button) => {
+        if (player.getCurAnim().name !== button) {
+            player.play(button);
+        }
+    })
+
     player.onUpdate(() => {
         // If no movement button is pressed, play the "idle" animation
-        if (player.getCurAnim().name !== "idle" && !isButtonDown(["left", "right", "up", "down"])) {
+        if (!player.getCurAnim() || (
+        player.getCurAnim().name !== "idle" &&
+        player.getCurAnim().name !== "attack" &&
+        !isButtonDown(["left", "right", "up", "down"])
+        )) {
             player.play("idle");
         }
         camPos(player.pos);
