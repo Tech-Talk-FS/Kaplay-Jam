@@ -25,17 +25,31 @@ kaplay({
 });
 
 // Mod keys:
-const registerModifierKeys = (...keys) => {
-  const isPressed = new Array(keys.length).fill(false);
-  console.log(">>>", isPressed);
-  keys.forEach((k, i) => {
-    onKeyPress(k, () => (isPressed[i] = true));
-    onKeyRelease(k, () => (isPressed[i] = false));
-  });
-  return isPressed;
+const isPressed = {
+  ctrl: false,
+  shift: false,
+  control: false,
 };
+onKeyPress(Object.keys(isPressed), (key) => {
+  console.log(key + " true");
+  isPressed[key] = true;
+});
+onKeyRelease(Object.keys(isPressed), (key) => {
+  isPressed[key] = false;
+  console.log(key + "  false");
+});
+// const registerModifierKeys = (keys) => {
+//   const isPressed = new Array(keys.length);
+//   for (let i = 0; i < keys.length; i++) {
+//     isPressed[i] = { isPressed: false };
+//     const k = keys[i];
+//     onKeyPress(k, () => (isPressed[i] = isPressed[i].isPressed = true));
+//     onKeyRelease(k, () => (isPressed[i].isPressed = false));
+//   }
+//   return isPressed;
+// };
 
-const [shift, ctrl, e] = registerModifierKeys("shift", "ctrl", "e");
+// const [shift, ctrl, e] = registerModifierKeys("shift", "ctrl", "e");
 
 // Loading a multi-frame sprite
 // Each row is 9 cells wide, count for empty cells
@@ -127,8 +141,13 @@ onKeyPress("space", () => {
 // });
 
 onKeyDown("left", () => {
-  console.log("is Shift?", shift);
-  player.move(-SPEED, 0);
+  console.log("is Shift?", isPressed.shift);
+  if (isPressed.shift) {
+    player.move(-SPEED * 1.5, 0);
+  } else {
+    player.move(-SPEED, 0);
+  }
+
   player.flipX = true;
   // .play() will reset to the first frame of the anim, so we want to make sure it only runs when the current animation is not "run"
   if (player.isGrounded() && player.curAnim() !== "run") {
@@ -137,7 +156,13 @@ onKeyDown("left", () => {
 });
 
 onKeyDown("right", () => {
-  player.move(SPEED, 0);
+  console.log("is Shift?", isPressed.shift);
+  if (isPressed.shift) {
+    player.move(SPEED * 1.5, 0);
+  } else {
+    player.move(SPEED, 0);
+  }
+  //   player.move(SPEED, 0);
   player.flipX = false;
   if (player.isGrounded() && player.curAnim() !== "run") {
     player.play("run");
