@@ -24,6 +24,19 @@ kaplay({
   font: "monospace",
 });
 
+// Mod keys:
+const registerModifierKeys = (...keys) => {
+  const isPressed = new Array(keys.length).fill(false);
+  console.log(">>>", isPressed);
+  keys.forEach((k, i) => {
+    onKeyPress(k, () => (isPressed[i] = true));
+    onKeyRelease(k, () => (isPressed[i] = false));
+  });
+  return isPressed;
+};
+
+const [shift, ctrl, e] = registerModifierKeys("shift", "ctrl", "e");
+
 // Loading a multi-frame sprite
 // Each row is 9 cells wide, count for empty cells
 loadSprite("dino", "/assests/Soldier/Soldier/Soldier.png", {
@@ -33,12 +46,12 @@ loadSprite("dino", "/assests/Soldier/Soldier/Soldier.png", {
   // Define animations
   anims: {
     idle: {
-      // Starts from frame 0, ends at frame 3
+      // Starts from frame 0, ends at frame 5
       from: 0,
-      to: 40,
+      to: 5,
       // Frame per second
       speed: 3,
-      loop: false,
+      loop: true,
     },
     run: {
       from: 9,
@@ -97,6 +110,8 @@ player.onAnimEnd((anim) => {
   }
 });
 
+// let SHIFT = false;
+
 onKeyPress("space", () => {
   if (player.isGrounded()) {
     player.jump(JUMP_FORCE);
@@ -104,7 +119,15 @@ onKeyPress("space", () => {
   }
 });
 
+// onKeyPress("shift", (evt) => {
+//   SHIFT = true;
+// });
+// onKeyRelease("shift", (evt) => {
+//   SHIFT = false;
+// });
+
 onKeyDown("left", () => {
+  console.log("is Shift?", shift);
   player.move(-SPEED, 0);
   player.flipX = true;
   // .play() will reset to the first frame of the anim, so we want to make sure it only runs when the current animation is not "run"
