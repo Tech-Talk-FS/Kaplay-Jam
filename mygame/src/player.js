@@ -1,3 +1,5 @@
+import { damage } from "./damage";
+
 export function createPlayer() {
     const SPEED = 120;
     const SPEED_MOD = 1.5;
@@ -47,6 +49,7 @@ export function createPlayer() {
     const attack = player.add([
         anchor("left"),
         rotate(0),
+        damage(2),
         "player_attack",
     ]);
 

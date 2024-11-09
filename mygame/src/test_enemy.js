@@ -4,10 +4,15 @@ export function createTestEnemy() {
         anchor("center"),
         rect(20, 20),
         area(),
+        health(5),
     ]);
 
     enemy.onCollide("player_attack", (otherObj, collision) => {
-        if (!otherObj.hidden) {
+        enemy.hurt(otherObj.is("damage") ? otherObj.damage() : 1);
+    });
+
+    enemy.onHurt(() => {
+        if (enemy.hp() <= 0) {
             destroy(enemy);
         }
     });
