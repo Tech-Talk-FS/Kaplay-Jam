@@ -26,10 +26,6 @@ kaplay({
 
 const player = createPlayer();
 
-player.onUpdate(() => {
-  camPos(player.pos);
-});
-
 // Add a platform
 add([
   rect(width(), 24),
@@ -38,15 +34,6 @@ add([
   pos(0, height() - 24),
   body({ isStatic: true }),
 ]);
-
-["left", "right"].forEach((key) => {
-  onKeyRelease(key, () => {
-    // Only reset to "idle" if player is not holding any of these keys
-    if (player.isGrounded() && !isKeyDown("left") && !isKeyDown("right")) {
-      player.play("idle");
-    }
-  });
-});
 
 const getInfo = () =>
   `

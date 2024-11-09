@@ -86,6 +86,7 @@ export function createPlayer() {
         if (!isButtonDown(["left", "right", "up", "down"])) {
             player.play("idle");
         }
+        camPos(player.pos);
     });
 
     return player;
