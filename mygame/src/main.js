@@ -8,6 +8,8 @@ kaplay({
   scale: 4,
   // Set the default font
   font: "monospace",
+  // Works with onButtonPressed, onButtonDown, onButtonReleased
+  // Allows for multiple keys to work for one action
   buttons: {
     left: {
       keyboard: ["left", "a"],

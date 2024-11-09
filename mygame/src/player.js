@@ -83,7 +83,7 @@ export function createPlayer() {
 
     player.onUpdate(() => {
         // If no movement button is pressed, play the "idle" animation
-        if (!isButtonDown(["left", "right", "up", "down"])) {
+        if (player.getCurAnim().name !== "idle" && !isButtonDown(["left", "right", "up", "down"])) {
             player.play("idle");
         }
         camPos(player.pos);
