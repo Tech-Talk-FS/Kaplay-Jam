@@ -1,9 +1,8 @@
 import kaplay from "kaplay";
 import "kaplay/global";
-import { createPlayer } from "./player";
+import { createPlayer, loadPlayerSprites } from "./player";
 import { createTestEnemy } from "./test_enemy";
 import { createTestInteractable } from "./test_interactable";
-import { loadPlayer, loadPlayerSprites } from "./temp_player";
 
 // Start a kaboom game
 kaplay({
