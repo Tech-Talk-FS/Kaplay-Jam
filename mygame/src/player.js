@@ -1,51 +1,95 @@
+import { character } from "./character";
 import { damage } from "./damage";
 
-export function createPlayer() {
-    const SPEED = 120;
+String.prototype.capitalize = function(){ return this[0].toUpperCase()+this.slice(1); }
+/**
+ * The base name and the number of frames. the name will be suffixed with Left, Down, Right, Up
+ * @typedef ActionDefinition
+ * @type {[string, number, import("kaplay").SpriteAnim | undefined]}
+ */
+/**
+ * The HanaCaraka sprite offer specialized animations in each direction because the directions are in the same order I can automate a lot of the declaration.
+ * @param {number} maxX - The max columns expected
+ * @param  {...ActionDefinition} opts - The actions being supported. these should be declared in the order they occure in the sprite grid.
+ * @returns { import("kaplay").LoadSpriteOpt } - The arguments with the sliceX and sliceY as well as the animations. 
+ */
+export const directionalAnimations = (...opts) => {
+	const maxX = Math.max(...opts.map(v=>v[1]))+1;
+	const options = {
+		sliceX: maxX,
+		sliceY: opts.length*4,
+		anims: opts.reduce((o,[name,x, op={}],i)=>{
+			const y = i*4*maxX;
+			['Right', 'Left', 'Down', 'Up'].forEach((d,j)=>{
+				const my = y + maxX*j
+				o[name+d] = {
+					from: my,
+					to: my+x,
+					...op
+				}
+			});
+			return o;
+		},{})
+	};
+    console.log(options);
+	return options;
+}
+
+const anims = [
+	['idle', 3, {loop: true}],
+	['walk', 7, {loop: true}],
+	['run', 7, {loop: true}],
+	['jump', 5],
+	['damage', 3],
+	['death', 5],
+	['sword', 5],
+	['spear', 5],
+	['axe', 5],
+	['hammer', 5],
+	['pickaxe', 5],
+	['planting', 3],
+	['sickle', 5],
+	['water', 5]
+];
+const colors = ['white', 'blue', 'green', 'orange', 'pink', 'red', 'yellow'];
+const dirs = ["Right", "Left", "Down", "Up"];
+const equips = ["sword", "pickaxe", "axe", "sickle", "spear"];
+
+export const loadPlayerSprites = () => {
+	for(let i = 0; i<colors.length; i++){
+		const color = colors[i];
+		loadSprite(`hana${color ? '-'+color:''}`, `assests/Player/hana${color ? '-'+color:''}.png`, directionalAnimations(...anims));
+	}
+}
+
+export function createPlayer(color="white") {
     const SPEED_MOD = 1.5;
     const upgrade_modifiers = {
         speed: 1.0,
     };
 
-    // Loading a multi-frame sprite
-    // Each row is 9 cells wide, count for empty cells
-    loadSprite("player", "/assests/Soldier/Soldier/Soldier.png", {
-        // The image contains 9 frames layed out horizontally, slice it into individual frames
-        sliceX: 9,
-        sliceY: 7,
-        // Define animations
-        anims: {
-            idle: {
-                // Starts from frame 0, ends at frame 5
-                from: 0,
-                to: 5,
-                // Frame per second
-                speed: 3,
-                loop: true,
-            },
-            run: {
-                from: 9,
-                to: 16,
-                speed: 10,
-                loop: true,
-            },
-            attack: {
-                from: 18,
-                to: 23,
-                speed: 15,
-            }
-        },
-    });
-
+	const statics = new Set(anims.filter(([,,{loop}={}])=>!loop).flatMap(([n])=>dirs.map(d=>n+d)));
+    console.log(statics);
     // Creates the player sprite
     const player = add([
-        sprite("player"),
+		sprite('hana-'+color),
         pos(center()),
         anchor("center"),
         area({
-            shape: new Rect(vec2(0, -2), 13, 19)
+            shape: new Rect(vec2(1, 0), 13, 15)
         }),
         body(),
+        health(5),
+        character(),
+        {
+            lazyPlay: (action) => {
+                const animToPlay = action+player.dir;
+                const currAnimName = player.getCurAnim()?.name
+                if(!statics.has(currAnimName) && animToPlay !== currAnimName) {
+                    player.play(animToPlay);
+                }
+            },
+        },
         "player",
     ]);
 
@@ -60,69 +104,89 @@ export function createPlayer() {
     // Attaches interactable hitbox onto player
     const interact = player.add([
         anchor("left"),
-        rotate(0),
+        rotate(90),
         area({
-            shape: new Rect(vec2(0, 0), 20, 22)
+            shape: new Rect(vec2(0, 0), 17, 22)
         }),
         "player_interact",
     ]);
 
-    player.onButtonDown(["left", "right", "up", "down"], (button) => {
+    player.onButtonDown(["Left", "Right", "Up", "Down"], button => {
         let xMod = 0;
         let yMod = 0;
         // If the shift key is pressed, increase run speed
         let shiftMod = isKeyDown("shift") ? SPEED_MOD : 1;
+        const action = shiftMod === 1 ? "walk" : "run";
 
-        // Move and face character left if the "left" button is pressed
-        if (button === "left") {
+        player.dir = button;
+
+        // Move and face character left if the "Left" button is pressed
+        if (button === "Left") {
             xMod = -1;
-            player.flipX = true;
             attack.rotateTo(180);
             interact.rotateTo(180);
         }
-        // Move and face character right if the "right" button is pressed
-        else if (button === "right") {
+        // Move and face character right if the "Right" button is pressed
+        else if (button === "Right") {
             xMod = 1;
-            player.flipX = false;
             attack.rotateTo(0);
             interact.rotateTo(0);
         }
 
-        // Move character up if the "up" button is pressed
-        if (button === "up") {
+        // Move character up if the "Up" button is pressed
+        if (button === "Up") {
             yMod = -1;
+            interact.rotateTo(270);
         }
-        // Move character down if the "down" button is pressed
-        else if (button === "down") {
+        // Move character down if the "Down" button is pressed
+        else if (button === "Down") {
             yMod = 1;
+            interact.rotateTo(90);
         }
+
+        const speedX = player.speed * shiftMod * xMod * upgrade_modifiers.speed;
+        const speedY = player.speed * shiftMod * yMod * upgrade_modifiers.speed;
 
         player.move(
-            SPEED * shiftMod * xMod * upgrade_modifiers.speed,
-            SPEED * shiftMod * yMod * upgrade_modifiers.speed
+            speedX,
+            speedY
         );
 
-        // If the animation isn't already playing, play the "run" animation
-        if (player.getCurAnim()?.name !== "run" && player.getCurAnim()?.name !== "attack") {
-            player.play("run");
-        }
+        // Play the "walk"/"run" animation
+        player.lazyPlay(action)
     });
 
     // Plays the attack animation when the "attack" button is held down.
-    player.onButtonDown("attack", (button) => {
-        if (player.getCurAnim()?.name !== button) {
-            player.play(button);
-        }
-    })
+    player.onButtonDown("attack", button => {
+        console.log(player.currEquipment);
+        player.lazyPlay(player.currEquipment);
+    });
+
+    player.onButtonPress("weaponSwap", button => {
+        player.changeEquipment();
+    });
+
+    player.onButtonPress("paletteSwap", button => {
+        const i = (colors.indexOf(player.sprite.slice(5))+1)%colors.length;
+        const newSprite = `hana-${colors[i]}`;
+        player.use(sprite(newSprite));
+    });
+
+	// player.onAnimEnd(()=>{
+    //     console.log("Test");
+	// 	switch (player.getCurAnim()?.name){
+	// 		default: player.lazyPlay("idle");
+	// 	}
+	// })
 
     player.onUpdate(() => {
         // If no movement button is pressed and no "attack" animation is playing,
         // play the "idle" animation
         if (player.getCurAnim()?.name !== "idle" &&
         player.getCurAnim()?.name !== "attack" &&
-        !isButtonDown(["left", "right", "up", "down"])
+        !isButtonDown(["Left", "Right", "Up", "Down"])
         ) {
-            player.play("idle");
+            player.lazyPlay("idle");
         }
         
         // If the "attack" animation reaches the sword swipe section,

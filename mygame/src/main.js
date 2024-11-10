@@ -3,6 +3,7 @@ import "kaplay/global";
 import { createPlayer } from "./player";
 import { createTestEnemy } from "./test_enemy";
 import { createTestInteractable } from "./test_interactable";
+import { loadPlayer, loadPlayerSprites } from "./temp_player";
 
 // Start a kaboom game
 kaplay({
@@ -13,30 +14,37 @@ kaplay({
   // Works with onButtonPressed, onButtonDown, onButtonReleased
   // Allows for multiple keys to work for one action
   buttons: {
-    left: {
+    Left: {
       keyboard: ["left", "a"],
     },
-    right: {
+    Right: {
       keyboard: ["right", "d"],
     },
-    up: {
+    Up: {
       keyboard: ["up", "w"],
     },
-    down: {
+    Down: {
       keyboard: ["down", "s"],
     },
     attack: {
       keyboard: ["space"],
     },
     interact: {
+      keyboard: ["f"],
+    },
+    weaponSwap: {
       keyboard: ["e"],
     },
+    paletteSwap: {
+      keyboard: ["c"],
+    }
   }
 });
 
+loadPlayerSprites();
 const player = createPlayer();
-const enemy = createTestEnemy();
-const interactable = createTestInteractable();
+// const enemy = createTestEnemy();
+// const interactable = createTestInteractable();
 
 // Add a platform
 add([
