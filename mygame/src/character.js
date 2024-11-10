@@ -3,7 +3,7 @@ export function character() {
 
     return {
         id: "character",
-        require: ["health"],
+        require: ["health", "state"],
         speed: 100,
         armor: 0,
         currEquipment: "sword",

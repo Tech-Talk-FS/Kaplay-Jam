@@ -31,7 +31,6 @@ export const directionalAnimations = (...opts) => {
 			return o;
 		},{})
 	};
-    console.log(options);
 	return options;
 }
 
@@ -53,7 +52,6 @@ const anims = [
 ];
 const colors = ['white', 'blue', 'green', 'orange', 'pink', 'red', 'yellow'];
 const dirs = ["Right", "Left", "Down", "Up"];
-const equips = ["sword", "pickaxe", "axe", "sickle", "spear"];
 
 export const loadPlayerSprites = () => {
 	for(let i = 0; i<colors.length; i++){
@@ -67,9 +65,11 @@ export function createPlayer(color="white") {
     const upgrade_modifiers = {
         speed: 1.0,
     };
+    const playerActions = ["idle", "walk", "run", "attack"];
+    let animToPlay = "idle";
+    let dirToFace = "Down";
 
 	const statics = new Set(anims.filter(([,,{loop}={}])=>!loop).flatMap(([n])=>dirs.map(d=>n+d)));
-    console.log(statics);
     // Creates the player sprite
     const player = add([
 		sprite('hana-'+color),
@@ -79,13 +79,24 @@ export function createPlayer(color="white") {
             shape: new Rect(vec2(1, 0), 13, 15)
         }),
         body(),
+        state(playerActions[0], playerActions),
         health(5),
         character(),
         {
             lazyPlay: (action) => {
                 const animToPlay = action+player.dir;
                 const currAnimName = player.getCurAnim()?.name
+
+                // If this action is overrideable before it ends and it is a new animation...
                 if(!statics.has(currAnimName) && animToPlay !== currAnimName) {
+                    // If the action is different than its previous one, change its state
+                    // Example: walkUp is the same walk state as walkDown
+                    if (!currAnimName?.includes(action)) {
+                        // If the action is a weapon, change it to attack
+                        const state = playerActions.includes(action) ? action : "attack";
+                        player.enterState(state);
+                    }
+                    // Play the new animation
                     player.play(animToPlay);
                 }
             },
@@ -118,30 +129,46 @@ export function createPlayer(color="white") {
         let shiftMod = isKeyDown("shift") ? SPEED_MOD : 1;
         const action = shiftMod === 1 ? "walk" : "run";
 
-        player.dir = button;
+        // Only change the direction if not in the middle of an attack.
+        if (player.state !== "attack") {
+            player.dir = button;
+        }
+        dirToFace = button;
 
-        // Move and face character left if the "Left" button is pressed
+        // Move character left if the "Left" button is pressed
         if (button === "Left") {
             xMod = -1;
-            attack.rotateTo(180);
-            interact.rotateTo(180);
         }
-        // Move and face character right if the "Right" button is pressed
+        // Move character right if the "Right" button is pressed
         else if (button === "Right") {
             xMod = 1;
-            attack.rotateTo(0);
-            interact.rotateTo(0);
         }
 
         // Move character up if the "Up" button is pressed
         if (button === "Up") {
             yMod = -1;
-            interact.rotateTo(270);
         }
         // Move character down if the "Down" button is pressed
         else if (button === "Down") {
             yMod = 1;
-            interact.rotateTo(90);
+        }
+
+        // Player direction might be different than walking direction
+        switch(player.dir) {
+            case "Left":
+                attack.rotateTo(180);
+                interact.rotateTo(180);
+                break;
+            case "Right":
+                attack.rotateTo(0);
+                interact.rotateTo(0);
+                break;
+            case "Up":
+                interact.rotateTo(270);
+                break;
+            case "Down":
+                interact.rotateTo(90);
+                break;
         }
 
         const speedX = player.speed * shiftMod * xMod * upgrade_modifiers.speed;
@@ -152,14 +179,16 @@ export function createPlayer(color="white") {
             speedY
         );
 
-        // Play the "walk"/"run" animation
-        player.lazyPlay(action)
+        // Queue the "walk"/"run" animation
+        // The "attack" animation takes higher priority.
+        if (animToPlay != player.currEquipment) {
+            animToPlay = action;
+        }
     });
 
-    // Plays the attack animation when the "attack" button is held down.
+    // Queues the attack animation when the "attack" button is held down.
     player.onButtonDown("attack", button => {
-        console.log(player.currEquipment);
-        player.lazyPlay(player.currEquipment);
+        animToPlay = player.currEquipment;
     });
 
     player.onButtonPress("weaponSwap", button => {
@@ -172,23 +201,15 @@ export function createPlayer(color="white") {
         player.use(sprite(newSprite));
     });
 
-	// player.onAnimEnd(()=>{
-    //     console.log("Test");
-	// 	switch (player.getCurAnim()?.name){
-	// 		default: player.lazyPlay("idle");
-	// 	}
-	// })
+    // Used to change direction after the attack animations end.
+    // Without this, holding down the attack button will prevent
+    // the direction from changing as the state is not changed
+    // from attacking.
+    player.onAnimEnd(action => {
+        player.dir = dirToFace;
+    });
 
     player.onUpdate(() => {
-        // If no movement button is pressed and no "attack" animation is playing,
-        // play the "idle" animation
-        if (player.getCurAnim()?.name !== "idle" &&
-        player.getCurAnim()?.name !== "attack" &&
-        !isButtonDown(["Left", "Right", "Up", "Down"])
-        ) {
-            player.lazyPlay("idle");
-        }
-        
         // If the "attack" animation reaches the sword swipe section,
         // activate the attack hitbox.
         if (player.getCurAnim()?.name === "attack" &&
@@ -201,6 +222,15 @@ export function createPlayer(color="white") {
         else if (attack.is("area")) {
             disableAttack();
         }
+
+        // Update is called after any button press functions
+        // so this would prevent changing animations multiple times before
+        // one update call, which should allow something like holding
+        // up+right without the animations constantly resetting.
+        player.lazyPlay(animToPlay);
+
+        // Default back to "idle" animation
+        animToPlay = "idle";
 
         // Set camera to the player's position
         camPos(player.pos);
