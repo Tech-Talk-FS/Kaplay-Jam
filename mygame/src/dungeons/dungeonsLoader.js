@@ -16,7 +16,7 @@ const rnd = (range)=>({frame: ~~rand(...range)});
 export const dungeonLoader = () => {
 
 	const loadDungeon = lvl => {
-		const [title, floor, dungeon] = DUNGEONS[lvl];
+		const [title, floor, dungeon, ornaments, actions] = DUNGEONS[lvl];
 		if(!dungeon) throw new Error("Level is not defined");
 	
 		//add the floor
@@ -28,6 +28,8 @@ export const dungeonLoader = () => {
 		const player = createPlayer();
 		player.pos = plyr.pos;
 		level.remove(plyr);
+		const ornLevel = ornaments?.length ? addLevel(ornaments):undefined;
+		if(actions) actions(level, ornLevel);
 	}
 	tileLoader();
 	scene("main", loadDungeon);
