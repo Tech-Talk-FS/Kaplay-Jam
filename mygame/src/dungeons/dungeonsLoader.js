@@ -4,6 +4,7 @@ import { DUNGEONS } from "./dungeons";
 import { tileLoader } from "./tileLoader";
 
 
+
 const TILE_DIM = {tileWidth: 16, tileHeight: 16}
 const STATIC = () => [body({isStatic: true}), anchor('center')];
 const OBSTACLE = () => [...STATIC(), area()]
@@ -28,9 +29,10 @@ export const dungeonLoader = () => {
 		const player = createPlayer();
 		player.pos = plyr.pos;
 		level.remove(plyr);
-		const ornLevel = ornaments?.length ? addLevel(ornaments):undefined;
+		const ornLevel = ornaments?.length ? addLevel(ornaments, MAIN_SHEET):undefined;
 		if(actions) actions(level, ornLevel);
 	}
+	loadSprite("yellow-pixel", "assests/yellow-pixel.png");
 	tileLoader();
 	scene("main", loadDungeon);
 	go("main", 0);

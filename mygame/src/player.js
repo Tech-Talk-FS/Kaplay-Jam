@@ -176,6 +176,13 @@ export function createPlayer(map, color="white") {
         player.use(sprite(newSprite));
     });
 
+    player.onButtonPress("interact", ()=>{
+        for(const col of interact.getCollisions()){
+            const node = col.target;
+            if('interact' in node && typeof node.interact === 'function') node.interact(player);
+        }
+    });
+
 	// player.onAnimEnd(()=>{
     //     console.log("Test");
 	// 	switch (player.getCurAnim()?.name){

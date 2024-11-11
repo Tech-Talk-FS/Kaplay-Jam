@@ -3,6 +3,7 @@ import { BANNER, BONES, CENTER_TORCH, CHAIN_1, CHAIN_2, COIN, EAST_CORNER, EAST_
 const TILE_DIM = {tileWidth: 16, tileHeight: 16}
 const STATIC = () => [body({isStatic: true}), anchor('center')];
 const OBSTACLE = () => [...STATIC(), area()]
+const PASSTHROUGH = () => [...STATIC(), area({collisionIgnore: ['player']})]
 const rnd = (range)=>({frame: ~~rand(...range)});
 const sp = (tile) => sprite('tiles', Array.isArray(tile) ? rnd(tile):{frame: tile});
 export const FLOOR_SHEET = {
@@ -104,13 +105,13 @@ export const MAIN_SHEET = {
 		],
 		"H":()=>[
 			sp(LADDER),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'ladder',
 			'door'
 		],
 		"h":()=>[
 			sp(TRAPDOOR),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'trap-door',
 			'door'
 		],
@@ -147,138 +148,138 @@ export const MAIN_SHEET = {
 		],
 		"q":()=>[
 			sp(SMALL_MANA),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'small-mana'
 		],
 		"Q":()=>[
 			sp(LARGE_MANA),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'large-mana'
 		],
 		"w":()=>[
 			sp(SMALL_HEALTH),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'small-healt'
 		],
 		"W":()=>[
 			sp(LARGE_HEALTH),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'large-health'
 		],
 		"k":()=>[
 			sp(IRON_KEY),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'iron-key'
 		],
 		"K":()=>[
 			sp(GOLD_KEY),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'gold-key'
 		],
 		"c":()=>[
 			sp(CHAIN_1),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'chain-1',
 			'chain'
 		],
 		"C":()=>[
 			sp(CHAIN_2),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'chain-2',
 			'chain'
 		],
 		"x":()=>[
 			sp(LEFT_WEB),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'left-web',
 			'web'
 		],
 		"X":()=>[
 			sp(RIGHT_WEB),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'right-web',
 			'web'
 		],
 		"!":()=>[
 			sp(CENTER_TORCH),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'center-torch',
 			'torch'
 		],
 		"t":()=>[
 			sp(LEFT_TORCH),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'left-torch',
 			'torch'
 		],
 		"T":()=>[
 			sp(RIGHT_TORCH),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'right-torch',
 			'torch'
 		],
 		"l":()=>[
 			sp(TALL_CANDLE),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'tall-candle',
 			'torch'
 		],
 		"L":()=>[
 			sp(TALL_CANDLE_LIT),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'tall-candle-lit',
 			'torch'
 		],
 		"j":()=>[
 			sp(SHORT_CANDLE),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'short-candle',
 			'torch'
 		],
 		"J":()=>[
 			sp(SHORT_CANDLE_LIT),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'short-candle-lit',
 			'torch'
 		],
 		"b":()=>[
 			sp(BANNER),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'banner'
 		],
 		"z":()=>[
 			sp(BONES),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'bones'
 		],
 		"Z":()=>[
 			sp(SKELETONS),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'skeleton'
 		],
 		"v":()=>[
 			sp(LEFT_WALL_ORNAMENT),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'left-wall-ornament'
 		],
 		"V":()=>[
 			sp(RIGHT_WALL_ORNAMENT),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'right-wall-ornament'
 		],
 		"n":()=>[
 			sp(COIN),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'coin'
 		],
 		"m":()=>[
 			sp(SMALL_DIRT),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'small-dirt'
 		],
 		"M":()=>[
 			sp(LARGE_DIRT),
-			...STATIC(),
+			...PASSTHROUGH(),
 			'large-dirt'
 		]
 	}
