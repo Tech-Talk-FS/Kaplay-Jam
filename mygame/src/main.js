@@ -95,9 +95,14 @@ const player = add([
   sprite("dino"),
   pos(center()),
   anchor("center"),
+  color(200, 250, 35),
   area(),
   body(),
 ]);
+
+player.onClick(() => {
+  debug.log("Tech Talk is 🔥");
+});
 
 // .play is provided by sprite() component, it starts playing the specified animation (the animation information of "idle" is defined above in loadSprite)
 player.play("idle");
