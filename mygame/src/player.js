@@ -31,7 +31,6 @@ export const directionalAnimations = (...opts) => {
 			return o;
 		},{})
 	};
-    console.log(options);
 	return options;
 }
 
@@ -62,7 +61,7 @@ export const loadPlayerSprites = () => {
 	}
 }
 
-export function createPlayer(color="white") {
+export function createPlayer(map, color="white") {
     const SPEED_MOD = 1.5;
     const upgrade_modifiers = {
         speed: 1.0,
@@ -70,14 +69,19 @@ export function createPlayer(color="white") {
 
 	const statics = new Set(anims.filter(([,,{loop}={}])=>!loop).flatMap(([n])=>dirs.map(d=>n+d)));
     console.log(statics);
+    /*
+    Note: this will need a better solution for now
+    */
+    const plyr = query({include: "plyr"});
+    console.log(plyr);
     // Creates the player sprite
     const player = add([
 		sprite('hana-'+color),
-        pos(center()),
         anchor("center"),
         area({
             shape: new Rect(vec2(1, 0), 13, 15)
         }),
+        pos(),
         body(),
         health(5),
         character(),
