@@ -70,7 +70,7 @@ export function createPlayer(color="white") {
                 anchor: "top",
                 active: {
                     from: 2,
-                    to: 5,
+                    to: 3,
                 },
                 area: {
                     shape: new Rect(vec2(0, 5), 22, 16)
@@ -85,7 +85,7 @@ export function createPlayer(color="white") {
                 anchor: "bot",
                 active: {
                     from: 2,
-                    to: 5,
+                    to: 3,
                 },
                 area: {
                     shape: new Rect(vec2(2, 0), 22, 16)
@@ -100,7 +100,7 @@ export function createPlayer(color="white") {
                 anchor: "right",
                 active: {
                     from: 2,
-                    to: 5,
+                    to: 3,
                 },
                 area: {
                     shape: new Rect(vec2(0, 3), 22, 10)
@@ -118,7 +118,7 @@ export function createPlayer(color="white") {
                 anchor: "left",
                 active: {
                     from: 2,
-                    to: 5,
+                    to: 3,
                 },
                 area: {
                     shape: new Rect(vec2(0, 3), 22, 10)
@@ -165,6 +165,10 @@ export function createPlayer(color="white") {
                     }
                     // Play the new animation
                     player.play(animToPlay);
+                    // Player direction might be different than walking direction
+                    interact.rotateTo(directionAttributes[player.dir]?.interact?.rotate
+                        ? directionAttributes[player.dir]?.interact?.rotate
+                        : 0);
                 }
             },
         },
@@ -183,9 +187,7 @@ export function createPlayer(color="white") {
     const interact = player.add([
         anchor("left"),
         rotate(0),
-        area({
-            shape: new Rect(vec2(0, 0), 17, 22)
-        }),
+        area(directionAttributes[player.dir].interact.area),
         "player_interact",
     ]);
 
@@ -220,22 +222,6 @@ export function createPlayer(color="white") {
             yMod = 1;
         }
 
-        // Player direction might be different than walking direction
-        switch(player.dir) {
-            case "Left":
-                interact.rotateTo(180);
-                break;
-            case "Right":
-                interact.rotateTo(0);
-                break;
-            case "Up":
-                interact.rotateTo(270);
-                break;
-            case "Down":
-                interact.rotateTo(90);
-                break;
-        }
-
         const speedX = player.speed * shiftMod * xMod * upgrade_modifiers.speed;
         const speedY = player.speed * shiftMod * yMod * upgrade_modifiers.speed;
 
@@ -256,11 +242,13 @@ export function createPlayer(color="white") {
         animToPlay = player.currEquipment;
     });
 
+    // Swaps the currently equipped weapons.
     player.onButtonPress("weaponSwap", button => {
         player.changeEquipment();
         attack.damageAmount = player.damageAmount;
     });
 
+    // Swaps the current color palette
     player.onButtonPress("paletteSwap", button => {
         const i = (colors.indexOf(player.sprite.slice(5))+1)%colors.length;
         const newSprite = `hana-${colors[i]}`;
@@ -273,6 +261,7 @@ export function createPlayer(color="white") {
     // from attacking.
     player.onAnimEnd(animation => {
         player.dir = dirToFace;
+        // Disable the attack hitbox if the attack animation is done
         if (player.state === "attack") {
             disableAttack();
         }
@@ -308,12 +297,27 @@ export function createPlayer(color="white") {
     function enableAttack() {
         const currDirAttribute = directionAttributes[player.dir];
         const currWeapon = currDirAttribute[player.currEquipment];
+        const activeFrom = currWeapon?.active?.from ? currWeapon.active.from : 0;
+        const activeTo = currWeapon?.active?.to ? currWeapon?.active.to : 0;
+        const weaponAnchor = currWeapon?.anchor ? currWeapon.anchor : "center";
+        const weaponArea = currWeapon?.area ? currWeapon.area : { shape: new Rect(vec2(0, 0), 1, 1) };
 
+        // If the hitbox is not already active
+        // and if the current frame is within the
+        // active frames for the hitbox, activate the hitbox
         if (!attack.is("area") &&
-        player.animFrame >= currWeapon?.active.from &&
-        player.animFrame <= currWeapon?.active.to ) {
-            attack.anchor = currWeapon.anchor;
-            attack.use(area(currWeapon.area));
+        player.animFrame >= activeFrom &&
+        player.animFrame <= activeTo ) {
+            attack.anchor = weaponAnchor;
+            attack.use(area(weaponArea));
+        }
+        // If the hitbox is already active
+        // but the current frame is not within the
+        // active frames for the hitbox, deactivate the hitbox
+        else if (attack.is("area") &&
+        (player.animFrame < activeFrom ||
+        player.animFrame > activeTo)) {
+            disableAttack();
         }
     }
 
