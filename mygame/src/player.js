@@ -61,7 +61,7 @@ export const loadPlayerSprites = () => {
 	}
 }
 
-export function createPlayer(color="white") {
+export function createPlayer(map, color="white") {
     const hitboxes = getHitboxes();
 
     const SPEED_MOD = 1.5;
@@ -73,14 +73,20 @@ export function createPlayer(color="white") {
     let dirToFace = "Right";
 
 	const statics = new Set(anims.filter(([,,{loop}={}])=>!loop).flatMap(([n])=>dirs.map(d=>n+d)));
+    console.log(statics);
+    /*
+    Note: this will need a better solution for now
+    */
+    const plyr = query({include: "plyr"});
+    console.log(plyr);
     // Creates the player sprite
     const player = add([
 		sprite('hana-'+color),
-        pos(center()),
         anchor("center"),
         area({
             shape: new Rect(vec2(1, 0), 13, 15)
         }),
+        pos(),
         body(),
         state(playerActions[0], playerActions),
         health(5),
@@ -199,6 +205,13 @@ export function createPlayer(color="white") {
         const i = (colors.indexOf(player.sprite.slice(5))+1)%colors.length;
         const newSprite = `hana-${colors[i]}`;
         player.use(sprite(newSprite));
+    });
+
+    player.onButtonPress("interact", ()=>{
+        for(const col of interact.getCollisions()){
+            const node = col.target;
+            if('interact' in node && typeof node.interact === 'function') node.interact(player);
+        }
     });
 
     // Used to change direction after the attack animations end.

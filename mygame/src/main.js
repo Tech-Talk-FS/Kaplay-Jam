@@ -3,13 +3,15 @@ import "kaplay/global";
 import { createPlayer, loadPlayerSprites } from "./player";
 import { createTestEnemy } from "./test_enemy";
 import { createTestInteractable } from "./test_interactable";
+import { dungeonLoader } from "./dungeons";
 
 // Start a kaboom game
-kaplay({
+const k = kaplay({
   // Scale the whole game up
   scale: 4,
   // Set the default font
   font: "monospace",
+  background: "#000000",
   // Works with onButtonPressed, onButtonDown, onButtonReleased
   // Allows for multiple keys to work for one action
   buttons: {
@@ -41,27 +43,30 @@ kaplay({
 });
 
 loadPlayerSprites();
-const player = createPlayer();
+
+dungeonLoader();
+//const player = createPlayer();
+
 // const enemy = createTestEnemy();
 // const interactable = createTestInteractable();
 
 // Add a platform
-add([
+/*add([
   rect(width(), 24),
   area(),
   outline(1),
   pos(0, height() - 24),
   body({ isStatic: true }),
-]);
+]);*/
 
-const getInfo = () =>
+/*const getInfo = () =>
   `
 Anim: ${player.curAnim()}
 Frame: ${player.frame}
-`.trim();
+`.trim();*/
 
 // Add some text to show the current animation
-const label = add([text(getInfo(), { size: 12 }), color(0, 0, 0), pos(4)]);
+const label = add([text(""/*getInfo()*/, { size: 12 }), color(0, 0, 0), pos(4), fixed()]);
 
 label.onUpdate(() => {
   label.text = getInfo();
