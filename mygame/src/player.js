@@ -20,7 +20,7 @@ export const directionalAnimations = (...opts) => {
 		sliceY: opts.length*4,
 		anims: opts.reduce((o,[name,x, op={}],i)=>{
 			const y = i*4*maxX;
-			['Right', 'Left', 'Down', 'Up'].forEach((d,j)=>{
+			dirs.forEach((d,j)=>{
 				const my = y + maxX*j
 				o[name+d] = {
 					from: my,
@@ -61,13 +61,79 @@ export const loadPlayerSprites = () => {
 }
 
 export function createPlayer(color="white") {
+    const directionAttributes = {
+        Down: {
+            interact: {
+                rotate: 90
+            },
+            sword: {
+                anchor: "top",
+                active: {
+                    from: 2,
+                    to: 5,
+                },
+                area: {
+                    shape: new Rect(vec2(0, 5), 22, 16)
+                }
+            }
+        },
+        Up: {
+            interact: {
+                rotate: 270
+            },
+            sword: {
+                anchor: "bot",
+                active: {
+                    from: 2,
+                    to: 5,
+                },
+                area: {
+                    shape: new Rect(vec2(2, 0), 22, 16)
+                }
+            }
+        },
+        Left: {
+            interact: {
+                rotate: 180
+            },
+            sword: {
+                anchor: "right",
+                active: {
+                    from: 2,
+                    to: 5,
+                },
+                area: {
+                    shape: new Rect(vec2(0, 3), 22, 10)
+                }
+            }
+        },
+        Right: {
+            interact: {
+                area: {
+                    shape: new Rect(vec2(0, 0), 17, 22)
+                },
+                rotate: 0
+            },
+            sword: {
+                anchor: "left",
+                active: {
+                    from: 2,
+                    to: 5,
+                },
+                area: {
+                    shape: new Rect(vec2(0, 3), 22, 10)
+                }
+            }
+        }
+    }
+
     const SPEED_MOD = 1.5;
     const upgrade_modifiers = {
         speed: 1.0,
     };
     const playerActions = ["idle", "walk", "run", "attack"];
     let animToPlay = "idle";
-    let dirToFace = "Down";
+    let dirToFace = "Right";
 
 	const statics = new Set(anims.filter(([,,{loop}={}])=>!loop).flatMap(([n])=>dirs.map(d=>n+d)));
     // Creates the player sprite
@@ -81,6 +147,7 @@ export function createPlayer(color="white") {
         body(),
         state(playerActions[0], playerActions),
         health(5),
+        damage(3),
         character(),
         {
             lazyPlay: (action) => {
@@ -108,21 +175,21 @@ export function createPlayer(color="white") {
     const attack = player.add([
         anchor("left"),
         rotate(0),
-        damage(2),
+        damage(player.damageAmount),
         "player_attack",
     ]);
 
     // Attaches interactable hitbox onto player
     const interact = player.add([
         anchor("left"),
-        rotate(90),
+        rotate(0),
         area({
             shape: new Rect(vec2(0, 0), 17, 22)
         }),
         "player_interact",
     ]);
 
-    player.onButtonDown(["Left", "Right", "Up", "Down"], button => {
+    player.onButtonDown(dirs, button => {
         let xMod = 0;
         let yMod = 0;
         // If the shift key is pressed, increase run speed
@@ -156,11 +223,9 @@ export function createPlayer(color="white") {
         // Player direction might be different than walking direction
         switch(player.dir) {
             case "Left":
-                attack.rotateTo(180);
                 interact.rotateTo(180);
                 break;
             case "Right":
-                attack.rotateTo(0);
                 interact.rotateTo(0);
                 break;
             case "Up":
@@ -193,6 +258,7 @@ export function createPlayer(color="white") {
 
     player.onButtonPress("weaponSwap", button => {
         player.changeEquipment();
+        attack.damageAmount = player.damageAmount;
     });
 
     player.onButtonPress("paletteSwap", button => {
@@ -205,22 +271,18 @@ export function createPlayer(color="white") {
     // Without this, holding down the attack button will prevent
     // the direction from changing as the state is not changed
     // from attacking.
-    player.onAnimEnd(action => {
+    player.onAnimEnd(animation => {
         player.dir = dirToFace;
+        if (player.state === "attack") {
+            disableAttack();
+        }
     });
 
     player.onUpdate(() => {
         // If the "attack" animation reaches the sword swipe section,
         // activate the attack hitbox.
-        if (player.getCurAnim()?.name === "attack" &&
-        (player.animFrame === 3 ||
-        player.animFrame === 4)) {
+        if (player.state === "attack") {
             enableAttack();
-        }
-        // If the "attack" animation is no longer playing,
-        // disable the attack hitbox.
-        else if (attack.is("area")) {
-            disableAttack();
         }
 
         // Update is called after any button press functions
@@ -244,9 +306,15 @@ export function createPlayer(color="white") {
     // Adds the area component to attack
     // Allows the attack hitbox to be active
     function enableAttack() {
-        attack.use(area({
-            shape: new Rect(vec2(0, 0), 22, 23)
-        }));
+        const currDirAttribute = directionAttributes[player.dir];
+        const currWeapon = currDirAttribute[player.currEquipment];
+
+        if (!attack.is("area") &&
+        player.animFrame >= currWeapon?.active.from &&
+        player.animFrame <= currWeapon?.active.to ) {
+            attack.anchor = currWeapon.anchor;
+            attack.use(area(currWeapon.area));
+        }
     }
 
     // Adds an upgrade event for the player to be called

@@ -3,11 +3,11 @@ export function character() {
 
     return {
         id: "character",
-        require: ["health", "state"],
+        require: ["health", "state", "damage"],
         speed: 100,
         armor: 0,
         currEquipment: "sword",
-        dir: "Down",
+        dir: "Right",
         /**
          * Changes the equipment to the designated one. If none are specified,
          * it cycles to the next weapon.
@@ -20,6 +20,14 @@ export function character() {
             else {
                 const i = (possibleEquipments.indexOf(this.currEquipment)+1)%possibleEquipments.length;
                 this.currEquipment = possibleEquipments[i];
+            }
+
+            switch(this.currEquipment) {
+                case "sword":
+                    this.damageAmount = 3;
+                    break;
+                default:
+                    this.damageAmount = 1;
             }
         },
     }

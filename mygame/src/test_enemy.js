@@ -8,7 +8,7 @@ export function createTestEnemy() {
     ]);
 
     enemy.onCollide("player_attack", (otherObj, collision) => {
-        enemy.hurt(otherObj.is("damage") ? otherObj.damage() : 1);
+        enemy.hurt(otherObj.is("damage") ? otherObj.damageAmount: 1);
     });
 
     enemy.onHurt(() => {

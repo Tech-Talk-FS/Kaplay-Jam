@@ -1,13 +1,9 @@
-export function damage(damageAmount) {
-    let damage = damageAmount;
-
+export function damage(damageAmount=1) {
     return {
         id :"damage",
-        damage() {
-            return damage;
-        },
+        damageAmount,
         inspect() {
-            return `damage: ${damage}`;
+            return `damage: ${damageAmount}`;
         },
     }
 }
