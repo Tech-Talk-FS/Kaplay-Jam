@@ -1,5 +1,6 @@
 import { character } from "./character";
 import { damage } from "./damage";
+import { getHitboxes } from "./player_hitboxes";
 
 String.prototype.capitalize = function(){ return this[0].toUpperCase()+this.slice(1); }
 /**
@@ -61,71 +62,7 @@ export const loadPlayerSprites = () => {
 }
 
 export function createPlayer(color="white") {
-    const directionAttributes = {
-        Down: {
-            interact: {
-                rotate: 90
-            },
-            sword: {
-                anchor: "top",
-                active: {
-                    from: 2,
-                    to: 3,
-                },
-                area: {
-                    shape: new Rect(vec2(0, 5), 22, 16)
-                }
-            }
-        },
-        Up: {
-            interact: {
-                rotate: 270
-            },
-            sword: {
-                anchor: "bot",
-                active: {
-                    from: 2,
-                    to: 3,
-                },
-                area: {
-                    shape: new Rect(vec2(2, 0), 22, 16)
-                }
-            }
-        },
-        Left: {
-            interact: {
-                rotate: 180
-            },
-            sword: {
-                anchor: "right",
-                active: {
-                    from: 2,
-                    to: 3,
-                },
-                area: {
-                    shape: new Rect(vec2(0, 3), 22, 10)
-                }
-            }
-        },
-        Right: {
-            interact: {
-                area: {
-                    shape: new Rect(vec2(0, 0), 17, 22)
-                },
-                rotate: 0
-            },
-            sword: {
-                anchor: "left",
-                active: {
-                    from: 2,
-                    to: 3,
-                },
-                area: {
-                    shape: new Rect(vec2(0, 3), 22, 10)
-                }
-            }
-        }
-    }
+    const hitboxes = getHitboxes();
 
     const SPEED_MOD = 1.5;
     const upgrade_modifiers = {
@@ -165,9 +102,16 @@ export function createPlayer(color="white") {
                     }
                     // Play the new animation
                     player.play(animToPlay);
-                    // Player direction might be different than walking direction
-                    interact.rotateTo(directionAttributes[player.dir]?.interact?.rotate
-                        ? directionAttributes[player.dir]?.interact?.rotate
+
+                    // Adjust the interaction hitbox based on the current direction being faced
+                    if (hitboxes?.interact[player.dir]?.area) {
+                        if (interact.is("area")) {
+                            interact.unuse("area");
+                        }
+                        interact.use(area(hitboxes.interact[player.dir].area))
+                    }
+                    interact.rotateTo(hitboxes?.interact[player.dir]?.rotate
+                        ? hitboxes.interact[player.dir].rotate
                         : 0);
                 }
             },
@@ -187,7 +131,7 @@ export function createPlayer(color="white") {
     const interact = player.add([
         anchor("left"),
         rotate(0),
-        area(directionAttributes[player.dir].interact.area),
+        area(hitboxes.interact[player.dir].area),
         "player_interact",
     ]);
 
@@ -242,10 +186,12 @@ export function createPlayer(color="white") {
         animToPlay = player.currEquipment;
     });
 
-    // Swaps the currently equipped weapons.
+    // Swaps the currently equipped weapons if the player is not already attacking.
     player.onButtonPress("weaponSwap", button => {
-        player.changeEquipment();
-        attack.damageAmount = player.damageAmount;
+        if (player.state !== "attack") {
+            player.changeEquipment();
+            attack.damageAmount = player.damageAmount;
+        }
     });
 
     // Swaps the current color palette
@@ -295,12 +241,12 @@ export function createPlayer(color="white") {
     // Adds the area component to attack
     // Allows the attack hitbox to be active
     function enableAttack() {
-        const currDirAttribute = directionAttributes[player.dir];
-        const currWeapon = currDirAttribute[player.currEquipment];
-        const activeFrom = currWeapon?.active?.from ? currWeapon.active.from : 0;
-        const activeTo = currWeapon?.active?.to ? currWeapon?.active.to : 0;
-        const weaponAnchor = currWeapon?.anchor ? currWeapon.anchor : "center";
-        const weaponArea = currWeapon?.area ? currWeapon.area : { shape: new Rect(vec2(0, 0), 1, 1) };
+        const currWeapon = hitboxes[player.currEquipment];
+        const currWeaponDir = currWeapon ? currWeapon[player.dir] : null;
+        const activeFrom = currWeaponDir?.active?.from ? currWeaponDir.active.from : 0;
+        const activeTo = currWeaponDir?.active?.to ? currWeaponDir?.active.to : 0;
+        const weaponAnchor = currWeaponDir?.anchor ? currWeaponDir.anchor : "center";
+        const weaponArea = currWeaponDir?.area ? currWeaponDir.area : { shape: new Rect(vec2(0, 0), 1, 1) };
 
         // If the hitbox is not already active
         // and if the current frame is within the

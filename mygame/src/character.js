@@ -26,6 +26,18 @@ export function character() {
                 case "sword":
                     this.damageAmount = 3;
                     break;
+                case "pickaxe":
+                    this.damageAmount = 2;
+                    break;
+                case "axe":
+                    this.damageAmount = 3;
+                    break;
+                case "sickle":
+                    this.damageAmount = 2;
+                    break;
+                case "spear":
+                    this.damageAmount = 3;
+                    break;
                 default:
                     this.damageAmount = 1;
             }
