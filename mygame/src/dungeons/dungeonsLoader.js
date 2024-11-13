@@ -1,4 +1,4 @@
-import { createPlayer } from "../player";
+import { createPlayer, directionalAnimations } from "../player";
 import { FLOOR_SHEET, MAIN_SHEET } from "./charSheets";
 import { DUNGEONS } from "./dungeons";
 import { tileLoader } from "./tileLoader";
@@ -32,7 +32,11 @@ export const dungeonLoader = () => {
 		const ornLevel = ornaments?.length ? addLevel(ornaments, MAIN_SHEET):undefined;
 		if(actions) actions(level, ornLevel);
 	}
-	loadSprite("yellow-pixel", "assests/yellow-pixel.png");
+	loadSprite('skeleton', 'assests/enemies/skeleton.png', directionalAnimations(
+		['idle', 5, {loop: true}],
+		['walk', 5, {loop: true}],
+		['damage', 3],
+		['death', 3]));
 	tileLoader();
 	scene("main", loadDungeon);
 	go("main", 0);

@@ -1,6 +1,6 @@
 import kaplay from "kaplay";
 import "kaplay/global";
-import { createPlayer, loadPlayerSprites } from "./player";
+import { createPlayer, directionalAnimations, loadPlayerSprites } from "./player";
 import { createTestEnemy } from "./test_enemy";
 import { createTestInteractable } from "./test_interactable";
 import { dungeonLoader } from "./dungeons";

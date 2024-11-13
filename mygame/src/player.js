@@ -4,6 +4,7 @@ import { entity } from "./entity";
 import { getHitboxes } from "./player_hitboxes";
 
 String.prototype.capitalize = function(){ return this[0].toUpperCase()+this.slice(1); }
+const dirs = ["Right", "Left", "Down", "Up"];
 /**
  * The base name and the number of frames. the name will be suffixed with Left, Down, Right, Up
  * @typedef ActionDefinition
@@ -44,7 +45,7 @@ const anims = [
 ];
 //const colors = ['white', 'blue', 'green', 'orange', 'pink', 'red', 'yellow'];
 const variations = 6;
-const dirs = ["Right", "Left", "Down", "Up"];
+
 
 export const loadPlayerSprites = () => {
 	for(let i = 0; i<variations; i++){
