@@ -7,6 +7,7 @@ import { directionalAnimations } from "../player";
 String.prototype.capitalize = function () {
   return this[0].toUpperCase() + this.slice(1);
 };
+const dirs = ["Right", "Left", "Down", "Up"];
 
 export const loadSkeletonSprite = () => {
   loadSprite(
@@ -22,24 +23,25 @@ export const loadSkeletonSprite = () => {
 };
 
 export function createPlayer(map, variation = 0) {
-  const hitboxes = getHitboxes();
+//   const hitboxes = getHitboxes();
 
-  const SPEED_MOD = 1.5;
-  const upgrade_modifiers = {
-    speed: 1.0,
-  };
-  const playerActions = ["idle", "walk", "run", "attack"];
+//   const SPEED_MOD = 1.5;
+//   const upgrade_modifiers = {
+//     speed: 1.0,
+//   };
+  const playerActions = ["idle", "walk", "damage", "death"];
   let animToPlay = "idle";
-  let dirToFace = "Right";
+  let dirToFace = "Left";
 
   const statics = new Set(
     anims
       .filter(([, , { loop } = {}]) => !loop)
       .flatMap(([n]) => dirs.map((d) => n + d))
   );
+  
   // Creates the player sprite
-  const player = add([
-    sprite("player-" + variation),
+  const skeleton = add([
+    sprite("skeleton"),
     anchor("center"),
     area({
       shape: new Rect(vec2(1, 0), 13, 15),
@@ -50,11 +52,11 @@ export function createPlayer(map, variation = 0) {
     health(5),
     damage(3),
     entity(),
-    character(),
+    enemy(),
     {
       lazyPlay: (action) => {
-        const animToPlay = action + player.dir;
-        const currAnimName = player.getCurAnim()?.name;
+        const animToPlay = action + skeleton.dir;
+        const currAnimName = skeleton.getCurAnim()?.name;
 
         // If this action is overrideable before it ends and it is a new animation...
         if (!statics.has(currAnimName) && animToPlay !== currAnimName) {
@@ -63,23 +65,23 @@ export function createPlayer(map, variation = 0) {
           if (!currAnimName?.includes(action)) {
             // If the action is a weapon, change it to attack
             const state = playerActions.includes(action) ? action : "attack";
-            player.enterState(state);
+            skeleton.enterState(state);
           }
           // Play the new animation
-          player.play(animToPlay);
+          skeleton.play(animToPlay);
 
           // Adjust the interaction hitbox based on the current direction being faced
-          if (hitboxes?.interact[player.dir]?.area) {
-            if (interact.is("area")) {
-              interact.unuse("area");
-            }
-            interact.use(area(hitboxes.interact[player.dir].area));
-          }
-          interact.rotateTo(
-            hitboxes?.interact[player.dir]?.rotate
-              ? hitboxes.interact[player.dir].rotate
-              : 0
-          );
+        //   if (hitboxes?.interact[player.dir]?.area) {
+        //     if (interact.is("area")) {
+        //       interact.unuse("area");
+        //     }
+        //     interact.use(area(hitboxes.interact[player.dir].area));
+        //   }
+        //   interact.rotateTo(
+        //     hitboxes?.interact[player.dir]?.rotate
+        //       ? hitboxes.interact[player.dir].rotate
+        //       : 0
+        //   );
         }
       },
     },
