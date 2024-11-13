@@ -1,5 +1,6 @@
 import { character } from "./character";
 import { damage } from "./damage";
+import { entity } from "./entity";
 import { getHitboxes } from "./player_hitboxes";
 
 String.prototype.capitalize = function(){ return this[0].toUpperCase()+this.slice(1); }
@@ -90,6 +91,7 @@ export function createPlayer(map, color="white") {
         state(playerActions[0], playerActions),
         health(5),
         damage(3),
+        entity(),
         character(),
         {
             lazyPlay: (action) => {
