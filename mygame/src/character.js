@@ -3,11 +3,8 @@ export function character() {
 
     return {
         id: "character",
-        require: ["health", "state", "damage"],
-        speed: 100,
-        armor: 0,
+        require: ["entity"],
         currEquipment: "sword",
-        dir: "Right",
         /**
          * Changes the equipment to the designated one. If none are specified,
          * it cycles to the next weapon.
