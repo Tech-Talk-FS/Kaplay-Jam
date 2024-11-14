@@ -1,12 +1,11 @@
-import kaplay from "kaplay";
-// --- importing sounds below ---
-import dungeon1 from "../Sounds/dungeon1.mp3"
-// ---                        ---
+export function soundLoader () {
 
-const loadSounds = kaplay().loadSound()
+   // MUSIC BELOW
+   loadMusic("dungeon1", "assests/Sounds/dungeon1.mp3") // dungeon 1 music
 
-export function dungeon1Sound (){
-   return loadSounds("dungeon1", dungeon1)
+   // SOUND EFFECTS BELOW
 }
 
-module.exports = {dungeon1Sound};
+
+// export all sounds
+

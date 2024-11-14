@@ -5,6 +5,7 @@ import { loadSkeletonSprite } from "./enemies/skeleton";
 import { createTestEnemy } from "./test_enemy";
 import { createTestInteractable } from "./test_interactable";
 import { dungeonLoader } from "./dungeons";
+import {soundLoader} from "./Sounds/soundLoader.js";
 
 // Start a kaboom game
 const k = kaplay({
@@ -43,10 +44,20 @@ const k = kaplay({
   }
 });
 
+
 loadPlayerSprites();
 loadSkeletonSprite();
-
+soundLoader();
 dungeonLoader();
+
+  play("dungeon1", {
+    paused: false,
+    loop: true,
+    volume: 1,
+    speed: 1,
+  });
+
+
 
 //const player = createPlayer();
 
