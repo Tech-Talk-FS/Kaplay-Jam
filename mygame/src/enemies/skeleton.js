@@ -25,8 +25,8 @@ export const loadSkeletonSprite = () => {
   );
 };
 
-export function createSkeleton(map, variation = 0) {
-  const playerActions = ["idle", "walk", "damage", "death"];
+export function createSkeleton(player) {
+  const playerActions = ["idle", "walk", "detect", "damage", "death"];
   let animToPlay = "idle";
   let dirToFace = "Left";
 
@@ -75,14 +75,41 @@ export function createSkeleton(map, variation = 0) {
 
 
 
-  skeleton.onUpdate(() => {
+  skeleton.onUpdate(async () => {
     // Use state for tracking
-    if (skeleton.state === "attack") {
-    //   enableAttack();
-
+    if (skeleton.state === "idle") {
+        await wait(2)
+        skeleton.enterState("detect")
     }
-    // console.log("update");
-    
+    if (skeleton.state === "detect") {
+        // Calculate the difference in x and y coordinates
+        const dx = player?.pos.x - skeleton.pos.x;
+        const dy = player?.pos.y - skeleton.pos.y;
+        const radius = 100
+        
+        // Calculate the actual distance using the Pythagorean theorem
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        // Check if the distance is less than or equal to the radius
+        const isWithinRadius = distance <= radius;
+
+        console.log("How close?", isWithinRadius)
+
+        if(isWithinRadius){
+            skeleton.enterState("walk")
+        }
+            
+        await wait(5)
+        skeleton.enterState("idle")
+    }
+    if (skeleton.state === "walk") {
+            console.log("walking", skeleton.pos )
+            skeleton.lazyPlay("walk");
+            const dir = player.pos.sub(skeleton.pos).unit();
+            skeleton.move(dir.scale(3));
+            await wait(5)
+            skeleton.enterState("idle")
+    }
 
     // Update is called after any button press functions
     // so this would prevent changing animations multiple times before

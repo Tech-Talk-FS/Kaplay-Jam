@@ -30,11 +30,11 @@ export const dungeonLoader = () => {
 		const skel = level.get('skel')[0]
 		
 		const player = createPlayer();
-		const skeleton = createSkeleton();
 		player.pos = plyr.pos;
+		level.remove(plyr);
+		const skeleton = createSkeleton(player);
 		skeleton.pos = skel.pos;
 		skeleton.dir = "Left" // don't know how to default this yet
-		level.remove(plyr);
 		level.remove(skel);
 		const ornLevel = ornaments?.length ? addLevel(ornaments, MAIN_SHEET):undefined;
 		if(actions) actions(level, ornLevel);
