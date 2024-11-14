@@ -1,6 +1,6 @@
 import kaplay from "kaplay";
 import "kaplay/global";
-import { createPlayer, loadPlayerSprites } from "./player";
+import { createPlayer, directionalAnimations, loadPlayerSprites } from "./player";
 import { createTestEnemy } from "./test_enemy";
 import { createTestInteractable } from "./test_interactable";
 import { dungeonLoader } from "./dungeons";
@@ -66,7 +66,7 @@ Frame: ${player.frame}
 `.trim();*/
 
 // Add some text to show the current animation
-const label = add([text(""/*getInfo()*/, { size: 12 }), color(0, 0, 0), pos(4), fixed()]);
+const label = add([text(""/*getInfo()*/, { size: 12 }), color(255, 255, 255), pos(4), fixed()]);
 
 label.onUpdate(() => {
   label.text = getInfo();

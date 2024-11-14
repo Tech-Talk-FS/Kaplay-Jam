@@ -25,6 +25,12 @@ export const MAIN_SHEET = {
 			...STATIC(),
 			'plyr'
 		],
+		"$": () => [
+			sprite('skeleton', {anim: 'idleLeft'}),
+			body(),
+			area({shape: new Rect(vec2(0,0), 12, 24)}),
+			anchor('center')
+		],
 		"=": () => [
 			sp(NORTH_WALL_TILES),
 			...OBSTACLE()

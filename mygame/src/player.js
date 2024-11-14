@@ -4,6 +4,7 @@ import { entity } from "./entity";
 import { getHitboxes } from "./player_hitboxes";
 
 String.prototype.capitalize = function(){ return this[0].toUpperCase()+this.slice(1); }
+const dirs = ["Right", "Left", "Down", "Up"];
 /**
  * The base name and the number of frames. the name will be suffixed with Left, Down, Right, Up
  * @typedef ActionDefinition
@@ -39,20 +40,19 @@ export const directionalAnimations = (...opts) => {
 const anims = [
 	['idle', 5, {loop: true}],
 	['walk', 5, {loop: true}],
-	['sword', 3],
+    ['sword', 3],
 	['death', 3],
 ];
-const outfits = [1, 2, 3, 4, 5, 6];
-const dirs = ["Right", "Left", "Down", "Up"];
+const variations = 6;
+
 
 export const loadPlayerSprites = () => {
-	for(let i = 0; i<outfits.length; i++){
-		const outfit = outfits[i];
-		loadSprite(`player${outfit ? '-'+outfit:''}`, `assests/Player/player${outfit ? '-'+outfit:''}.png`, directionalAnimations(...anims));
+	for(let i = 0; i<variations; i++){
+		loadSprite(`player-${i}`, `assests/Player/player-${i}.png`, directionalAnimations(...anims));
 	}
 }
 
-export function createPlayer(map, outfitNumber=1) {
+export function createPlayer(map, variation=0) {
     const hitboxes = getHitboxes();
 
     const SPEED_MOD = 1.5;
@@ -64,10 +64,9 @@ export function createPlayer(map, outfitNumber=1) {
     let dirToFace = "Right";
 
 	const statics = new Set(anims.filter(([,,{loop}={}])=>!loop).flatMap(([n])=>dirs.map(d=>n+d)));
-
     // Creates the player sprite
     const player = add([
-		sprite('player-'+outfitNumber),
+		sprite('player-'+variation),
         anchor("center"),
         area({
             shape: new Rect(vec2(0, 1), 13, 15)
@@ -128,119 +127,112 @@ export function createPlayer(map, outfitNumber=1) {
         "player_interact",
     ]);
 
-    const events = [
-        player.onButtonDown(dirs, button => {
-            let xMod = 0;
-            let yMod = 0;
-            // If the shift key is pressed, increase run speed
-            let shiftMod = isKeyDown("shift") ? SPEED_MOD : 1;
-    
-            // Only change the direction if not in the middle of an attack.
-            if (player.state !== "attack") {
-                player.dir = button;
-            }
-            dirToFace = button;
-    
-            // Move character left if the "Left" button is pressed
-            if (button === "Left") {
-                xMod = -1;
-            }
-            // Move character right if the "Right" button is pressed
-            else if (button === "Right") {
-                xMod = 1;
-            }
-    
-            // Move character up if the "Up" button is pressed
-            if (button === "Up") {
-                yMod = -1;
-            }
-            // Move character down if the "Down" button is pressed
-            else if (button === "Down") {
-                yMod = 1;
-            }
-    
-            const speedX = player.speed * shiftMod * xMod * upgrade_modifiers.speed;
-            const speedY = player.speed * shiftMod * yMod * upgrade_modifiers.speed;
-    
-            player.move(
-                speedX,
-                speedY
-            );
-    
-            // Queue the "walk" animation
-            // The "attack" animation takes higher priority.
-            if (animToPlay != player.currEquipment) {
-                animToPlay = "walk";
-            }
-        }),
-    
-        // Queues the attack animation when the "attack" button is held down.
-        player.onButtonDown("attack", button => {
-            animToPlay = player.currEquipment;
-        }),
-    
-        // Swaps the currently equipped weapons if the player is not already attacking.
-        // UNUSEABLE WITH CURRENT SPRITE
-        // player.onButtonPress("weaponSwap", button => {
-        //     if (player.state !== "attack") {
-        //         player.changeEquipment();
-        //         attack.damageAmount = player.damageAmount;
-        //     }
-        // }),
-    
-        // Swaps the current color palette
-        player.onButtonPress("paletteSwap", button => {
-            const outfitNum = parseInt(player.sprite.slice(7));
-            const index = outfits.indexOf(outfitNum);
-            const newSprite = `player-${index+1 < outfits.length ? outfits[index+1] : 1}`;
-            player.use(sprite(newSprite));
-        }),
-    
-        player.onButtonPress("interact", ()=>{
-            for(const col of interact.getCollisions()){
-                const node = col.target;
-                if('interact' in node && typeof node.interact === 'function') node.interact(player);
-            }
-        }),
-    
-        // Used to change direction after the attack animations end.
-        // Without this, holding down the attack button will prevent
-        // the direction from changing as the state is not changed
-        // from attacking.
-        player.onAnimEnd(animation => {
-            player.dir = dirToFace;
-            // Disable the attack hitbox if the attack animation is done
-            if (player.state === "attack") {
-                disableAttack();
-            }
-        }),
-    
-        player.onUpdate(() => {
-            // If the "attack" animation reaches the sword swipe section,
-            // activate the attack hitbox.
-            if (player.state === "attack") {
-                enableAttack();
-            }
-    
-            // Update is called after any button press functions
-            // so this would prevent changing animations multiple times before
-            // one update call, which should allow something like holding
-            // up+right without the animations constantly resetting.
-            player.lazyPlay(animToPlay);
-    
-            // Default back to "idle" animation
-            animToPlay = "idle";
-    
-            // Set camera to the player's position
-            camPos(player.pos);
-        }),
+    player.onButtonDown(dirs, button => {
+        let xMod = 0;
+        let yMod = 0;
+        // If the shift key is pressed, increase run speed
+        let shiftMod = isKeyDown("shift") ? SPEED_MOD : 1;
+        //no run animation in the sprite kit for now. 
+        //const action = shiftMod === 1 ? "walk" : "run";
+        const action = "walk"
 
-        player.onDestroy(() => {
-            events.forEach(event => {
-                event.cancel();
-            });
-        })
-    ]
+        // Only change the direction if not in the middle of an attack.
+        if (player.state !== "attack") {
+            player.dir = button;
+        }
+        dirToFace = button;
+
+        // Move character left if the "Left" button is pressed
+        if (button === "Left") {
+            xMod = -1;
+        }
+        // Move character right if the "Right" button is pressed
+        else if (button === "Right") {
+            xMod = 1;
+        }
+
+        // Move character up if the "Up" button is pressed
+        if (button === "Up") {
+            yMod = -1;
+        }
+        // Move character down if the "Down" button is pressed
+        else if (button === "Down") {
+            yMod = 1;
+        }
+
+        const speedX = player.speed * shiftMod * xMod * upgrade_modifiers.speed;
+        const speedY = player.speed * shiftMod * yMod * upgrade_modifiers.speed;
+
+        player.move(
+            speedX,
+            speedY
+        );
+
+        // Queue the "walk"/"run" animation
+        // The "attack" animation takes higher priority.
+        if (animToPlay != player.currEquipment) {
+            animToPlay = action;
+        }
+    });
+
+    // Queues the attack animation when the "attack" button is held down.
+    player.onButtonDown("attack", button => {
+        animToPlay = player.currEquipment;
+    });
+
+    // Swaps the currently equipped weapons if the player is not already attacking.
+    // CURRENTLY UNUSEABLE WITH CURRENT SPRITE SHEET
+    // player.onButtonPress("weaponSwap", button => {
+    //     if (player.state !== "attack") {
+    //         player.changeEquipment();
+    //         attack.damageAmount = player.damageAmount;
+    //     }
+    // });
+
+    // Swaps the current color palette
+    player.onButtonPress("paletteSwap", button => {
+        const i = (parseInt(player.sprite.slice(7))+1)%variations;
+        player.use(sprite(`player-${i}`));
+    });
+
+    player.onButtonPress("interact", ()=>{
+        for(const col of interact.getCollisions()){
+            const node = col.target;
+            if('interact' in node && typeof node.interact === 'function') node.interact(player);
+        }
+    });
+
+    // Used to change direction after the attack animations end.
+    // Without this, holding down the attack button will prevent
+    // the direction from changing as the state is not changed
+    // from attacking.
+    player.onAnimEnd(animation => {
+        player.dir = dirToFace;
+        // Disable the attack hitbox if the attack animation is done
+        if (player.state === "attack") {
+            disableAttack();
+        }
+    });
+
+    player.onUpdate(() => {
+        // If the "attack" animation reaches the sword swipe section,
+        // activate the attack hitbox.
+        if (player.state === "attack") {
+            enableAttack();
+        }
+
+        // Update is called after any button press functions
+        // so this would prevent changing animations multiple times before
+        // one update call, which should allow something like holding
+        // up+right without the animations constantly resetting.
+        player.lazyPlay(animToPlay);
+
+        // Default back to "idle" animation
+        animToPlay = "idle";
+
+        // Set camera to the player's position
+        camPos(player.pos);
+    });
 
     // Removes the area component from attack
     function disableAttack() {
