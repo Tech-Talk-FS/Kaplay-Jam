@@ -93,7 +93,7 @@ class HUD {
 			anchor: 'botright',
 			pos: vec2(42, height()/2-6),
 			color: rgb(128,128,128)
-		})
+		});
 	}
 
 	/**
