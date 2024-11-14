@@ -44,7 +44,7 @@ export function createSkeleton(player) {
     pos(),
     body(),
     state(playerActions[0], playerActions),
-    health(5),
+    health(10),
     damage(3),
     entity(),
     enemy(),
@@ -88,8 +88,6 @@ export function createSkeleton(player) {
       // Check if the distance is less than or equal to the radius
       const isWithinRadius = distance <= radius;
 
-      console.log("How close?", isWithinRadius);
-
       if (isWithinRadius) {
         skeleton.enterState("walk");
       }
@@ -98,7 +96,6 @@ export function createSkeleton(player) {
       skeleton.enterState("idle");
     }
     if (skeleton.state === "walk") {
-      console.log("walking", skeleton.pos);
       skeleton.lazyPlay("walk");
       const dir = player.pos.sub(skeleton.pos).unit();
       skeleton.move(dir.scale(3));
@@ -116,19 +113,17 @@ export function createSkeleton(player) {
     animToPlay = "idle";
   });
 
-  //   skeleton.onCollide("player", (bullet) => {
-  //     debug.log("Tech Talk is 🔥");
-  //     destroy(skeleton);
-  //   });
-
   skeleton.onCollide("player_attack", (otherObj, collision) => {
-    console.log("HP", skeleton.hp());
+    debug.log("💀 " + skeleton.hp());
     skeleton.hurt(otherObj.is("damage") ? otherObj.damageAmount : 1);
   });
 
-  skeleton.onHurt(() => {
+  skeleton.onHurt(async () => {
+    skeleton.lazyPlay("damage");
     if (skeleton.hp() <= 0) {
-      destroy(skeleton);
+      skeleton.lazyPlay("death");
+      await wait(3);
+      //   destroy(skeleton);
     }
   });
 
