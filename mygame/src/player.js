@@ -37,54 +37,40 @@ export const directionalAnimations = (...opts) => {
 }
 
 const anims = [
-	['idle', 3, {loop: true}],
-	['walk', 7, {loop: true}],
-	['run', 7, {loop: true}],
-	['jump', 5],
-	['damage', 3],
-	['death', 5],
-	['sword', 5],
-	['spear', 5],
-	['axe', 5],
-	['hammer', 5],
-	['pickaxe', 5],
-	['planting', 3],
-	['sickle', 5],
-	['water', 5]
+	['idle', 5, {loop: true}],
+	['walk', 5, {loop: true}],
+	['sword', 3],
+	['death', 3],
 ];
-const colors = ['white', 'blue', 'green', 'orange', 'pink', 'red', 'yellow'];
+const outfits = [1, 2, 3, 4, 5, 6];
 const dirs = ["Right", "Left", "Down", "Up"];
 
 export const loadPlayerSprites = () => {
-	for(let i = 0; i<colors.length; i++){
-		const color = colors[i];
-		loadSprite(`hana${color ? '-'+color:''}`, `assests/Player/hana${color ? '-'+color:''}.png`, directionalAnimations(...anims));
+	for(let i = 0; i<outfits.length; i++){
+		const outfit = outfits[i];
+		loadSprite(`player${outfit ? '-'+outfit:''}`, `assests/Player/player${outfit ? '-'+outfit:''}.png`, directionalAnimations(...anims));
 	}
 }
 
-export function createPlayer(map, color="white") {
+export function createPlayer(map, outfitNumber=1) {
     const hitboxes = getHitboxes();
 
     const SPEED_MOD = 1.5;
     const upgrade_modifiers = {
         speed: 1.0,
     };
-    const playerActions = ["idle", "walk", "run", "attack"];
+    const playerActions = ["idle", "walk", "attack"];
     let animToPlay = "idle";
     let dirToFace = "Right";
 
 	const statics = new Set(anims.filter(([,,{loop}={}])=>!loop).flatMap(([n])=>dirs.map(d=>n+d)));
-    /*
-    Note: this will need a better solution for now
-    */
-    const plyr = query({include: "plyr"});
-    console.log(plyr);
+
     // Creates the player sprite
     const player = add([
-		sprite('hana-'+color),
+		sprite('player-'+outfitNumber),
         anchor("center"),
         area({
-            shape: new Rect(vec2(1, 0), 13, 15)
+            shape: new Rect(vec2(0, 1), 13, 15)
         }),
         pos(),
         body(),
@@ -148,7 +134,6 @@ export function createPlayer(map, color="white") {
             let yMod = 0;
             // If the shift key is pressed, increase run speed
             let shiftMod = isKeyDown("shift") ? SPEED_MOD : 1;
-            const action = shiftMod === 1 ? "walk" : "run";
     
             // Only change the direction if not in the middle of an attack.
             if (player.state !== "attack") {
@@ -182,10 +167,10 @@ export function createPlayer(map, color="white") {
                 speedY
             );
     
-            // Queue the "walk"/"run" animation
+            // Queue the "walk" animation
             // The "attack" animation takes higher priority.
             if (animToPlay != player.currEquipment) {
-                animToPlay = action;
+                animToPlay = "walk";
             }
         }),
     
@@ -195,17 +180,19 @@ export function createPlayer(map, color="white") {
         }),
     
         // Swaps the currently equipped weapons if the player is not already attacking.
-        player.onButtonPress("weaponSwap", button => {
-            if (player.state !== "attack") {
-                player.changeEquipment();
-                attack.damageAmount = player.damageAmount;
-            }
-        }),
+        // UNUSEABLE WITH CURRENT SPRITE
+        // player.onButtonPress("weaponSwap", button => {
+        //     if (player.state !== "attack") {
+        //         player.changeEquipment();
+        //         attack.damageAmount = player.damageAmount;
+        //     }
+        // }),
     
         // Swaps the current color palette
         player.onButtonPress("paletteSwap", button => {
-            const i = (colors.indexOf(player.sprite.slice(5))+1)%colors.length;
-            const newSprite = `hana-${colors[i]}`;
+            const outfitNum = parseInt(player.sprite.slice(7));
+            const index = outfits.indexOf(outfitNum);
+            const newSprite = `player-${index+1 < outfits.length ? outfits[index+1] : 1}`;
             player.use(sprite(newSprite));
         }),
     
