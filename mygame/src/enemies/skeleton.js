@@ -9,20 +9,24 @@ String.prototype.capitalize = function () {
 };
 const dirs = ["Right", "Left", "Down", "Up"];
 
+const anims = [
+	['idle', 5, {loop: true}],
+	['walk', 5, {loop: true}],
+    ['damage', 3],
+	['death', 3],
+];
+
 export const loadSkeletonSprite = () => {
   loadSprite(
     "skeleton",
     "assests/enemies/skeleton.png",
     directionalAnimations(
-      ["idle", 5, { loop: true }],
-      ["walk", 5, { loop: true }],
-      ["damage", 3],
-      ["death", 3]
+      ...anims
     )
   );
 };
 
-export function createPlayer(map, variation = 0) {
+export function createSkeleton(map, variation = 0) {
 //   const hitboxes = getHitboxes();
 
 //   const SPEED_MOD = 1.5;
@@ -55,6 +59,7 @@ export function createPlayer(map, variation = 0) {
     enemy(),
     {
       lazyPlay: (action) => {
+        
         const animToPlay = action + skeleton.dir;
         const currAnimName = skeleton.getCurAnim()?.name;
 
@@ -69,19 +74,6 @@ export function createPlayer(map, variation = 0) {
           }
           // Play the new animation
           skeleton.play(animToPlay);
-
-          // Adjust the interaction hitbox based on the current direction being faced
-        //   if (hitboxes?.interact[player.dir]?.area) {
-        //     if (interact.is("area")) {
-        //       interact.unuse("area");
-        //     }
-        //     interact.use(area(hitboxes.interact[player.dir].area));
-        //   }
-        //   interact.rotateTo(
-        //     hitboxes?.interact[player.dir]?.rotate
-        //       ? hitboxes.interact[player.dir].rotate
-        //       : 0
-        //   );
         }
       },
     },
@@ -176,17 +168,6 @@ export function createPlayer(map, variation = 0) {
 //     }
 //   });
 
-  // Used to change direction after the attack animations end.
-  // Without this, holding down the attack button will prevent
-  // the direction from changing as the state is not changed
-  // from attacking.
-  skeleton.onAnimEnd((animation) => {
-    skeleton.dir = dirToFace;
-    // Disable the attack hitbox if the attack animation is done
-    if (skeleton.state === "attack") {
-    //   disableAttack();
-    }
-  });
 
   skeleton.onUpdate(() => {
     // If the "attack" animation reaches the sword swipe section,
@@ -195,7 +176,7 @@ export function createPlayer(map, variation = 0) {
     //   enableAttack();
 
     }
-    console.log("update");
+    // console.log("update");
     
 
     // Update is called after any button press functions

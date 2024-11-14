@@ -26,10 +26,9 @@ export const MAIN_SHEET = {
 			'plyr'
 		],
 		"$": () => [
-			sprite('skeleton', {anim: 'idleLeft'}),
-			body(),
-			area({shape: new Rect(vec2(0,0), 12, 24)}),
-			anchor('center')
+			rect(16, 16),
+			...STATIC(),
+			'skel'
 		],
 		"=": () => [
 			sp(NORTH_WALL_TILES),

@@ -1,4 +1,5 @@
 import { createPlayer, directionalAnimations } from "../player";
+import { createSkeleton } from "../enemies/skeleton";
 import { FLOOR_SHEET, MAIN_SHEET } from "./charSheets";
 import { DUNGEONS } from "./dungeons";
 import { tileLoader } from "./tileLoader";
@@ -26,9 +27,15 @@ export const dungeonLoader = () => {
 		//the walls and interactive objects
 		const level = addLevel(dungeon, MAIN_SHEET);
 		const plyr = level.get('plyr')[0]
+		const skel = level.get('skel')[0]
+		
 		const player = createPlayer();
+		const skeleton = createSkeleton();
 		player.pos = plyr.pos;
+		skeleton.pos = skel.pos;
+		skeleton.dir = "Left" // don't know how to default this yet
 		level.remove(plyr);
+		level.remove(skel);
 		const ornLevel = ornaments?.length ? addLevel(ornaments, MAIN_SHEET):undefined;
 		if(actions) actions(level, ornLevel);
 	}
