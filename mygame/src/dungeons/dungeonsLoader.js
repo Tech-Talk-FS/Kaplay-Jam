@@ -1,5 +1,6 @@
 import { createHud, loadHUD } from "../hud/hud";
 import { createPlayer, directionalAnimations } from "../player";
+import { createSkeleton } from "../enemies/skeleton";
 import { FLOOR_SHEET, MAIN_SHEET } from "./charSheets";
 import { FLOOR_TILES } from "./constants";
 import { DUNGEONS } from "./dungeons";
@@ -47,21 +48,28 @@ export const dungeonLoader = () => {
 		//the walls and interactive objects
 		const level = addLevel(dungeon, MAIN_SHEET);
 		const plyr = level.get('plyr')[0]
+		const skel = level.get('skel')[0]
+		
 		const player = createPlayer();
 		player.pos = plyr.pos;
 		level.remove(plyr);
+		const skeleton = createSkeleton(player);
+		skeleton.pos = skel.pos;
+		skeleton.dir = "Left" // don't know how to default this yet
+		level.remove(skel);
 		const ornLevel = ornaments?.length ? addLevel(ornaments, MAIN_SHEET):undefined;
 		const hud = createHud(player);
 		if(actions) actions(level, ornLevel, hud);
 		
 
 	}
-	loadHUD();
-	loadSprite('skeleton', 'assests/enemies/skeleton.png', directionalAnimations(
-		['idle', 5, {loop: true}],
-		['walk', 5, {loop: true}],
-		['damage', 3],
-		['death', 3]));
+
+	// loadSprite('skeleton', 'assests/enemies/skeleton.png', directionalAnimations(
+	// 	['idle', 5, {loop: true}],
+	// 	['walk', 5, {loop: true}],
+	// 	['damage', 3],
+	// 	['death', 3]));
+
 	tileLoader();
 	scene("main", loadDungeon);
 	go("main", 0);

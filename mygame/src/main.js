@@ -1,6 +1,7 @@
 import kaplay from "kaplay";
 import "kaplay/global";
 import { createPlayer, directionalAnimations, loadPlayerSprites } from "./player";
+import { loadSkeletonSprite } from "./enemies/skeleton";
 import { createTestEnemy } from "./test_enemy";
 import { createTestInteractable } from "./test_interactable";
 import { dungeonLoader } from "./dungeons";
@@ -43,6 +44,7 @@ const k = kaplay({
 });
 
 loadPlayerSprites();
+loadSkeletonSprite();
 
 dungeonLoader();
 //const player = createPlayer();
