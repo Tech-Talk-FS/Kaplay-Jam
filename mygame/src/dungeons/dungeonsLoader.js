@@ -40,4 +40,5 @@ export const dungeonLoader = () => {
 	tileLoader();
 	scene("main", loadDungeon);
 	go("main", 0);
+
 };

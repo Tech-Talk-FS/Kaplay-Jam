@@ -45,6 +45,7 @@ const k = kaplay({
 loadPlayerSprites();
 
 dungeonLoader();
+
 //const player = createPlayer();
 
 // const enemy = createTestEnemy();
@@ -71,5 +72,6 @@ const label = add([text(""/*getInfo()*/, { size: 12 }), color(0, 0, 0), pos(4), 
 label.onUpdate(() => {
   label.text = getInfo();
 });
+
 
 // Check out https://kaboomjs.com#SpriteComp for everything sprite() provides
