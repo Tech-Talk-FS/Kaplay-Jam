@@ -1,4 +1,4 @@
-
+const hrt = {sprite: 'heart', width: 16, height: 16, anchor: 'botleft'};
 
 export const loadHUD = () => loadSpriteAtlas("assests/hud-ui.png", {
 	heart: {
@@ -24,9 +24,15 @@ export const loadHUD = () => loadSpriteAtlas("assests/hud-ui.png", {
 		x: 0,
 		y: 64,
 		width: 192,
-		height: 224,
+		height: 160,
 		sliceX: 6,
 		sliceY: 5
+	},
+	help: {
+		x: 32,
+		y: 220,
+		width: 16,
+		height: 16
 	}
 })
 
@@ -38,37 +44,98 @@ class HUD {
 	
 	constructor(player){
 		this.hp = 0
-		//this will be sort of a controlled component so static placement info only needs to be handled once 
-		this.$hud = add([
-			rect(width(), height(), {fill: false}),
-			outline(1, Color.fromHex(0xffff00)),
-			pos(center()),
-			anchor('center'),
-			fixed()
-		])
 		this.player = player;
-		this.$msg = this.$hud.add([
-			sprite('panel', {width: 128, height: 32}),
-			pos(0, height()/2),
-			anchor('bot'),
-		]);
-		this.$msg.hidden = true;
-		this.$text = this.$msg.add([
-			text("", {color:{r:255,g:255,b:255}, size: 4, align:'center'}),
-			pos(0, -12),
-			anchor('bot'),
-		]);
-		this.$msg.add([
-			//apparently cant set color in the initializer
-			text('ENTER to continue', {size: 3}),
-			anchor('bot'),
-			pos(28, -5)
-		]).color = Color.fromHex(0x888888)
 
-		this.$msg.onKeyPress("enter", ()=>this.nextMessage());
-		player.onUpdate(this.updateHealth.bind(this));
+
+		//handle dialog
+		player.onKeyPress("enter", ()=>this.nextMessage());
+
+		//player.onUpdate(this.updateHealth.bind(this));
+		player.onDraw(this.onDraw.bind(this));
 	}
 
+	/**
+	 * This method will be used to handle the ondraw method. this will be used to draw the sprites that dont need a large amount of control. 
+	 * @private
+	 */
+	onDraw(){
+		this.drawWeapon();
+		this.drawHealth();
+		this.drawMessageBox();
+	}
+
+	/**
+	 * draw weapon
+	 * @returns 
+	 */
+	drawMessageBox(){
+		if(!this.messageQueue.length) return;
+		drawSprite({
+			sprite: 'panel',
+			anchor: 'bot',
+			pos: vec2(0, height()/2),
+			width: 128,
+			height: 32
+		});
+		drawText({
+			text: this.messageQueue[0],
+			size: 4,
+			width: 128,
+			height: 32,
+			align: 'center',
+			anchor: 'bot',
+			pos: vec2(0, height()/2-12),
+		});
+		drawText({
+			text: 'ENTER to continue',
+			size: 3,
+			align: 'right',
+			anchor: 'botright',
+			pos: vec2(42, height()/2-6),
+			color: rgb(128,128,128)
+		})
+	}
+
+	/**
+	 * @private
+	 */
+	drawHealth(){
+		const hp = this.player.hp();
+		const fullHeartsWidth = Math.floor(hp/4);
+		const rem = hp%4;
+		
+		const btm = height()/2
+		//render the health
+		for(let i = 0; i<fullHeartsWidth;i++){
+			drawSprite({
+				frame: 3,
+				pos: vec2(-width()/2+i*16, btm),
+				...hrt
+			});
+		}
+		if(rem) drawSprite({	
+			frame: rem-1,
+			pos: vec2(-width()/2+fullHeartsWidth*16, btm),
+			...hrt
+		});
+	}
+
+	drawWeapon(){
+		//if(!this.player.weapon) return;
+		drawSprite({
+			sprite: 'sword',
+			frame: 0,
+			width: 16,
+			height: 16,
+			pos: vec2(-width()/2+4, height()/2-16),
+			anchor: 'botleft'
+		})
+	}
+
+	/**
+	 * Prepends the message to the message queue.
+	 * @param  {...any} values 
+	 */
 	immediateMsg(...values){
 		const msgs = [...this.messageQueue];
 		this.messageQueue = [];
@@ -83,7 +150,6 @@ class HUD {
 		const reg = new RegExp(`\.{1,${this.characterLimit}}`,'g');
 		const q = this.messageQueue.length;
 		for(const value of values) {
-			console.log(/.{1,2}/g,reg,value)
 			const vs = value.match(reg);
 			for(let i = 0; i<vs.length; i+=this.lineLimit){
 				this.messageQueue.push(vs.slice(i, this.lineLimit+i).join('\n'));
@@ -95,38 +161,6 @@ class HUD {
 
 	nextMessage = (isInitial=false)=>{
 		if(!isInitial) this.messageQueue.shift();
-		this.$text.text = this.messageQueue[0] ?? "";
-		this.$msg.hidden = !this.messageQueue.length;
-	}
-
-	updateHealth(){
-		const hp = this.player.hp();
-		if(this.hp === hp) return; //no need to update
-		this.hp = hp; 
-		if(this.$health){
-			this.$health.destroy();
-			delete this.$health;
-		}
-		
-		this.$health = this.$hud.add([
-			pos(-width()/2, height()/2),
-			anchor('bot')
-		]);
-		const fullHearts = Math.floor(hp/4);
-		const remainder = hp%4;
-		if(fullHearts){
-			const w = fullHearts*16;
-			this.$health.add([
-				sprite('heart', {frame: 3, tiled: true, width: w, height: 16}),
-				pos(0,0),
-				anchor('botleft')
-			])
-		}
-		if(remainder>0) this.$health.add([
-			sprite('heart', {frame: remainder-1, width: 16, height: 16}),
-			pos(fullHearts*16, 0),
-			anchor('botleft')
-		])
 	}
 }
 
