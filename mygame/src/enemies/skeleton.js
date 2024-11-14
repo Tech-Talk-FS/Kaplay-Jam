@@ -120,6 +120,40 @@ export function createSkeleton(player) {
 
   skeleton.onHurt(async () => {
     skeleton.lazyPlay("damage");
+    // loadSprite(
+    //   "coin",
+    //   `assests/Player/player-${i}.png`,
+    //   directionalAnimations(...anims)
+    // );
+
+    const particle = add([
+      pos(skeleton.pos),
+      rect(4, 4),
+      outline(2),
+      anchor("center"),
+      //   scale(rand(0.5, 1)),
+      area({ collisionIgnore: ["particle", "player", "skeleton"] }),
+      body({ isStatic: true }),
+      lifespan(1, { fade: 0.3 }),
+      opacity(0.5),
+      move(choose([LEFT, RIGHT]), rand(10, 20)),
+      "particle",
+    ]);
+
+    particle.onUpdate(async () => {
+      console.log("update", easings);
+      particle.move(10, 10);
+    });
+
+    // trying to fade it out
+    // await tween(
+    //   particle.opacity,
+    //   0,
+    //   0.3,
+    //   (val) => (particle.opacity = val),
+    //   easings.linear
+    // );
+
     if (skeleton.hp() <= 0) {
       skeleton.lazyPlay("death");
       await wait(3);
