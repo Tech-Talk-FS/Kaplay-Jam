@@ -37,15 +37,15 @@ export const DUNGEONS = [
 			"            ",
 			"           X",
 		],
-		(lvl, orns) => {
+		(lvl, orns, hud) => {
 			const door = lvl.get('door')[0];
-			door.interact = () => modal(door, "The door\nis stuck", 2e3, 0, -16)
+			door.interact = () => hud.immediateMsg("The door\nis stuck")
 			for(const torch of lvl.get('torch')){
-				torch.interact = () => modal(torch, "This hasn't been\nlit in years", 1e3)
+				torch.interact = () => hud.immediateMsg("This hasn't been\nlit in years");
 			}
 			const banner = orns.get('banner')[0];
 			banner.interact = (player) => {
-				modal(banner, '"Not all is as it seems"\n... ', 2e3, 0, -16)
+				hud.immediateMsg('Not all is as it seems"\n... ');
 				const web = orns.get('web')[0];
 				orns.remove(web);
 				player.unlockedLvl1 = true;
@@ -54,6 +54,7 @@ export const DUNGEONS = [
 			orn.interact = (player) => {
 				if(player.unlockedLvl1) go("main", 1);
 			}
+			hud.msg("...\n...\n...", "What?... Where am I?", "How did I get here")
 		}
 	],
 	[
@@ -75,7 +76,7 @@ export const DUNGEONS = [
 			"[        ]",
 			"[        ]",
 			"[        ]",
-			"[        ]",
+			"[   $    ]",
 			"[        ]",
 			"[        ]",
 			"[        ]",
