@@ -1,6 +1,6 @@
 import { character } from "./character";
 import { damage } from "./damage";
-import { entity } from "./entity";
+import { Entity, entity } from "./entity";
 import { getHitboxes } from "./player_hitboxes";
 
 String.prototype.capitalize = function(){ return this[0].toUpperCase()+this.slice(1); }
@@ -52,6 +52,38 @@ export const loadPlayerSprites = () => {
 	for(let i = 0; i<variations; i++){
 		loadSprite(`player-${i}`, `assests/Player/player-${i}.png`, directionalAnimations(...anims));
 	}
+}
+
+/**
+ * Intended to be used as a Singleton class.
+ * Reference Player.player instead of creating a new version of the object
+ */
+export class Player extends Entity {
+    // Should only be one player instance at all times (singleton).
+    // Should allow us to move data between scenes freely.
+    static {
+        this.instance = new Player();
+    }
+
+    /**
+     * @private
+     */
+    swordPower = 0;
+
+    get SwordPower() {
+        return this.swordPower;
+    }
+    set SwordPower(value) {
+        if (value > 27) this.swordPower = 27;
+        else this.swordPower = value;
+    }
+
+    constructor({health, speed, armor, damage, knockback, gameObject, swordPower} = {
+        health: 10, speed: 100, armor: 0, damage: 1, knockback: 0, gameObject: null, swordPower: 0
+    }) {
+        super({health, speed, armor, damage, knockback, gameObject});
+        this.swordPower = swordPower;
+    }
 }
 
 export function createPlayer(map, variation=0) {
