@@ -1,3 +1,4 @@
+import { createHud, loadHUD } from "../hud/hud";
 import { createPlayer, directionalAnimations } from "../player";
 import { FLOOR_SHEET, MAIN_SHEET } from "./charSheets";
 import { DUNGEONS } from "./dungeons";
@@ -30,8 +31,12 @@ export const dungeonLoader = () => {
 		player.pos = plyr.pos;
 		level.remove(plyr);
 		const ornLevel = ornaments?.length ? addLevel(ornaments, MAIN_SHEET):undefined;
-		if(actions) actions(level, ornLevel);
+		const hud = createHud();
+		if(actions) actions(level, ornLevel, hud);
+		
+
 	}
+	loadHUD();
 	loadSprite('skeleton', 'assests/enemies/skeleton.png', directionalAnimations(
 		['idle', 5, {loop: true}],
 		['walk', 5, {loop: true}],
