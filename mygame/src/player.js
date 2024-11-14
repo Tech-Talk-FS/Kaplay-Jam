@@ -40,7 +40,9 @@ export const directionalAnimations = (...opts) => {
 const anims = [
 	['idle', 5, {loop: true}],
 	['walk', 5, {loop: true}],
+    ['run', 5, {loop: true}],
     ['sword', 3],
+    ['damage', 3],
 	['death', 3],
 ];
 const variations = 6;
@@ -133,8 +135,8 @@ export function createPlayer(map, variation=0) {
         // If the shift key is pressed, increase run speed
         let shiftMod = isKeyDown("shift") ? SPEED_MOD : 1;
         //no run animation in the sprite kit for now. 
-        //const action = shiftMod === 1 ? "walk" : "run";
-        const action = "walk"
+        const action = shiftMod === 1 ? "walk" : "run";
+        //const action = "walk"
 
         // Only change the direction if not in the middle of an attack.
         if (player.state !== "attack") {
