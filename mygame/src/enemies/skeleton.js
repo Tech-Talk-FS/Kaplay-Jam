@@ -9,19 +9,17 @@ String.prototype.capitalize = function () {
 const dirs = ["Right", "Left", "Down", "Up"];
 
 const anims = [
-	['idle', 5, {loop: true}],
-	['walk', 5, {loop: true}],
-    ['damage', 3],
-	['death', 3],
+  ["idle", 5, { loop: true }],
+  ["walk", 5, { loop: true }],
+  ["damage", 3],
+  ["death", 3],
 ];
 
 export const loadSkeletonSprite = () => {
   loadSprite(
     "skeleton",
     "assests/enemies/skeleton.png",
-    directionalAnimations(
-      ...anims
-    )
+    directionalAnimations(...anims)
   );
 };
 
@@ -35,7 +33,7 @@ export function createSkeleton(player) {
       .filter(([, , { loop } = {}]) => !loop)
       .flatMap(([n]) => dirs.map((d) => n + d))
   );
-  
+
   // Creates the player sprite
   const skeleton = add([
     sprite("skeleton"),
@@ -52,7 +50,6 @@ export function createSkeleton(player) {
     enemy(),
     {
       lazyPlay: (action) => {
-        
         const animToPlay = action + skeleton.dir;
         const currAnimName = skeleton.getCurAnim()?.name;
 
@@ -73,42 +70,40 @@ export function createSkeleton(player) {
     "skeleton",
   ]);
 
-
-
   skeleton.onUpdate(async () => {
     // Use state for tracking
     if (skeleton.state === "idle") {
-        await wait(2)
-        skeleton.enterState("detect")
+      await wait(2);
+      skeleton.enterState("detect");
     }
     if (skeleton.state === "detect") {
-        // Calculate the difference in x and y coordinates
-        const dx = player?.pos.x - skeleton.pos.x;
-        const dy = player?.pos.y - skeleton.pos.y;
-        const radius = 100
-        
-        // Calculate the actual distance using the Pythagorean theorem
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        
-        // Check if the distance is less than or equal to the radius
-        const isWithinRadius = distance <= radius;
+      // Calculate the difference in x and y coordinates
+      const dx = player?.pos.x - skeleton.pos.x;
+      const dy = player?.pos.y - skeleton.pos.y;
+      const radius = 100;
 
-        console.log("How close?", isWithinRadius)
+      // Calculate the actual distance using the Pythagorean theorem
+      const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if(isWithinRadius){
-            skeleton.enterState("walk")
-        }
-            
-        await wait(5)
-        skeleton.enterState("idle")
+      // Check if the distance is less than or equal to the radius
+      const isWithinRadius = distance <= radius;
+
+      console.log("How close?", isWithinRadius);
+
+      if (isWithinRadius) {
+        skeleton.enterState("walk");
+      }
+
+      await wait(5);
+      skeleton.enterState("idle");
     }
     if (skeleton.state === "walk") {
-            console.log("walking", skeleton.pos )
-            skeleton.lazyPlay("walk");
-            const dir = player.pos.sub(skeleton.pos).unit();
-            skeleton.move(dir.scale(3));
-            await wait(5)
-            skeleton.enterState("idle")
+      console.log("walking", skeleton.pos);
+      skeleton.lazyPlay("walk");
+      const dir = player.pos.sub(skeleton.pos).unit();
+      skeleton.move(dir.scale(3));
+      await wait(5);
+      skeleton.enterState("idle");
     }
 
     // Update is called after any button press functions
@@ -121,10 +116,21 @@ export function createSkeleton(player) {
     animToPlay = "idle";
   });
 
-  skeleton.onCollide("player", (bullet) => {
-    debug.log("Tech Talk is 🔥");
-    destroy(skeleton);
-});
+  //   skeleton.onCollide("player", (bullet) => {
+  //     debug.log("Tech Talk is 🔥");
+  //     destroy(skeleton);
+  //   });
+
+  skeleton.onCollide("player_attack", (otherObj, collision) => {
+    console.log("HP", skeleton.hp());
+    skeleton.hurt(otherObj.is("damage") ? otherObj.damageAmount : 1);
+  });
+
+  skeleton.onHurt(() => {
+    if (skeleton.hp() <= 0) {
+      destroy(skeleton);
+    }
+  });
 
   debug.inspect = true;
 
