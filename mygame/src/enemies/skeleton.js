@@ -27,7 +27,6 @@ export function createSkeleton(player) {
   const playerActions = ["idle", "walk", "detect", "damage", "death"];
   let animToPlay = "idle";
   let dirToFace = "Left";
-
   const statics = new Set(
     anims
       .filter(([, , { loop } = {}]) => !loop)
@@ -70,7 +69,7 @@ export function createSkeleton(player) {
     "skeleton",
   ]);
 
-  skeleton.onUpdate(async () => {
+  skeleton.onUpdate(async (...args) => {
     // Use state for tracking
     if (skeleton.state === "idle") {
       await wait(2);
@@ -78,12 +77,10 @@ export function createSkeleton(player) {
     }
     if (skeleton.state === "detect") {
       // Calculate the difference in x and y coordinates
-      const dx = player?.pos.x - skeleton.pos.x;
-      const dy = player?.pos.y - skeleton.pos.y;
+      const distance = player.pos.dist(skeleton.pos);
       const radius = 100;
 
       // Calculate the actual distance using the Pythagorean theorem
-      const distance = Math.sqrt(dx * dx + dy * dy);
 
       // Check if the distance is less than or equal to the radius
       const isWithinRadius = distance <= radius;
@@ -92,7 +89,7 @@ export function createSkeleton(player) {
         skeleton.enterState("walk");
       }
 
-      await wait(5);
+      //await wait(5); you dont want to wait inside an update method as this method is being called from within the render loop therefore subsequent renders can be delayed
       skeleton.enterState("idle");
     }
     if (skeleton.state === "walk") {
@@ -114,12 +111,12 @@ export function createSkeleton(player) {
   });
 
   skeleton.onCollide("player_attack", (otherObj, collision) => {
-    debug.log("💀 " + skeleton.hp());
+    //debug.log("💀 " + skeleton.hp());
     skeleton.hurt(otherObj.is("damage") ? otherObj.damageAmount : 1);
   });
 
   skeleton.onHurt(async () => {
-    skeleton.lazyPlay("damage");
+    skeleton.lazyPlay(skeleton.hp() > 0 ? "damage":"death");
     // loadSprite(
     //   "coin",
     //   `assests/Player/player-${i}.png`,
@@ -141,7 +138,6 @@ export function createSkeleton(player) {
     ]);
 
     particle.onUpdate(async () => {
-      console.log("update", easings);
       particle.move(10, 10);
     });
 
@@ -153,14 +149,16 @@ export function createSkeleton(player) {
     //   (val) => (particle.opacity = val),
     //   easings.linear
     // );
-
+    /*
     if (skeleton.hp() <= 0) {
       skeleton.lazyPlay("death");
-      await wait(3);
+      //await wait(3);
       //   destroy(skeleton);
-    }
+    }*/
   });
-
+  skeleton.onAnimEnd((anim)=>{
+    if(anim.startsWith('death')) skeleton.destroy();
+  })
   debug.inspect = true;
 
   return skeleton;

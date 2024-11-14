@@ -69,7 +69,7 @@ export const dungeonLoader = () => {
 	// 	['walk', 5, {loop: true}],
 	// 	['damage', 3],
 	// 	['death', 3]));
-
+	loadHUD();
 	tileLoader();
 	scene("main", loadDungeon);
 	go("main", 0);
