@@ -2,7 +2,6 @@ import { enemy } from "./enemy";
 import { damage } from "../damage";
 import { entity } from "../entity";
 import { directionalAnimations } from "../player";
-// import { getHitboxes } from "./player_hitboxes";
 
 String.prototype.capitalize = function () {
   return this[0].toUpperCase() + this.slice(1);
@@ -27,12 +26,6 @@ export const loadSkeletonSprite = () => {
 };
 
 export function createSkeleton(map, variation = 0) {
-//   const hitboxes = getHitboxes();
-
-//   const SPEED_MOD = 1.5;
-//   const upgrade_modifiers = {
-//     speed: 1.0,
-//   };
   const playerActions = ["idle", "walk", "damage", "death"];
   let animToPlay = "idle";
   let dirToFace = "Left";
@@ -80,98 +73,10 @@ export function createSkeleton(map, variation = 0) {
     "skeleton",
   ]);
 
-  // Attaches attack hitbox onto player
-//   const attack = player.add([
-//     anchor("left"),
-//     rotate(0),
-//     damage(player.damageAmount),
-//     "player_attack",
-//   ]);
-
-  // Attaches interactable hitbox onto player
-//   const interact = player.add([
-//     anchor("left"),
-//     rotate(0),
-//     area(hitboxes.interact[player.dir].area),
-//     "player_interact",
-//   ]);
-
-//   player.onButtonDown(dirs, (button) => {
-//     let xMod = 0;
-//     let yMod = 0;
-//     // If the shift key is pressed, increase run speed
-//     let shiftMod = isKeyDown("shift") ? SPEED_MOD : 1;
-//     //no run animation in the sprite kit for now.
-//     //const action = shiftMod === 1 ? "walk" : "run";
-//     const action = "walk";
-
-//     // Only change the direction if not in the middle of an attack.
-//     if (player.state !== "attack") {
-//       player.dir = button;
-//     }
-//     dirToFace = button;
-
-//     // Move character left if the "Left" button is pressed
-//     if (button === "Left") {
-//       xMod = -1;
-//     }
-//     // Move character right if the "Right" button is pressed
-//     else if (button === "Right") {
-//       xMod = 1;
-//     }
-
-//     // Move character up if the "Up" button is pressed
-//     if (button === "Up") {
-//       yMod = -1;
-//     }
-//     // Move character down if the "Down" button is pressed
-//     else if (button === "Down") {
-//       yMod = 1;
-//     }
-
-//     const speedX = player.speed * shiftMod * xMod * upgrade_modifiers.speed;
-//     const speedY = player.speed * shiftMod * yMod * upgrade_modifiers.speed;
-
-//     player.move(speedX, speedY);
-
-//     // Queue the "walk"/"run" animation
-//     // The "attack" animation takes higher priority.
-//     if (animToPlay != player.currEquipment) {
-//       animToPlay = action;
-//     }
-//   });
-
-  // Queues the attack animation when the "attack" button is held down.
-//   player.onButtonDown("attack", (button) => {
-//     animToPlay = player.currEquipment;
-//   });
-
-  // Swaps the currently equipped weapons if the player is not already attacking.
-//   player.onButtonPress("weaponSwap", (button) => {
-//     if (player.state !== "attack") {
-//       player.changeEquipment();
-//       attack.damageAmount = player.damageAmount;
-//     }
-//   });
-
-//   // Swaps the current color palette
-//   player.onButtonPress("paletteSwap", (button) => {
-//     const i = (parseInt(player.sprite.slice(7)) + 1) % variations;
-//     player.use(sprite(`player-${i}`));
-//   });
-
-//   player.onButtonPress("interact", () => {
-//     for (const col of interact.getCollisions()) {
-//       const node = col.target;
-//       if ("interact" in node && typeof node.interact === "function")
-//         node.interact(player);
-//     }
-//   });
 
 
   skeleton.onUpdate(() => {
-    // If the "attack" animation reaches the sword swipe section,
-    // activate the attack hitbox.
+    // Use state for tracking
     if (skeleton.state === "attack") {
     //   enableAttack();
 
@@ -187,59 +92,12 @@ export function createSkeleton(map, variation = 0) {
 
     // Default back to "idle" animation
     animToPlay = "idle";
-
-    // Set camera to the player's position
-    // camPos(skeleton.pos);
   });
 
-  // Removes the area component from attack
-//   function disableAttack() {
-//     attack.unuse("area");
-//   }
-
-  // Adds the area component to attack
-  // Allows the attack hitbox to be active
-//   function enableAttack() {
-//     const currWeapon = hitboxes[skeleton.currEquipment];
-//     const currWeaponDir = currWeapon ? currWeapon[player.dir] : null;
-//     const activeFrom = currWeaponDir?.active?.from
-//       ? currWeaponDir.active.from
-//       : 0;
-//     const activeTo = currWeaponDir?.active?.to ? currWeaponDir?.active.to : 0;
-//     const weaponAnchor = currWeaponDir?.anchor
-//       ? currWeaponDir.anchor
-//       : "center";
-//     const weaponArea = currWeaponDir?.area
-//       ? currWeaponDir.area
-//       : { shape: new Rect(vec2(0, 0), 1, 1) };
-
-//     // If the hitbox is not already active
-//     // and if the current frame is within the
-//     // active frames for the hitbox, activate the hitbox
-//     if (
-//       !attack.is("area") &&
-//       player.animFrame >= activeFrom &&
-//       player.animFrame <= activeTo
-//     ) {
-//       attack.anchor = weaponAnchor;
-//       attack.use(area(weaponArea));
-//     }
-//     // If the hitbox is already active
-//     // but the current frame is not within the
-//     // active frames for the hitbox, deactivate the hitbox
-//     else if (
-//       attack.is("area") &&
-//       (player.animFrame < activeFrom || player.animFrame > activeTo)
-//     ) {
-//       disableAttack();
-//     }
-//   }
-
-  // Adds an upgrade event for the player to be called
-  // from other locations.
-//   on("upgrade", "skeleton", (obj, field, value) => {
-//     upgrade_modifiers[field] = value;
-//   });
+  skeleton.onCollide("player", (bullet) => {
+    debug.log("Tech Talk is 🔥");
+    destroy(skeleton);
+});
 
   debug.inspect = true;
 
