@@ -126,6 +126,19 @@ export function createPlayer(map, variation=0) {
                         const state = playerActions.includes(action) ? action : "attack";
                         player.enterState(state);
                     }
+
+                    // Play sword sound
+                    if(player.state === "attack") {
+                        play("swordHit", {
+                            volume: 1,
+                            speed: 1
+                        })
+                    }
+                    //
+                    // if(player.state === "walk" || player.state === "run") {
+                    //
+                    // }
+
                     // Play the new animation
                     player.play(animToPlay);
 
@@ -206,6 +219,10 @@ export function createPlayer(map, variation=0) {
         // The "attack" animation takes higher priority.
         if (animToPlay != player.currEquipment) {
             animToPlay = action;
+            play("playerWalking", {
+                volume: 1,
+                speed: 1,
+            })
         }
     });
 
@@ -232,7 +249,13 @@ export function createPlayer(map, variation=0) {
     player.onButtonPress("interact", ()=>{
         for(const col of interact.getCollisions()){
             const node = col.target;
-            if('interact' in node && typeof node.interact === 'function') node.interact(player);
+            if('interact' in node && typeof node.interact === 'function'){
+                play("interact", {
+                    volume: 1,
+                    speed: 1
+                })
+                node.interact(player);
+            }
         }
     });
 
