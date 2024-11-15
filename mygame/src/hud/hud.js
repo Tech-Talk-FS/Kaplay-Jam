@@ -37,21 +37,32 @@ export const loadHUD = () => loadSpriteAtlas("assests/hud-ui.png", {
 })
 
 class HUD {
+	
 	characterLimit = 32
 	lineLimit = 3
 	//messages will be added to a queue this will allow for key based scrolling
 	messageQueue = [];
 	
-	constructor(player){
+	constructor(player, levelName){
 		this.hp = 0
 		this.player = player;
 		this.player.hud = this;
-
+		this.levelName = levelName;
 		//handle dialog
 		player.onKeyPress("enter", ()=>this.nextMessage());
 
 		//player.onUpdate(this.updateHealth.bind(this));
-		player.onDraw(this.onDraw.bind(this));
+		//need to ensure components are drawn on a top level.
+		this.hud = addLevel(['#'], {tileWidth: width(), tileHeight: height(), tiles: {
+			"#": ()=>[
+				rect(width(), height(), {fill:false}),
+				//outline(2, Color.fromHex(0xffff00)),
+				anchor('center')
+			]
+		}})
+		const drawEventHandler = this.hud.onDraw(this.onDraw.bind(this));
+		player.onDestroy(()=>drawEventHandler.cancel());
+		player.onUpdate(()=>this.hud.pos = player.pos);
 	}
 
 	/**
@@ -59,6 +70,7 @@ class HUD {
 	 * @private
 	 */
 	onDraw(){
+		console.log("Drawing", this.levelName);
 		this.drawWeapon();
 		this.drawHealth();
 		this.drawMessageBox();
@@ -144,9 +156,17 @@ class HUD {
 	}
 	/**
 	 * Dialogs can be manually separated by adding more values. additionally each value provided will be split into dialogs based on the lineLimit
+	 * 
+	 * update (11/15/24): The current method is naive and creates a strange dynamic. 
+	 * 
+	 * existing newline symbols are not handled which results in a possibility of having an overloaded message box. 
+	 * 
+	 * additionally it message ever needs to be interactive this has no method of handling messages based on their submission as all are serialized to the queue.
+	 * In an attempt to serialize the messages a little bettr values will be 
 	 * @param  {...string} values 
 	 */
 	msg(...values){
+		//just splitting the message by line length
 		const reg = new RegExp(`\.{1,${this.characterLimit}}`,'g');
 		const q = this.messageQueue.length;
 		for(const value of values) {
@@ -159,6 +179,14 @@ class HUD {
 		if(!q) return this.nextMessage(true);
 	}
 
+	/**
+	 * @param { string } message - the message you want to display
+	 * @param { boolean } [shouldPause] - the  
+	 */
+	dialog(message, shouldPause){
+
+	}
+
 	nextMessage = (isInitial=false)=>{
 		if(!isInitial) this.messageQueue.shift();
 	}
@@ -167,6 +195,7 @@ class HUD {
 /**
  * Create hud object for the level
  * @param {import("kaplay").GameObj} player 
+ * @param {string} levelName
  * @returns 
  */
-export const createHud = (player) => new HUD(player);
+export const createHud = (player, levelName) => new HUD(player, levelName);

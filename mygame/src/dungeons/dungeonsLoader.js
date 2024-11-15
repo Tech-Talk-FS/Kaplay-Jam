@@ -49,19 +49,22 @@ export const dungeonLoader = () => {
 		//the walls and interactive objects
 		const level = addLevel(dungeon, MAIN_SHEET);
 		const plyr = level.get('plyr')[0]
-		const skel = level.get('skel')[0]
+		const skels = level.get('skel')
 		const player = createPlayer();
 		player.pos = plyr.pos;
 		level.remove(plyr);
-		const skeleton = bogey('skeleton', player)
-		skeleton.pos = skel.pos;
-		skeleton.dir = "Left" // don't know how to default this yet
-		level.remove(skel);
-		const ornLevel = ornaments?.length ? addLevel(ornaments, MAIN_SHEET):undefined;
-		const hud = createHud(player);
-		if(actions) actions(level, ornLevel, hud);
+		if(skels.length){
+			const skeleton = bogey('skeleton', player);
+			for(const skel of skels){
+				skeleton.pos = skel.pos;
+				skeleton.dir = "Left" // don't know how to default this yet
+				skel.destroy(); //remove placed tile
+			}
+		}
 		
-
+		const ornLevel = ornaments?.length ? addLevel(ornaments, MAIN_SHEET):undefined;
+		const hud = createHud(player, title);
+		if(actions) actions(level, ornLevel, hud);
 	}
 
 	// loadSprite('skeleton', 'assests/enemies/skeleton.png', directionalAnimations(
