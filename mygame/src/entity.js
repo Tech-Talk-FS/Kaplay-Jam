@@ -16,12 +16,13 @@ export class Entity {
     }
 }
 
-export function entity({speed,armor,dir} = {speed: 100, armor: 0, dir: "Right"}) {
+export function entity({speed,armor,dir,knockback} = {speed: 100, armor: 0, dir: "Right", knockback: 0}) {
     return {
         id: "entity",
         require: ["health", "state", "damage"],
         speed,
         armor,
+        knockback,
         dir,
     };
 }
