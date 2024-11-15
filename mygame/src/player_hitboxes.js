@@ -4,8 +4,8 @@ export function getHitboxes() {
             Down: {
                 anchor: "top",
                 active: {
-                    from: 2,
-                    to: 3,
+                    from: 1,
+                    to: 2,
                 },
                 area: {
                     shape: new Rect(vec2(0, 5), 22, 16)
@@ -14,31 +14,31 @@ export function getHitboxes() {
             Up: {
                 anchor: "bot",
                 active: {
-                    from: 2,
-                    to: 3,
+                    from: 1,
+                    to: 2,
                 },
                 area: {
-                    shape: new Rect(vec2(2, 0), 22, 16)
+                    shape: new Rect(vec2(0, 0), 22, 16)
                 }
             },
             Left: {
                 anchor: "right",
                 active: {
-                    from: 2,
-                    to: 3,
+                    from: 1,
+                    to: 2,
                 },
                 area: {
-                    shape: new Rect(vec2(0, 3), 22, 10)
+                    shape: new Rect(vec2(1, 3), 19, 20)
                 }
             },
             Right: {
                 anchor: "left",
                 active: {
-                    from: 2,
-                    to: 3,
+                    from: 1,
+                    to: 2,
                 },
                 area: {
-                    shape: new Rect(vec2(0, 3), 22, 10)
+                    shape: new Rect(vec2(-1, 3), 19, 20)
                 }
             }
         },

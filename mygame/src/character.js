@@ -20,9 +20,6 @@ export function character() {
             }
 
             switch(this.currEquipment) {
-                case "sword":
-                    this.damageAmount = 3;
-                    break;
                 case "pickaxe":
                     this.damageAmount = 2;
                     break;
@@ -35,8 +32,9 @@ export function character() {
                 case "spear":
                     this.damageAmount = 3;
                     break;
+                case "sword":
                 default:
-                    this.damageAmount = 1;
+                    this.damageAmount = 3;
             }
         },
     }
