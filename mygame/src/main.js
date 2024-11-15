@@ -50,12 +50,10 @@ loadSkeletonSprite();
 soundLoader();
 dungeonLoader();
 
-  play("dungeon1", {
-    paused: false,
-    loop: true,
-    volume: 1,
-    speed: 1,
-  });
+  // play("dungeon1", { // sound fx playing on start
+  //   volume: 0.1,
+  //   speed: 1,
+  // });
 
 
 

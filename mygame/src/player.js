@@ -209,6 +209,7 @@ export function createPlayer(map, variation=0) {
     // Without this, holding down the attack button will prevent
     // the direction from changing as the state is not changed
     // from attacking.
+
     player.onAnimEnd(animation => {
         player.dir = dirToFace;
         // Disable the attack hitbox if the attack animation is done
