@@ -43,7 +43,7 @@ class HUD {
 	//messages will be added to a queue this will allow for key based scrolling
 	messageQueue = [];
 	
-	constructor(player, levelName){
+	constructor(){
 		this.hp = 0
 		this.player = player;
 		this.player.hud = this;
@@ -57,7 +57,8 @@ class HUD {
 			"#": ()=>[
 				rect(width(), height(), {fill:false}),
 				//outline(2, Color.fromHex(0xffff00)),
-				anchor('center')
+				anchor('topleft'),
+				fixed()
 			]
 		}})
 		const drawEventHandler = this.hud.onDraw(this.onDraw.bind(this));
@@ -181,10 +182,9 @@ class HUD {
 
 	/**
 	 * @param { string } message - the message you want to display
-	 * @param { boolean } [shouldPause] - the  
+	 * @param { boolean } [shouldPause] - should the game pause
 	 */
 	dialog(message, shouldPause){
-
 	}
 
 	nextMessage = (isInitial=false)=>{

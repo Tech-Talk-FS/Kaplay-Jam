@@ -160,7 +160,7 @@ export function createSkeleton(player) {
   skeleton.onAnimEnd((anim)=>{
     if(anim.startsWith('death')) skeleton.destroy();
   })
-  debug.inspect = true;
+  //debug.inspect = true;
 
   return skeleton;
 }

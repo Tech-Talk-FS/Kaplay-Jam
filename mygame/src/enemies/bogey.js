@@ -46,7 +46,7 @@ export const bogey = (sp, player, options={}) => {
 		boge.play(animation);
     }
 	
-	const boge = add([
+	const boge = make([
 		sprite(sp, options.spriteOps),
 		pos(...(Array.isArray(options.pos) ? options.pos:[options.pos])),
 		area({shape: options.shape ?? new Rect(vec2(1, 0), 13, 15)}),

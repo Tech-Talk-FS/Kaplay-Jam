@@ -40,31 +40,51 @@ const drawStaticFloor = (lvl) => {
 export const dungeonLoader = () => {
 
 	const loadDungeon = lvl => {
+		
 		const [title, floor, dungeon, ornaments, actions] = DUNGEONS[lvl];
 		if(!dungeon) throw new Error("Level is not defined");
-	
+
+		
 		//add the floor
 		drawStaticFloor(floor);
 	
 		//the walls and interactive objects
 		const level = addLevel(dungeon, MAIN_SHEET);
+		
+		
+		const ornLevel = ornaments?.length ? addLevel(ornaments, MAIN_SHEET):undefined;
+		const game = add([
+			timer()
+		]); //the game scene all enemies and players must go here.
 		const plyr = level.get('plyr')[0]
-		const skels = level.get('skel')
-		const player = createPlayer();
+		const skels = level.get('skel');
+		const player = game.add(createPlayer());
 		player.pos = plyr.pos;
+		//player.go(0,0);
+		player.go(1,0);
+		player.go(1,1);
+		player.go(1,-1);
+		player.go(0,1);
+		//player.go(0,-1);
+		player.go(1,0);
+		//player.go(1,1);
+		//player.go(1,-1);
+		//player.go(-1,0);
+		//player.go(-1,1);
+		player.go(-1,-1)
 		level.remove(plyr);
+		
+		
 		if(skels.length){
-			const skeleton = bogey('skeleton', player);
 			for(const skel of skels){
+				const skeleton = game.add(bogey('skeleton', player));
 				skeleton.pos = skel.pos;
 				skeleton.dir = "Left" // don't know how to default this yet
 				skel.destroy(); //remove placed tile
 			}
-		}
-		
-		const ornLevel = ornaments?.length ? addLevel(ornaments, MAIN_SHEET):undefined;
-		const hud = createHud(player, title);
-		if(actions) actions(level, ornLevel, hud);
+		} 
+		const hud = createHud(player, title, game);
+		if(actions) actions(level, ornLevel, hud, game);
 	}
 
 	// loadSprite('skeleton', 'assests/enemies/skeleton.png', directionalAnimations(

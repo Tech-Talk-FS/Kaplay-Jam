@@ -1,3 +1,6 @@
+import { controlled, damagable, damage, directional, hud, mobile, offensive } from '../objects';
+import { interacter } from '../objects/interacter';
+import { knockback } from '../objects/knockback';
 import { BANNER, BONES, CENTER_TORCH, CHAIN_1, CHAIN_2, COIN, EAST_CORNER, EAST_JOINT, EAST_WALL_TILES, FLOOR_TILES, GOLD_KEY, IRON_KEY, LADDER, LARGE_CHEST_1, LARGE_CHEST_2, LARGE_DIRT, LARGE_HEALTH, LARGE_MANA, LARGE_WOOD_CHEST, LEFT_RECT_DOOR, LEFT_ROUND_DOOR, LEFT_TORCH, LEFT_VERT_DOOR, LEFT_WALL_ORNAMENT, LEFT_WEB, NORTH_WALL_TILES, RIGHT_RECT_DOOR, RIGHT_ROUND_DOOR, RIGHT_TORCH, RIGHT_VERT_DOOR, RIGHT_WALL_ORNAMENT, RIGHT_WEB, SHORT_CANDLE, SHORT_CANDLE_LIT, SKELETONS, SMALL_CHEST_1, SMALL_CHEST_2, SMALL_DIRT, SMALL_HEALTH, SMALL_MANA, SMALL_WOOD_CHEST, SOUTH_WALL_TILES, TALL_CANDLE, TALL_CANDLE_LIT, TRAPDOOR, WEST_CORNER, WEST_JOINT, WEST_WALL_TILES } from "./constants"
 
 const TILE_DIM = {tileWidth: 16, tileHeight: 16}
@@ -21,14 +24,36 @@ export const MAIN_SHEET = {
 	...TILE_DIM,
 	tiles: {
 		"@": () => [
-			rect(16, 16),
-			...STATIC(),
-			'plyr'
+			sprite('player-0'),
+			anchor('center'),
+			health(10),
+			area({shape: new Rect(vec2(0,0), 12, 15)}),
+			directional(),
+			body(),
+			damage(3),
+			knockback(10),
+			damagable(),
+			state('idle', ['idle', 'damage', 'death']),
+			offensive(new Rect(vec2(6, 0), 24, 32)),
+			mobile({speed: 50}),
+			interacter(new Rect(vec2(3, 0), 18, 15)),
+			controlled(),
+			hud(),
+			'player'
 		],
 		"$": () => [
-			rect(16, 16),
-			...STATIC(),
-			'skel'
+			sprite('skeleton'),
+			anchor('center'),
+			state('idle', ['idle', 'patrol', 'persue', 'attack', 'damage', 'death']),
+			health(10),
+			body(),
+			area({shape: new Rect(vec2(0,0), 12, 15)}),
+			directional(),
+			damage(5),
+			damagable(),
+			offensive(new Rect(vec2(0, 0), 12, 15)),
+			mobile({speed: 25}),
+			'skeleton'
 		],
 		"=": () => [
 			sp(NORTH_WALL_TILES),

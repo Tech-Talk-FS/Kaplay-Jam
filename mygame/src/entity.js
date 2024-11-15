@@ -1,6 +1,6 @@
 export class Entity {
     health = 10;
-    speed = 100;
+    //speed = 100;
     armor = 0;
     damage = 1;
     knockback = 0;
@@ -20,7 +20,7 @@ export function entity({speed,armor,dir,knockback} = {speed: 100, armor: 0, dir:
     return {
         id: "entity",
         require: ["health", "state", "damage"],
-        speed,
+        //speed,
         armor,
         knockback,
         dir,

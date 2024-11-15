@@ -5,10 +5,12 @@ import { loadSkeletonSprite } from "./enemies/skeleton";
 import { createTestEnemy } from "./test_enemy";
 import { createTestInteractable } from "./test_interactable";
 import { dungeonLoader } from "./dungeons";
+import { DungeonMaster } from "./DungeonMaster";
 
 // Start a kaboom game
 const k = kaplay({
   // Scale the whole game up
+  debug: true,
   scale: 4,
   // Set the default font
   font: "monospace",
@@ -43,10 +45,11 @@ const k = kaplay({
   }
 });
 
-loadPlayerSprites();
-loadSkeletonSprite();
+//loadPlayerSprites();
+//loadSkeletonSprite();
 
-dungeonLoader();
+const dm = new DungeonMaster();
+//dungeonLoader();
 //const player = createPlayer();
 
 // const enemy = createTestEnemy();
@@ -68,10 +71,12 @@ Frame: ${player.frame}
 `.trim();*/
 
 // Add some text to show the current animation
-const label = add([text(""/*getInfo()*/, { size: 12 }), color(255, 255, 255), pos(4), fixed()]);
+//const label = add([text(""/*getInfo()*/, { size: 12 }), color(255, 255, 255), pos(4), fixed()]);
 
-label.onUpdate(() => {
-  label.text = getInfo();
-});
+//label.onUpdate(() => {
+  //label.text = getInfo();
+//});
+
+
 
 // Check out https://kaboomjs.com#SpriteComp for everything sprite() provides

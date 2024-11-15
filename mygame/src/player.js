@@ -1,6 +1,11 @@
 import { character } from "./character";
 import { damage } from "./damage";
+import { DungeonMaster } from "./DungeonMaster";
 import { Entity, entity } from "./entity";
+import { damagable } from "./objects/damagable";
+import { directional } from "./objects/directional";
+import { mobile } from "./objects/mobile";
+import { TestEntity } from "./objects/testentity";
 import { getHitboxes } from "./player_hitboxes";
 
 String.prototype.capitalize = function(){ return this[0].toUpperCase()+this.slice(1); }
@@ -88,7 +93,6 @@ export class Player extends Entity {
 
 export function createPlayer(map, variation=0) {
     const hitboxes = getHitboxes();
-
     const SPEED_MOD = 1.5;
     const upgrade_modifiers = {
         speed: 1.0,
@@ -99,7 +103,7 @@ export function createPlayer(map, variation=0) {
 
 	const statics = new Set(anims.filter(([,,{loop}={}])=>!loop).flatMap(([n])=>dirs.map(d=>n+d)));
     // Creates the player sprite
-    const player = add([
+    const player = make([
 		sprite('player-'+variation),
         anchor("center"),
         area({
@@ -110,8 +114,12 @@ export function createPlayer(map, variation=0) {
         state(playerActions[0], playerActions),
         health(5),
         damage(3),
+        damagable(),
         entity(),
         character(),
+        directional(),
+        mobile(),
+        TestEntity(),
         {
             lazyPlay: (action) => {
                 const animToPlay = action+player.dir;
@@ -162,6 +170,7 @@ export function createPlayer(map, variation=0) {
     ]);
 
     player.onButtonDown(dirs, button => {
+        
         let xMod = 0;
         let yMod = 0;
         // If the shift key is pressed, increase run speed
