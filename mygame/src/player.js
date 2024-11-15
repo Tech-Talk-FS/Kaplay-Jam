@@ -182,6 +182,16 @@ export function createPlayer(map, variation=0) {
     // Queues the attack animation when the "attack" button is held down.
     player.onButtonDown("attack", button => {
         animToPlay = player.currEquipment;
+        //hit everything within the weapon area
+        console.log(attack);
+        /**
+        for(const c of attack.getCollisions()){
+            if('hurt' in c.target && typeof c.target.hurt === 'function') {
+                c.target.hurt(player.damage);
+                c.target.move(c.target.pos.sub(player.pos).unit().scale(50))
+            }
+        }
+        */
     });
 
     // Swaps the currently equipped weapons if the player is not already attacking.
@@ -271,6 +281,16 @@ export function createPlayer(map, variation=0) {
         }
     }
 
+    //This is a quick and dirty way to just make combat a little more interesting. 
+    player.onHurt(amt=>{
+        if(player.hp() > 0){
+            player.play('damage'+player.dir);
+        } else {
+            player.play('death'+player.dir)
+            go('main', 0);
+        }
+         //forces anything else to 
+    });
     // Adds an upgrade event for the player to be called
     // from other locations.
     on("upgrade", "player", (obj, field, value) => {

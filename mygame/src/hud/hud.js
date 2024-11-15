@@ -45,7 +45,7 @@ class HUD {
 	constructor(player){
 		this.hp = 0
 		this.player = player;
-
+		this.player.hud = this;
 
 		//handle dialog
 		player.onKeyPress("enter", ()=>this.nextMessage());

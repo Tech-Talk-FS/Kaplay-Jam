@@ -5,6 +5,7 @@ import { FLOOR_SHEET, MAIN_SHEET } from "./charSheets";
 import { FLOOR_TILES } from "./constants";
 import { DUNGEONS } from "./dungeons";
 import { tileLoader } from "./tileLoader";
+import { bogey } from "../enemies/bogey";
 
 
 /**
@@ -49,11 +50,10 @@ export const dungeonLoader = () => {
 		const level = addLevel(dungeon, MAIN_SHEET);
 		const plyr = level.get('plyr')[0]
 		const skel = level.get('skel')[0]
-		
 		const player = createPlayer();
 		player.pos = plyr.pos;
 		level.remove(plyr);
-		const skeleton = createSkeleton(player);
+		const skeleton = bogey('skeleton', player)
 		skeleton.pos = skel.pos;
 		skeleton.dir = "Left" // don't know how to default this yet
 		level.remove(skel);
