@@ -1,6 +1,6 @@
 import { character } from "./character";
 import { damage } from "./damage";
-import { entity } from "./entity";
+import { Entity, entity } from "./entity";
 import { getHitboxes } from "./player_hitboxes";
 
 String.prototype.capitalize = function(){ return this[0].toUpperCase()+this.slice(1); }
@@ -45,15 +45,45 @@ const anims = [
     ['damage', 3],
 	['death', 3],
 ];
-//const colors = ['white', 'blue', 'green', 'orange', 'pink', 'red', 'yellow'];
 const variations = 6;
 
 
 export const loadPlayerSprites = () => {
 	for(let i = 0; i<variations; i++){
-		
 		loadSprite(`player-${i}`, `assests/Player/player-${i}.png`, directionalAnimations(...anims));
 	}
+}
+
+/**
+ * Intended to be used as a Singleton class.
+ * Reference Player.player instead of creating a new version of the object
+ */
+export class Player extends Entity {
+    // Should only be one player instance at all times (singleton).
+    // Should allow us to move data between scenes freely.
+    static {
+        this.instance = new Player();
+    }
+
+    /**
+     * @private
+     */
+    swordPower = 0;
+
+    get SwordPower() {
+        return this.swordPower;
+    }
+    set SwordPower(value) {
+        if (value > 27) this.swordPower = 27;
+        else this.swordPower = value;
+    }
+
+    constructor({health, speed, armor, damage, knockback, gameObject, swordPower} = {
+        health: 10, speed: 100, armor: 0, damage: 1, knockback: 0, gameObject: null, swordPower: 0
+    }) {
+        super({health, speed, armor, damage, knockback, gameObject});
+        this.swordPower = swordPower;
+    }
 }
 
 export function createPlayer(map, variation=0) {
@@ -63,7 +93,7 @@ export function createPlayer(map, variation=0) {
     const upgrade_modifiers = {
         speed: 1.0,
     };
-    const playerActions = ["idle", "walk", "run", "attack"];
+    const playerActions = ["idle", "walk", "attack"];
     let animToPlay = "idle";
     let dirToFace = "Right";
 
@@ -73,7 +103,7 @@ export function createPlayer(map, variation=0) {
 		sprite('player-'+variation),
         anchor("center"),
         area({
-            shape: new Rect(vec2(1, 0), 13, 15)
+            shape: new Rect(vec2(0, 1), 13, 15)
         }),
         pos(),
         body(),
@@ -185,12 +215,13 @@ export function createPlayer(map, variation=0) {
     });
 
     // Swaps the currently equipped weapons if the player is not already attacking.
-    player.onButtonPress("weaponSwap", button => {
-        if (player.state !== "attack") {
-            player.changeEquipment();
-            attack.damageAmount = player.damageAmount;
-        }
-    });
+    // CURRENTLY UNUSEABLE WITH CURRENT SPRITE SHEET
+    // player.onButtonPress("weaponSwap", button => {
+    //     if (player.state !== "attack") {
+    //         player.changeEquipment();
+    //         attack.damageAmount = player.damageAmount;
+    //     }
+    // });
 
     // Swaps the current color palette
     player.onButtonPress("paletteSwap", button => {
