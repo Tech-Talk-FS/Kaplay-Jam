@@ -10,5 +10,12 @@ export const petrified = () => ({
 		this.onStateEnter('idle', ()=>{
 			this.collisionIgnore = [];
 		})
+	},
+
+	wakeUp(){
+		this.enterState('idle');
+	},
+	fallAsleep(){
+		this.enterState('idlestone');
 	}
 })
