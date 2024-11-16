@@ -3,59 +3,65 @@ import { interact } from "../objects";
 const cLevel4 = {
 	title: "Dungeon - C3",
 	floor: [
-		"       ",
-		"       ",
-		"       ",
-		"       ",
-		"       ",
-		"       ",
+		"       XXXXXXXXXXXX",
+		"       XXXXXXXXXXXX",
+		"       XXXXXXXXXXXX",
+		"       XXXXXXXXXXXX",
+		"       XXXXXXXXXXXX",
+		"                   ",
+		"         XX        ",
+		"        XXXX       ",
+		"         XX        ",
+		"         XX        ",
+		"                   ",
 	],
 	dungeon: [
 		"[==(==]",
-		"[a   a]",
+		"[  ~  ]",
 		"[     ]",
 		"[     ]",
-		"[l   l]",
-		",__(__."
+		"[     ]",
+		"[     ____________]",
+		"[       ]  [      ]",
+		"[      ~?  /~     ]",
+		"[       ]  [   ~h ]",
+		"[       ]  [      ]",
+		",_____________(___.",
 	],
 	ornaments: [
-		"       ",
-		"       ",
-		"       ",
-		"       ",
-		"   @   ",
-		"       ",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"              @",
+		"",
 	],
 	async setup() {
-		const [topDoor, bottomDoor] = DM.dungeon.get('door');
-		topDoor.interact = (player) => {
-			// TODO: Permanent unlock here
-			if (!player.unlockedCLvl3) {
-				DM.player?.dialog(`
-				It's locked. Could there be a key here?
-				`);
+		const [topDoor, leftMiddleDoor, rightMiddleDoor, trapDoor, bottomDoor] = DM.dungeon.get('door');
+		
+		topDoor.interact = (player) => {DM.go(5,0)}
+		
+		rightMiddleDoor.interact = (player) => {
+			if (!DM.locals.ironKey) {
+				DM.player?.dialog(`"Without the Iron Key, you will not escape."`);
 			} else {
-				go("main", 2);
+				DM.go(3, 1);
 			}
 		}
-		bottomDoor.interact = (player) => {
-			DM.player?.dialog(`
-			I don't see a reason to return.
-			`);
-		}
+		
+		leftMiddleDoor.interact = (player) => {DM.go(3, 2)}
+		
+		trapDoor.interact = (player) => {DM.go(4)}
 
-		const torches = DM.dungeon.get('torch');
-		torches.forEach((torch, index) => {
-			torch.interact = (player) => {
-				DM.player?.dialog(`
-				Doesn't seem like it's
-				been lit in years.
-				`);
-			}
-		});
+		bottomDoor.interact = (player) => {DM.go(2, 0)}
 	},
 	tiles: {
-		
+
 	}
 };
-export default cLevel4
+export default cLevel4;

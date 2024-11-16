@@ -4,10 +4,12 @@ import cLevel1 from "./levels/c-level1";
 import cLevel2 from "./levels/c-level2";
 import cLevel3 from "./levels/c-level3";
 import cLevel4 from "./levels/c-level4";
+import cLevel5 from "./levels/c-level5";
 
 export const DUNGEONS = [
 	cLevel1,
 	cLevel2,
 	cLevel3,
 	cLevel4,
+	cLevel5,
 ]

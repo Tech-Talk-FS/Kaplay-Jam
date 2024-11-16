@@ -38,7 +38,7 @@ const cLevel3 = {
 		} else {
 			smallPotion.interact = (player) => {
 				DM.player?.dialog(`A small potion. Tastes good.`);
-				player.heal(1);
+				player.increaseHealth(1);
 				DM.locals.tutorialSmallPotion = true;
 				smallPotion.destroy();
 			}
@@ -49,7 +49,7 @@ const cLevel3 = {
 		} else {
 			largePotion.interact = (player) => {
 				DM.player?.dialog(`A larger potion. I feel so much better now.`);
-				player.heal(10);
+				player.increaseHealth(10);
 				DM.locals.tutorialLargePotion = true;
 				largePotion.destroy();
 			}
