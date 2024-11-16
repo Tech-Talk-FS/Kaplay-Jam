@@ -6,6 +6,9 @@
 	* [Level.dungeon](#leveldungeon)
 	* [Level.ornaments](#levelornaments)
 		* [Extending tiles](#extending-tiles)
+	* [Interactions](#interactions)
+	* [Increasing Stats](#increasing-stats)
+	* [Replacing objects](#replacing-items)
 
 Level creation is an attempt at being declarative but simple. Basically a level is made of up 2-3 layers (the ornaments layer is optional) + an additional fixed layer for the hud. 
 
