@@ -24,7 +24,7 @@ export const hazard = (damageAmount, knockback=0, attackDelay=1) => ({
 
 		this.onStateEnter('attack', async ()=>{
 			for(const c of this.getCollisions()){
-				if(c.target !== this && 'takeDamage' in c.target && typeof c.target.takeDamage === 'function') c.target.takeDamage(this.damageAmount, this.knockback, this.vec);
+				if(c.target !== this && 'takeDamage' in c.target && typeof c.target.takeDamage === 'function') c.target.takeDamage(this.damageAmount, this.knockback, this.pos.sub(c.target.pos).unit());
 			}
 			await wait(attackDelay);
 			this.enterState('idle');
