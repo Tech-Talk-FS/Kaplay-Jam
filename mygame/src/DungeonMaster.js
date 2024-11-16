@@ -42,7 +42,6 @@ export class DungeonMaster {
 		};
 		this.loadResources();
 		scene("main",this.loadDungeon.bind(this));
-		window.DM = this; //make this instance globally available.
 		go("main", 0);
 		//DungeonMaster.instance = this; (this does not make instance available in separate files. as such it will just be dungeon masters responsibility to delcare itself on each entity that needs to know of its existance)
 	}
@@ -63,6 +62,7 @@ export class DungeonMaster {
 			ornaments = [];
 		}
 		this.addFloor(floor);
+		this.dungeonName = title;
 		this.sheet = tiles ? combine(MAIN_SHEET, tiles):MAIN_SHEET;
 		this.dungeon = addLevel(dungeon, this.sheet);
 		this.ornaments = addLevel(ornaments, this.sheet);

@@ -40,38 +40,5 @@ const k = kaplay({
   }
 });
 
-//loadPlayerSprites();
-//loadSkeletonSprite();
-
-const dm = new DungeonMaster();
-//dungeonLoader();
-//const player = createPlayer();
-
-// const enemy = createTestEnemy();
-// const interactable = createTestInteractable();
-
-// Add a platform
-/*add([
-  rect(width(), 24),
-  area(),
-  outline(1),
-  pos(0, height() - 24),
-  body({ isStatic: true }),
-]);*/
-
-/*const getInfo = () =>
-  `
-Anim: ${player.curAnim()}
-Frame: ${player.frame}
-`.trim();*/
-
-// Add some text to show the current animation
-//const label = add([text(""/*getInfo()*/, { size: 12 }), color(255, 255, 255), pos(4), fixed()]);
-
-//label.onUpdate(() => {
-  //label.text = getInfo();
-//});
-
-
-
+window.DM = new DungeonMaster();
 // Check out https://kaboomjs.com#SpriteComp for everything sprite() provides

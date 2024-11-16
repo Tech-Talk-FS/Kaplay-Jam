@@ -13,9 +13,8 @@ export const hud = ()=>({
 		this.hud = addLevel(['#'], {tileWidth: width(), tileHeight: height(), tiles: {
 			"#": ()=>[
 				rect(width(), height(), {fill:false}),
-				//outline(2, Color.fromHex(0xffff00)),
 				anchor('topleft'),
-				outline(1, Color.fromHex(0xffff00)),
+				//outline(1, Color.fromHex(0xffff00)),
 				fixed()
 			]
 		}});
@@ -23,6 +22,7 @@ export const hud = ()=>({
 			this.drawWeapon();
 			this.drawHealth();
 			this.drawMessageBox();
+			this.drawDungeonName();
 		});
 
 		this.onKeyPress('enter', ()=>{
@@ -31,6 +31,23 @@ export const hud = ()=>({
 		});
 	},
 
+	drawDungeonName(){
+		drawSprite({
+			sprite: 'panel',
+			width: 64,
+			height: 16,
+			pos: vec2(4, 4),
+			anchor: 'topleft',
+			fixed: true
+		});
+		drawText({
+			text: DM.dungeonName,
+			size: 4,
+			anchor: 'center',
+			pos: vec2(36,12),
+			fixed: true
+		})
+	},
 	drawWeapon(){
 		
 		if(this.damageAmount-1 < 0) return;
