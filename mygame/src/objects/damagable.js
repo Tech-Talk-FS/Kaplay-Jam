@@ -11,7 +11,6 @@ export const damagable = () => {
 		 */
 		add(){
 			this.onHurt((amt)=>{
-				console.log(this.hp());
 				const hp = this.hp();
 				if(hp < 0) this.destroy();
 				this.enterState(hp > 0 ? "damage":"death");

@@ -6,6 +6,7 @@
  */
 
 import { DIRS } from "../constants"
+import { chance } from "../utils";
 import { directional } from "./directional"
 const DEFAULTS = {
 	patrolSpeed: 1,
@@ -71,5 +72,14 @@ export const enemy = ({
 			this.go(v);
 		});
 
+		this.onDestroy(()=>{
+			//The enemy was not killed
+			if(this.hp() > 0) return;
+			const ps = this.pos;
+			for(const [char, p] of this.drops) {
+				if(chance(p)) DM.dungeon.add([...DM.tiles[char](), pos(ps)]);
+			}
+			if('onDied' in this && typeof this.onDied === 'function') return this.onDied();
+		})
 	}
 })

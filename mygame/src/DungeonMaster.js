@@ -36,14 +36,14 @@ export class DungeonMaster {
 		this.currentLevel = 0;
 		this.locals = {
 			health: 10,
-			damageAmount: 0,
+			damageAmount: 1,
 			attackSpeed: 1,
 			
 		};
 		this.loadResources();
 		scene("main",this.loadDungeon.bind(this));
 		window.DM = this; //make this instance globally available.
-		go("main", 1);
+		go("main", 0);
 		//DungeonMaster.instance = this; (this does not make instance available in separate files. as such it will just be dungeon masters responsibility to delcare itself on each entity that needs to know of its existance)
 	}
 	

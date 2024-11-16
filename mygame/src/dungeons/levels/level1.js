@@ -18,7 +18,7 @@ const level1 = {
 		"[l         l]",
 		"[           ]",
 		"[           ]",
-		",_______<   ]",
+		",_______<  $]",
 		"        [   ]",
 		"        [   ]",
 		"        [  V]",
@@ -36,13 +36,9 @@ const level1 = {
 		"           X",
 	],
 	async setup(){
-		/*DM.player?.dialog(`...
-...
-...
-What?... Where am I?
-How did I get here`);*/
-		},
-		tiles: {
+
+	},
+	tiles: {
 			l:()=>[
 				interact(player=>player.dialog("This hasn't been\nlit in years"))
 			],
@@ -63,6 +59,14 @@ How did I get here`);*/
 					if(player.unlockedLvl1) go("main", 1);
 				})
 			],
+			$:()=>[
+				//perpetual respawn
+				{async onDied(){
+					const p = this.pos;
+					await wait(3),
+					DM.dungeon.add([...DM.tiles.$(), pos(p)]);
+				}}
+			]
 		}
 };
 export default level1;

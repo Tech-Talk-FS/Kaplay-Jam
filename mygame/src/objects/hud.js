@@ -34,7 +34,6 @@ export const hud = ()=>({
 	drawWeapon(){
 		
 		if(this.damageAmount-1 < 0) return;
-		console.log(this.damageAmount);
 		drawSprite({
 			sprite: 'sword',
 			frame: this.damageAmount-1,

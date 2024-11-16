@@ -44,7 +44,9 @@ export const MAIN_SHEET = {
 			state('idle', ['idle', 'patrol', 'persue', 'attack', 'damage', 'death']),
 			health(5),
 			body(),
-			enemy(),
+			enemy({
+				drops: [["w", 0.5],["W", 0.1]]
+			}),
 			area({shape: new Rect(vec2(0,0), 12, 15)}),
 			directional(),
 			damage({damageAmount:1, hitbox:new Rect(vec2(0, 0), 12, 15)}),
@@ -188,7 +190,6 @@ export const MAIN_SHEET = {
 			...PASSTHROUGH(),
 			interact(player=>{
 				player.increaseHealth(1);
-				this.destroy()
 			}, true),
 			'small-health'
 		],
