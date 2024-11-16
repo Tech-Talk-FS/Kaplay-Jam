@@ -14,10 +14,10 @@ const level1 = {
 	],
 	dungeon: [
 		"[=======(===]",
-		"[l         l]",
+		"[le        l]",
 		"[           ]",
-		"[           ]",
-		",_______<  $]",
+		"[3   E     #]",
+		",_______<   ]",
 		"        [   ]",
 		"        [   ]",
 		"        [  V]",
@@ -54,16 +54,14 @@ const level1 = {
 			],
 			V:()=>[
 				interact(player=>{
-					console.log(player)
-					if(player.unlockedLvl1) go("main", 1);
+					if(player.unlockedLvl1){ 
+						DM.dungeon.get('goblin-statue').forEach(g=>g.enterState('idle'));
+					}
 				})
 			],
-			$:()=>[
-				//perpetual respawn
-				{async onDied(){
-					const p = this.pos;
-					await wait(3),
-					DM.dungeon.add([...DM.tiles.$(), pos(p)]);
+			"#": ()=>[
+				{onDied(){
+					go("main", 1)
 				}}
 			]
 		}

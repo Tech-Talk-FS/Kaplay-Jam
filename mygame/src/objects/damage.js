@@ -17,7 +17,7 @@ export function damage({
 		 */
 		add(){
 			if(hitbox){
-				this.hitbox = this.add([area({shape: hitbox}), anchor('center'), rotate()])
+				this.hitbox = this.add([area({shape: hitbox}), anchor('center'), rotate(), 'hitbox'])
 			}
 
             this.onStateEnter('attack', async ()=>{

@@ -3,7 +3,7 @@ export const interacter = (reach) => ({
 	require: ['area', 'mobile'],
 	
 	add(){
-		this.reach = this.add([area({shape: reach}), anchor('center'), rotate()]);
+		this.reach = this.add([area({shape: reach}), anchor('center'), rotate(), 'player-reach']);
 	},
 
 	update(){
