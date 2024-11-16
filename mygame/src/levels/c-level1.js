@@ -1,6 +1,8 @@
-const cLevel1 = [
-	"Dungeon - C0",
-	[
+import { interact } from "../objects";
+
+const cLevel1 = {
+	title: "Dungeon - C0",
+	floor: [
 		"             ",
 		"             ",
 		"             ",
@@ -10,9 +12,9 @@ const cLevel1 = [
 		"             ",
 		"             ",
 	],
-	[
+	dungeon: [
 		"[=====(=====]",
-		"[l         l]",
+		"[l    ~    l]",
 		"[           ]",
 		"[  z        ]",
 		"[           ]",
@@ -21,7 +23,7 @@ const cLevel1 = [
 		"[lz        l]",
 		",___________."
 	],
-	[
+	ornaments: [
 		"            ",
 		"            ",
 		"            ",
@@ -31,18 +33,23 @@ const cLevel1 = [
 		"            ",
 		"      @     ",
 	],
-	async () => {
-		const door = DM.dungeon.get('door')[0];
-		door.interact = (player) => {
-			go("main", 1);
-		}
-		DM.player?.dialog(
-`...
+	async setup() {
+		if (!DM.locals.visitedLvl1) {
+			DM.player?.dialog(`...
 ...
 ...
 What?... Where am I?
-How did I get here?
-`);
+How did I get here?`);
+			DM.locals.visitedLvl1 = true;
+		}
+	},
+	tiles: {
+		"(": () => [
+			interact(player=>DM.go(1))
+		],
+		"l": ()=>[
+			interact(player => DM.player?.dialog(`Doesn't seem like it's been lit in years.`))
+		]
 	}
-];
+}
 export default cLevel1

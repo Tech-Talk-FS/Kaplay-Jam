@@ -1,6 +1,8 @@
-const cLevel3 = [
-	"Dungeon - C2",
-	[
+import { interact } from "../objects";
+
+const cLevel4 = {
+	title: "Dungeon - C3",
+	floor: [
 		"       ",
 		"       ",
 		"       ",
@@ -8,7 +10,7 @@ const cLevel3 = [
 		"       ",
 		"       ",
 	],
-	[
+	dungeon: [
 		"[==(==]",
 		"[a   a]",
 		"[     ]",
@@ -16,7 +18,7 @@ const cLevel3 = [
 		"[l   l]",
 		",__(__."
 	],
-	[
+	ornaments: [
 		"       ",
 		"       ",
 		"       ",
@@ -24,7 +26,7 @@ const cLevel3 = [
 		"   @   ",
 		"       ",
 	],
-	async () => {
+	async setup() {
 		const [topDoor, bottomDoor] = DM.dungeon.get('door');
 		topDoor.interact = (player) => {
 			// TODO: Permanent unlock here
@@ -42,22 +44,6 @@ const cLevel3 = [
 			`);
 		}
 
-		const [leftChest, rightChest] = DM.dungeon.get('small-wood-chest');
-		leftChest.interact = (player) => {
-			DM.player?.dialog(`
-			A spare potion. I feel better now.
-			`);
-			player.heal(4);
-			leftChest.destroy();
-		}
-		rightChest.interact = (player) => {
-			DM.player?.dialog(`
-			A key. This will be useful.
-			`);
-			player.unlockedCLvl3 = true;
-			rightChest.destroy();
-		}
-
 		const torches = DM.dungeon.get('torch');
 		torches.forEach((torch, index) => {
 			torch.interact = (player) => {
@@ -67,6 +53,9 @@ const cLevel3 = [
 				`);
 			}
 		});
+	},
+	tiles: {
+		
 	}
-];
-export default cLevel3
+};
+export default cLevel4
