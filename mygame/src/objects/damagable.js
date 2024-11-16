@@ -11,7 +11,9 @@ export const damagable = () => {
 		 */
 		add(){
 			this.onHurt((amt)=>{
-				this.enterState(this.hp() > 0 ? "damage":"death");
+				const hp = this.hp();
+				if(hp < 0) this.destroy();
+				this.enterState(hp > 0 ? "damage":"death");
 			});
 
 			this.onStateEnter("idle", ()=>{
@@ -27,10 +29,11 @@ export const damagable = () => {
 			})
 
 			this.onAnimEnd(anim=>{
-				if(anim === "damage") this.enterState("idle");
-				if(anim === "death") this.destroy();
+				if(anim.startsWith("death")) return this.destroy();
+				if(anim.startsWith('attack') || anim.startsWith('damage')) this.enterState('idle');
 			})
 		},
+
 		takeDamage(dmg, knockback=0, knockbackVector){
 			this.hurt(dmg);
 			if(knockback) tween(

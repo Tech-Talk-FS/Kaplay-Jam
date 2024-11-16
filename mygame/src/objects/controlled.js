@@ -10,16 +10,19 @@ export const controlled = () => {
 	debug.inspect = true;
 	return {
 		id: 'controlled',
-		require: ['mobile', 'offensive'],
+		require: ['mobile', 'damage'],
 		add(){
 			this.onButtonPress('interact', () => {
+				if(DM.paused) return;
 				this.interactWith();
 			});
 			this.onButtonPress('attack', () => {
-				console.log("Time to attack");
+				if(DM.paused) return;
 				this.attack();
 			});
-			
+			this.onDestroy(()=>{
+				if(this.hp() <= 0) go("main", 0)
+			});
 		},
 		update(){
 			camPos(this.pos);
@@ -29,6 +32,15 @@ export const controlled = () => {
 			} else {
 				this.do('idle')
 			}
+		},
+		increaseHealth(amt){
+			this.heal(amt);
+			DM.locals.health = this.hp();
+		},
+
+		increaseDamage(){
+			DM.locals.damageAmount++;
+			this.damageAmount = DM.locals.damageAmount
 		}
 	}
 }

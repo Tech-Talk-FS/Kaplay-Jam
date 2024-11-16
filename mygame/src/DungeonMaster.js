@@ -1,8 +1,8 @@
-import { MAIN_SHEET } from './dungeons/charSheets';
-import { FLOOR_TILES } from './dungeons/constants';
-import { DUNGEONS } from './dungeons/dungeons';
-import { createHud } from './hud/hud';
+import { MAIN_SHEET } from './charSheets';
+import { FLOOR_TILES } from './constants';
+import { DUNGEONS } from './dungeons';
 import * as loaders from './loaders';
+import { combine } from './utils';
 /*
 The dungeon master class is an attempt to reorganize and create a more ambiguous environment that in turn is more portable.
 
@@ -26,14 +26,22 @@ export class DungeonMaster {
 		this.ornaments.paused = v;
 	}
 
-	constructor(msg){
+	get tiles(){
+		if(!this.sheet) return {};
+		return this.sheet.tiles;
+	}
+
+	constructor(){
 		if('instance' in DungeonMaster) throw new Error("Game has already been started");
 		this.currentLevel = 0;
-		this.players = [];
-		this.msg = msg;
+		this.locals = {
+			health: 10,
+			damageAmount: 1,
+			attackSpeed: 1,
+			
+		};
 		this.loadResources();
 		scene("main",this.loadDungeon.bind(this));
-		window.DM = this; //make this instance globally available.
 		go("main", 0);
 		//DungeonMaster.instance = this; (this does not make instance available in separate files. as such it will just be dungeon masters responsibility to delcare itself on each entity that needs to know of its existance)
 	}
@@ -46,15 +54,19 @@ export class DungeonMaster {
 	}
 
 	loadDungeon(index){
-		const [title, floor, map, ornaments=[], setup] = DUNGEONS[index];
+		this.currentLevel = index;
+		const {title, floor, dungeon, ornaments=[], setup, tiles} = DUNGEONS[index];
 		if(typeof ornaments === 'function'){
+			sheet = setup;
 			setup = ornaments;
 			ornaments = [];
 		}
 		this.addFloor(floor);
-		this.dungeon = addLevel(map, MAIN_SHEET);
-		this.ornaments = addLevel(ornaments, MAIN_SHEET);
-		this.player = this.ornaments.get('player')[0];
+		this.dungeonName = title;
+		this.sheet = tiles ? combine(MAIN_SHEET, tiles):MAIN_SHEET;
+		this.dungeon = addLevel(dungeon, this.sheet);
+		this.ornaments = addLevel(ornaments, this.sheet);
+		this.player = this.ornaments?.get('player')[0] ?? this.dungeon.get('player')[0];
 		if(setup) setup();
 	}
 
