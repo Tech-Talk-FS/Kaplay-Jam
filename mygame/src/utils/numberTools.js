@@ -12,4 +12,4 @@ export const convert = (value, base, dest) => value * dest / base;
  * @param {number} p - a decimal representation of a percentage
  * @returns 
  */
-export const change = p => 1-rand(0,1) >= p;
+export const chance = p => 1-rand(0,1) >= p;
