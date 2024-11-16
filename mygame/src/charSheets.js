@@ -1,3 +1,4 @@
+import { controlled, damagable, damage, directional, hud, mobile, interacter, knockback, enemy, interact } from './objects';
 import { BANNER, BONES, CENTER_TORCH, CHAIN_1, CHAIN_2, COIN, EAST_CORNER, EAST_JOINT, EAST_WALL_TILES, FLOOR_TILES, GOLD_KEY, IRON_KEY, LADDER, LARGE_CHEST_1, LARGE_CHEST_2, LARGE_DIRT, LARGE_HEALTH, LARGE_MANA, LARGE_WOOD_CHEST, LEFT_RECT_DOOR, LEFT_ROUND_DOOR, LEFT_TORCH, LEFT_VERT_DOOR, LEFT_WALL_ORNAMENT, LEFT_WEB, NORTH_WALL_TILES, RIGHT_RECT_DOOR, RIGHT_ROUND_DOOR, RIGHT_TORCH, RIGHT_VERT_DOOR, RIGHT_WALL_ORNAMENT, RIGHT_WEB, SHORT_CANDLE, SHORT_CANDLE_LIT, SKELETONS, SMALL_CHEST_1, SMALL_CHEST_2, SMALL_DIRT, SMALL_HEALTH, SMALL_MANA, SMALL_WOOD_CHEST, SOUTH_WALL_TILES, TALL_CANDLE, TALL_CANDLE_LIT, TRAPDOOR, WEST_CORNER, WEST_JOINT, WEST_WALL_TILES } from "./constants"
 
 const TILE_DIM = {tileWidth: 16, tileHeight: 16}
@@ -21,14 +22,37 @@ export const MAIN_SHEET = {
 	...TILE_DIM,
 	tiles: {
 		"@": () => [
-			rect(16, 16),
-			...STATIC(),
-			'plyr'
+			sprite('player-0'),
+			anchor('center'),
+			health(DM.locals.health ?? 10),
+			area({shape: new Rect(vec2(0,0), 12, 15)}),
+			directional(),
+			body(),
+			damage({damageAmount:DM.locals.damageAmount ?? 0, attackSpeed: DM.locals.attackSpeed ?? 1, hitbox: new Rect(vec2(6, 0), 24, 32)}),
+			knockback(DM.locals.knockback ?? 10),
+			damagable(),
+			interacter(new Rect(vec2(6, 0), 24, 15)),
+			state('idle', ['idle', 'attack', 'interact', 'damage', 'death']),
+			mobile({speed: DM.locals.speed ?? 50}),
+			controlled(),
+			hud(),
+			'player'
 		],
 		"$": () => [
-			rect(16, 16),
-			...STATIC(),
-			'skel'
+			sprite('skeleton'),
+			anchor('center'),
+			state('idle', ['idle', 'patrol', 'persue', 'attack', 'damage', 'death']),
+			health(5),
+			body(),
+			enemy({
+				drops: [["w", 0.5],["W", 0.1]]
+			}),
+			area({shape: new Rect(vec2(0,0), 12, 15)}),
+			directional(),
+			damage({damageAmount:1, hitbox:new Rect(vec2(0, 0), 12, 15)}),
+			damagable(),
+			mobile({speed: 25}),
+			'skeleton'
 		],
 		"=": () => [
 			sp(NORTH_WALL_TILES),
@@ -164,11 +188,17 @@ export const MAIN_SHEET = {
 		"w":()=>[
 			sp(SMALL_HEALTH),
 			...PASSTHROUGH(),
-			'small-healt'
+			interact(player=>{
+				player.increaseHealth(1);
+			}, true),
+			'small-health'
 		],
 		"W":()=>[
 			sp(LARGE_HEALTH),
 			...PASSTHROUGH(),
+			interact(player=>{
+				player.increaseHealth(10)
+			}, true),
 			'large-health'
 		],
 		"k":()=>[
@@ -260,7 +290,7 @@ export const MAIN_SHEET = {
 		"Z":()=>[
 			sp(SKELETONS),
 			...PASSTHROUGH(),
-			'skeleton'
+			'skel'
 		],
 		"v":()=>[
 			sp(LEFT_WALL_ORNAMENT),
