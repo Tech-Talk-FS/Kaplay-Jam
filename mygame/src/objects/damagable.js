@@ -27,10 +27,11 @@ export const damagable = () => {
 			})
 
 			this.onAnimEnd(anim=>{
-				if(anim === "damage") this.enterState("idle");
+				if(anim === "damage" || anim === "attack") this.enterState("idle");
 				if(anim === "death") this.destroy();
 			})
 		},
+		
 		takeDamage(dmg, knockback=0, knockbackVector){
 			this.hurt(dmg);
 			if(knockback) tween(

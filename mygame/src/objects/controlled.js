@@ -10,13 +10,14 @@ export const controlled = () => {
 	debug.inspect = true;
 	return {
 		id: 'controlled',
-		require: ['mobile', 'offensive'],
+		require: ['mobile', 'damage'],
 		add(){
 			this.onButtonPress('interact', () => {
+				if(DM.paused) return;
 				this.interactWith();
 			});
 			this.onButtonPress('attack', () => {
-				console.log("Time to attack");
+				if(DM.paused) return;
 				this.attack();
 			});
 			

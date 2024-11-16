@@ -25,11 +25,11 @@ const level1 = [
 	[
 		"    b",
 		"            ",
-		" @          ",
+		"   @        ",
 		"            ",
 		"            ",
-		"            ",
-		"            ",
+		"          w ",
+		"          W ",
 		"           X",
 	],
 	async () => {
@@ -45,12 +45,12 @@ const level1 = [
 		banner.interact = (player) => {
 			player.dialog('Not all is as it seems"\n... ');
 			const web = DM.ornaments.get('web')[0];
-			DM.ornaments.remove(web);
-			player.unlockedLvl1 = true;
+			web.destroy();
+			DM.locals.unlockedLvl1 = true;
 		}
 		const orn = DM.dungeon.get('right-wall-ornament')[0];
 		orn.interact = (player) => {
-			if(player.unlockedLvl1) go("main", 1);
+			if(DM.locals.unlockedLvl1) go("main", 1);
 			
 		}
 		DM.player?.dialog(`...

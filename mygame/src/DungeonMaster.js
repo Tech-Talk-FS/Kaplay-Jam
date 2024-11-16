@@ -31,6 +31,7 @@ export class DungeonMaster {
 		this.currentLevel = 0;
 		this.players = [];
 		this.msg = msg;
+		this.locals = {};
 		this.loadResources();
 		scene("main",this.loadDungeon.bind(this));
 		window.DM = this; //make this instance globally available.

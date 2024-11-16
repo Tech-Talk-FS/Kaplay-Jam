@@ -4,4 +4,5 @@ export * from './damage';
 export * from './directional';
 export * from './hud';
 export * from './mobile';
-export * from './offensive';
+export * from './interacter';
+export * from './knockback';
