@@ -7,7 +7,7 @@
 
 import { DIRS } from "../constants"
 import { chance } from "../utils";
-import { directional } from "./directional"
+
 const DEFAULTS = {
 	patrolSpeed: 1,
 	drops: [],

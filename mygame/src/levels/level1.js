@@ -1,5 +1,4 @@
-import { interact } from "../../objects";
-import { mod } from "../../objects/mod";
+import { interact } from "../objects";
 
 const level1 = {
 	title:"Dungeon - 0",

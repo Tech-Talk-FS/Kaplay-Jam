@@ -1,4 +1,4 @@
-import { interact } from "../../objects";
+import { interact } from "../objects";
 import { MAIN_SHEET } from "../charSheets";
 
 const level2 = {

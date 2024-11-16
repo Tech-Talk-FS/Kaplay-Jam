@@ -1,6 +1,6 @@
-import { MAIN_SHEET } from './dungeons/charSheets';
-import { FLOOR_TILES } from './dungeons/constants';
-import { DUNGEONS } from './dungeons/dungeons';
+import { MAIN_SHEET } from './charSheets';
+import { FLOOR_TILES } from './constants';
+import { DUNGEONS } from './dungeons';
 import * as loaders from './loaders';
 import { combine } from './utils';
 /*
@@ -55,7 +55,6 @@ export class DungeonMaster {
 	}
 
 	loadDungeon(index){
-		console.log(index, this.locals);
 		this.currentLevel = index;
 		const {title, floor, dungeon, ornaments=[], setup, tiles} = DUNGEONS[index];
 		if(typeof ornaments === 'function'){
