@@ -1,6 +1,10 @@
-export const interact = fn => {
+export const interact = (fn, shouldDestroy=false) => {
 	return {
 		id: 'interact',
-		interact: fn
+		require: ['area'],
+		interact(player){
+			fn(player);
+			if(shouldDestroy) this.destroy();
+		}
 	}
 }

@@ -26,16 +26,19 @@ export class DungeonMaster {
 		this.ornaments.paused = v;
 	}
 
-	constructor(msg){
+	constructor(){
 		if('instance' in DungeonMaster) throw new Error("Game has already been started");
 		this.currentLevel = 0;
-		this.players = [];
-		this.msg = msg;
-		this.locals = {};
+		this.locals = {
+			health: 10,
+			damageAmount: 0,
+			attackSpeed: 1,
+			
+		};
 		this.loadResources();
 		scene("main",this.loadDungeon.bind(this));
 		window.DM = this; //make this instance globally available.
-		go("main", 0);
+		go("main", 1);
 		//DungeonMaster.instance = this; (this does not make instance available in separate files. as such it will just be dungeon masters responsibility to delcare itself on each entity that needs to know of its existance)
 	}
 	
@@ -47,6 +50,8 @@ export class DungeonMaster {
 	}
 
 	loadDungeon(index){
+		console.log(index, this.locals);
+		this.currentLevel = index;
 		const {title, floor, dungeon, ornaments=[], setup, tiles} = DUNGEONS[index];
 		if(typeof ornaments === 'function'){
 			sheet = setup;
@@ -54,11 +59,10 @@ export class DungeonMaster {
 			ornaments = [];
 		}
 		this.addFloor(floor);
-		if(tiles) console.log("Got tiles");
 		const sheet = tiles ? combine(MAIN_SHEET, tiles):MAIN_SHEET;
 		this.dungeon = addLevel(dungeon, sheet);
 		this.ornaments = addLevel(ornaments, sheet);
-		this.player = this.ornaments.get('player')[0];
+		this.player = this.ornaments?.get('player')[0] ?? this.dungeon.get('player')[0];
 		if(setup) setup();
 	}
 

@@ -20,7 +20,9 @@ export const controlled = () => {
 				if(DM.paused) return;
 				this.attack();
 			});
-			this.onDestroy(()=>go("main", 0));
+			this.onDestroy(()=>{
+				if(this.hp() <= 0) go("main", 0)
+			});
 		},
 		update(){
 			camPos(this.pos);
@@ -30,6 +32,15 @@ export const controlled = () => {
 			} else {
 				this.do('idle')
 			}
+		},
+		increaseHealth(amt){
+			this.heal(amt);
+			DM.locals.health = this.hp();
+		},
+
+		increaseDamage(){
+			DM.locals.damageAmount++;
+			this.damageAmount = DM.locals.damageAmount
 		}
 	}
 }

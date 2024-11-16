@@ -32,7 +32,9 @@ export const hud = ()=>({
 	},
 
 	drawWeapon(){
-		if(!~this.damageAmount-1) return;
+		
+		if(this.damageAmount-1 < 0) return;
+		console.log(this.damageAmount);
 		drawSprite({
 			sprite: 'sword',
 			frame: this.damageAmount-1,
@@ -59,7 +61,7 @@ export const hud = ()=>({
 				...hrt
 			});
 		}
-		if(rem) drawSprite({	
+		if(rem > 0) drawSprite({	
 			frame: rem-1,
 			pos: vec2(fullHeartsWidth*16, height()),
 			...hrt

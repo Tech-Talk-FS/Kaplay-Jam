@@ -12,7 +12,9 @@ export const damagable = () => {
 		add(){
 			this.onHurt((amt)=>{
 				console.log(this.hp());
-				this.enterState(this.hp() > 0 ? "damage":"death");
+				const hp = this.hp();
+				if(hp < 0) this.destroy();
+				this.enterState(hp > 0 ? "damage":"death");
 			});
 
 			this.onStateEnter("idle", ()=>{

@@ -16,7 +16,7 @@ const level1 = {
 	dungeon: [
 		"[=======(===]",
 		"[l         l]",
-		"[       $   ]",
+		"[           ]",
 		"[           ]",
 		",_______<   ]",
 		"        [   ]",
@@ -57,8 +57,9 @@ How did I get here`);*/
 					player.unlockedLvl1 = true;
 				})
 			],
-			X:()=>[
+			V:()=>[
 				interact(player=>{
+					console.log(player)
 					if(player.unlockedLvl1) go("main", 1);
 				})
 			],
