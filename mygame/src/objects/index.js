@@ -9,3 +9,4 @@ export * from './knockback';
 export * from './interact';
 export * from './enemy';
 export * from './petrified';
+export * from './hazard';
