@@ -26,6 +26,11 @@ export class DungeonMaster {
 		this.ornaments.paused = v;
 	}
 
+	get tiles(){
+		if(!this.sheet) return {};
+		return this.sheet.tiles;
+	}
+
 	constructor(){
 		if('instance' in DungeonMaster) throw new Error("Game has already been started");
 		this.currentLevel = 0;
@@ -59,9 +64,9 @@ export class DungeonMaster {
 			ornaments = [];
 		}
 		this.addFloor(floor);
-		const sheet = tiles ? combine(MAIN_SHEET, tiles):MAIN_SHEET;
-		this.dungeon = addLevel(dungeon, sheet);
-		this.ornaments = addLevel(ornaments, sheet);
+		this.sheet = tiles ? combine(MAIN_SHEET, tiles):MAIN_SHEET;
+		this.dungeon = addLevel(dungeon, this.sheet);
+		this.ornaments = addLevel(ornaments, this.sheet);
 		this.player = this.ornaments?.get('player')[0] ?? this.dungeon.get('player')[0];
 		if(setup) setup();
 	}
