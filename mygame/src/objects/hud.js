@@ -32,7 +32,7 @@ export const hud = ()=>({
 	},
 
 	drawWeapon(){
-		//if(!this.player.weapon) return;
+		if(!~this.damageAmount-1) return;
 		drawSprite({
 			sprite: 'sword',
 			frame: this.damageAmount-1,

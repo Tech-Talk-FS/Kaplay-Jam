@@ -28,7 +28,7 @@ export const MAIN_SHEET = {
 			area({shape: new Rect(vec2(0,0), 12, 15)}),
 			directional(),
 			body(),
-			damage({damageAmount:2, attackSpeed: 1, hitbox: new Rect(vec2(6, 0), 24, 32)}),
+			damage({damageAmount:0, attackSpeed: 1, hitbox: new Rect(vec2(6, 0), 24, 32)}),
 			knockback(10),
 			damagable(),
 			interacter(new Rect(vec2(6, 0), 24, 15)),
