@@ -1,8 +1,8 @@
 import { MAIN_SHEET } from './dungeons/charSheets';
 import { FLOOR_TILES } from './dungeons/constants';
 import { DUNGEONS } from './dungeons/dungeons';
-import { createHud } from './hud/hud';
 import * as loaders from './loaders';
+import { combine } from './utils';
 /*
 The dungeon master class is an attempt to reorganize and create a more ambiguous environment that in turn is more portable.
 
@@ -47,14 +47,17 @@ export class DungeonMaster {
 	}
 
 	loadDungeon(index){
-		const [title, floor, map, ornaments=[], setup] = DUNGEONS[index];
+		const {title, floor, dungeon, ornaments=[], setup, tiles} = DUNGEONS[index];
 		if(typeof ornaments === 'function'){
+			sheet = setup;
 			setup = ornaments;
 			ornaments = [];
 		}
 		this.addFloor(floor);
-		this.dungeon = addLevel(map, MAIN_SHEET);
-		this.ornaments = addLevel(ornaments, MAIN_SHEET);
+		if(tiles) console.log("Got tiles");
+		const sheet = tiles ? combine(MAIN_SHEET, tiles):MAIN_SHEET;
+		this.dungeon = addLevel(dungeon, sheet);
+		this.ornaments = addLevel(ornaments, sheet);
 		this.player = this.ornaments.get('player')[0];
 		if(setup) setup();
 	}

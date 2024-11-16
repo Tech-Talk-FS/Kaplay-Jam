@@ -6,3 +6,4 @@ export * from './hud';
 export * from './mobile';
 export * from './interacter';
 export * from './knockback';
+export * from './interact';

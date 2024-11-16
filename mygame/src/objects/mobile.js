@@ -5,6 +5,8 @@
  * @param { number } [vec] - The radian value of the direction the entity is facing
  */
 
+import { convert } from "../utils";
+
 /**
  * @type {MobilityOptions}
  */
@@ -52,11 +54,11 @@ export const mobile = ({
 			const speed = this.speed * mult;
 			if(v !== this.vec){
 				this.vec = v;
-				this.viewAngle = this.vec*180/Math.PI;
-				this.direction = ["Right", "Down", "Left", "Up"][Math.floor((Math.PI*1.5)+this.vec*2/Math.PI)%4];	
+				this.viewAngle = convert(this.vec, Math.PI, 180)
+				this.direction = ["Right", "Down", "Left", "Up"][~~(convert((Math.PI*1.5)+this.vec,Math.PI,2)+1)%4];	
 			}
+
 			this.do(action);
-			
 			this.move(vec2(speed*Math.cos(this.vec), speed*Math.sin(this.vec)));
 		}
 	}

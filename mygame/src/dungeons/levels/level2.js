@@ -1,6 +1,6 @@
-const level2 = [
-	"Dungeon - 1",
-	[
+const level2 = {
+	title: "Dungeon - 1",
+	floor: [
 		"XXXXXXXXX",
 		"X        ",
 		"X        ",
@@ -11,7 +11,7 @@ const level2 = [
 		"X        ",
 		"X        ",
 	],
-	[
+	dungeon:[
 		"[========]",
 		"[   @    ]",
 		"[zZz     ]",
@@ -23,9 +23,9 @@ const level2 = [
 		"[        ]",
 		",________."
 	],
-	[
+	ornaments:[
 		"  b    b  "
 	]
 
-];
+};
 export default level2;

@@ -1,6 +1,8 @@
-const level1 = [
-	"Dungeon - 0",
-	[
+import { interact } from "../../objects";
+
+const level1 = {
+	title:"Dungeon - 0",
+	floor:[
 		"XXXXXX XXXXXX",
 		"X           X",
 		"X           X",
@@ -10,7 +12,7 @@ const level1 = [
 		"XXXXXXXXX   X",
 		"XXXXXXXXX   X",
 	],
-	[
+	dungeon: [
 		"[=======(===]",
 		"[l         l]",
 		"[       $   ]",
@@ -22,7 +24,7 @@ const level1 = [
 		"        ,___."
 	],
 	//ornaments
-	[
+	ornaments: [
 		"    b",
 		"            ",
 		"   @        ",
@@ -32,32 +34,33 @@ const level1 = [
 		"          W ",
 		"           X",
 	],
-	async () => {
-		const door = DM.dungeon.get('door')[0];
-		door.interact = (player) => player.dialog("The door\nis stuck")
-		for(const torch of DM.dungeon.get('torch')){
-			console.log("Setting torch interaction");
-			torch.interact = (player) => {
-				player.dialog("This hasn't been\nlit in years");
-			}
-		}
-		const banner = DM.ornaments.get('banner')[0];
-		banner.interact = (player) => {
-			player.dialog('Not all is as it seems"\n... ');
-			const web = DM.ornaments.get('web')[0];
-			web.destroy();
-			DM.locals.unlockedLvl1 = true;
-		}
-		const orn = DM.dungeon.get('right-wall-ornament')[0];
-		orn.interact = (player) => {
-			if(DM.locals.unlockedLvl1) go("main", 1);
-			
-		}
-		DM.player?.dialog(`...
+	async setup(){
+		/*DM.player?.dialog(`...
 ...
 ...
 What?... Where am I?
-How did I get here`);
+How did I get here`);*/
+		},
+		tiles: {
+			l:()=>[
+				interact(player=>player.dialog("This hasn't been\nlit in years"))
+			],
+			"(":()=>[
+				interact(player=>player.dialog("The door\nis stuck"))
+			],
+			b:()=>[
+				interact(player=>{
+					player.dialog('Not all is as it seems"\n... ')
+					const web = DM.ornaments.get('web')[0];
+					web.destroy();
+					player.unlockedLvl1 = true;
+				})
+			],
+			X:()=>[
+				interact(player=>{
+					if(player.unlockedLvl1) go("main", 1);
+				})
+			]
 		}
-];
+};
 export default level1;
