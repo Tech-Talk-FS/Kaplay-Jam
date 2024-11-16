@@ -10,3 +10,4 @@ export * from './interact';
 export * from './enemy';
 export * from './petrified';
 export * from './hazard';
+export * from './hazardous';
