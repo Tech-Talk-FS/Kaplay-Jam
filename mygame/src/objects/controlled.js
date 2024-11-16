@@ -20,7 +20,7 @@ export const controlled = () => {
 				if(DM.paused) return;
 				this.attack();
 			});
-			
+			this.onDestroy(()=>go("main", 0));
 		},
 		update(){
 			camPos(this.pos);

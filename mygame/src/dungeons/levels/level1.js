@@ -1,4 +1,5 @@
 import { interact } from "../../objects";
+import { mod } from "../../objects/mod";
 
 const level1 = {
 	title:"Dungeon - 0",
@@ -60,7 +61,7 @@ How did I get here`);*/
 				interact(player=>{
 					if(player.unlockedLvl1) go("main", 1);
 				})
-			]
+			],
 		}
 };
 export default level1;

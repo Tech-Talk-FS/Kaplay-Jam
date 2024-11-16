@@ -7,3 +7,4 @@ export * from './mobile';
 export * from './interacter';
 export * from './knockback';
 export * from './interact';
+export * from './enemy';
