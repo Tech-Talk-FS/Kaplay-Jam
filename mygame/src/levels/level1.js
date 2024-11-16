@@ -14,11 +14,11 @@ const level1 = {
 	],
 	dungeon: [
 		"[=======(===]",
-		"[le        l]",
+		"[l         l]",
 		"[           ]",
-		"[3   E     #]",
+		"[           ]",
 		",_______<   ]",
-		"        [ % ]",
+		"        [   ]",
 		"        [   ]",
 		"        [  V]",
 		"        ,___."
@@ -35,7 +35,11 @@ const level1 = {
 		"           X",
 	],
 	async setup(){
-
+		DM.player.dialog(`What... 
+			Where am I? 
+			How Long have I been here?
+A faint voice can be heard 
+"Only the penatant can rise from the depths"`)
 	},
 	tiles: {
 			l:()=>[

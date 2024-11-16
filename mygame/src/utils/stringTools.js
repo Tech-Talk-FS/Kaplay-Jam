@@ -35,5 +35,6 @@ export const splitByLengthAndNewLine = (str, ln) => {
 			lastSpace = -1;
 		}
 	}
+	if(start < str.length) lines.push(str.slice(start));
 	return lines;
 }
