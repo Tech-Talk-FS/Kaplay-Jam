@@ -30,7 +30,7 @@ export const MAIN_SHEET = {
 			area({shape: new Rect(vec2(0,0), 12, 15)}),
 			directional(),
 			body(),
-			damage(3),
+			damage(2),
 			knockback(10),
 			damagable(),
 			state('idle', ['idle', 'damage', 'death']),
@@ -189,7 +189,7 @@ export const MAIN_SHEET = {
 		"w":()=>[
 			sp(SMALL_HEALTH),
 			...PASSTHROUGH(),
-			'small-healt'
+			'small-health'
 		],
 		"W":()=>[
 			sp(LARGE_HEALTH),

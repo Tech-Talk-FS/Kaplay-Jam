@@ -17,7 +17,6 @@ export const interacter = (reach) => ({
 		for(const c of this.reach.getCollisions()){
 			if('interact' in c.target && typeof c.target.interact === 'function'){
 				await c.target.interact(this);
-				console.log('interacting', c.target);
 			}
 		}
 	}

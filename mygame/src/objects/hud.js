@@ -28,8 +28,9 @@ export const hud = ()=>({
 		this.onKeyPress('enter', ()=>{
 			if(this.messageQueue.length) this.messageQueue.shift();
 			if(!this.messageQueue.length) DM.paused = false;
-		})
+		});
 	},
+
 	drawWeapon(){
 		//if(!this.player.weapon) return;
 		drawSprite({

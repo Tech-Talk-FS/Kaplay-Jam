@@ -21,6 +21,7 @@ export const directional = (initial = "Right") => {
 			const action = animation+this.direction;
 			if(action === cur?.name || !this.hasAnim(action)) return false; //no point in repeating a looping animation
 			this.play(action);
+			return true;
 		},
 	}
 }

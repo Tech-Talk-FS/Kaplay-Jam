@@ -21,6 +21,7 @@ const level1 = [
 		"        [  V]",
 		"        ,___."
 	],
+	//ornaments
 	[
 		"    b",
 		"            ",
@@ -32,8 +33,6 @@ const level1 = [
 		"           X",
 	],
 	async () => {
-		
-		
 		const door = DM.dungeon.get('door')[0];
 		door.interact = (player) => player.dialog("The door\nis stuck")
 		for(const torch of DM.dungeon.get('torch')){
@@ -45,7 +44,7 @@ const level1 = [
 		const banner = DM.ornaments.get('banner')[0];
 		banner.interact = (player) => {
 			player.dialog('Not all is as it seems"\n... ');
-			const web = orns.get('web')[0];
+			const web = DM.ornaments.get('web')[0];
 			DM.ornaments.remove(web);
 			player.unlockedLvl1 = true;
 		}
