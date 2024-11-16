@@ -127,6 +127,23 @@ export const MAIN_SHEET = {
 			petrified(),
 			'goblin-statue',
 		],
+		"%": () => [
+			sprite('slime-ball'),
+			anchor('center'),
+			state('idle', ['idle', 'patrol', 'persue', 'attack', 'damage', 'death']),
+			health(5),
+			body(),
+			enemy({
+				drops: [["w", 0.5],["W", 0.1]]
+			}),
+			area({shape: new Rect(vec2(0,0), 16, 16)}),
+			directional(),
+			damage({damageAmount:1, hitbox:new Rect(vec2(0, 0), 16, 16)}),
+			knockback(10),
+			damagable(),
+			mobile({speed: 25}),
+			'slime-ball'
+		],
 		"=": () => [
 			sp(NORTH_WALL_TILES),
 			...OBSTACLE()
