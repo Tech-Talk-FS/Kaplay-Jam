@@ -38,7 +38,7 @@ export class DungeonMaster {
 			health: 10,
 			damageAmount: 1,
 			attackSpeed: 1,
-			
+			destination: 1
 		};
 		this.loadResources();
 		scene("main",this.loadDungeon.bind(this));
@@ -67,6 +67,11 @@ export class DungeonMaster {
 		this.dungeon = addLevel(dungeon, this.sheet);
 		this.ornaments = addLevel(ornaments, this.sheet);
 		this.player = this.ornaments?.get('player')[0] ?? this.dungeon.get('player')[0];
+		//move the player if necessary.
+		const destination = this.locals.destination === undefined ? undefined:this.dungeon.get('destination')[this.locals.destination];
+		if(destination){
+			this.player.pos = destination.pos
+		}
 		if(setup) setup();
 	}
 
@@ -93,5 +98,15 @@ export class DungeonMaster {
 				});
 			}
 		})
+	}
+
+	/**
+	 * An attempt to simplify moving in and out of rooms with multiple spawn destinations
+	 * @param {number} level 
+	 * @param {number} [destination] - The index of the destination to replace
+	 */
+	go(level, destination){
+		this.locals.destination = destination;
+		go("main", level)
 	}
 }

@@ -21,6 +21,7 @@ export const FLOOR_SHEET = {
 export const MAIN_SHEET = {
 	...TILE_DIM,
 	tiles: {
+		"~": () => ['destination'],
 		"@": () => [
 			sprite('player-0'),
 			anchor('center'),

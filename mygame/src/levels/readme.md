@@ -9,6 +9,8 @@
 	* [Interactions](#interactions)
 	* [Increasing Stats](#increasing-stats)
 	* [Replacing objects](#replacing-items)
+	* [Changing rooms](#changing-rooms)
+	* [Multiple Spawns](#multiple-spawns)
 
 Level creation is an attempt at being declarative but simple. Basically a level is made of up 2-3 layers (the ornaments layer is optional) + an additional fixed layer for the hud. 
 
@@ -169,5 +171,52 @@ for(const item of DM.dungeon.get('item')){
 	
 	const newObj = DM.dungeon.add([...DM.tiles["^"](), pos(p)]);
 	item.destroy();
+}
+```
+### Changing Rooms
+
+Changing rooms just relies upon the *go* global function
+
+```ts
+{
+	"(":()=>[
+		interact(player=>{
+			//... some logic with player maybe?
+			const desiredLevel = 72;
+			DM.go(desiredLevel);
+		});
+	]
+}
+```
+
+### Multiple Spawns
+
+Due to a need for support of multiple spawn locations. I have added convenience method to alter spawn location. 
+
+```ts
+//SourceLevel.js
+export const sourceLevel = {
+	//...some level stuff
+	setup(){
+		//get the object when iteracted with will move you to a different room
+		const door = DM.dungeon.get("door")[0];
+		door.interact = player => {
+			//...some logic with player maybe?
+			DM.go(1); //to spawn at default location.
+			DM.go(1, 0); //to spawn at first alternat
+			DM.go(1, 1); //to spawn at second alteranate
+			DM.go(1,2); //to spawn at third alternate.
+			DM.go(1,3); //to spawn at fourth alternate
+			DM.go(1,4); //because a fifth alternate does not exist this will spawn at default location. 
+		}
+	}
+}
+//destinationLevel.js
+export const destinationLevel = {
+   dungeon: [
+	" ~ ",
+	"~ ~",
+	" ~ "
+   ],
 }
 ```
