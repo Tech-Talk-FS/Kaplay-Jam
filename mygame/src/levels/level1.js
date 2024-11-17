@@ -1,4 +1,4 @@
-import { interact } from "../objects";
+import { hazard, interact } from "../objects";
 
 const level1 = {
 	title:"Dungeon - 0",
@@ -43,6 +43,9 @@ A faint voice can be heard
 	},
 	tiles: {
 			l:()=>[
+				state('idle', ['idle', 'attack']),
+				area(),
+				hazard(1, 10, 2),
 				interact(player=>player.dialog("This hasn't been\nlit in years"))
 			],
 			"(":()=>[

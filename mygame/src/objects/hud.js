@@ -29,6 +29,37 @@ export const hud = ()=>({
 			if(this.messageQueue.length) this.messageQueue.shift();
 			if(!this.messageQueue.length) DM.paused = false;
 		});
+
+		//add interactive buttons to panel on the right side. 
+		this.controlPanel = this.hud.add([
+			sprite('panel', {width: 32, height: 32}),
+			anchor('botright'),
+			pos(width(), height()),
+			fixed()
+		]);
+
+		const infoBtn = this.controlPanel.add([
+			sprite('button', {frame: 0, width: 12, height: 12}),
+			pos(-5, -26),
+			anchor('topright')
+		]);
+
+		infoBtn.add([
+			sprite('info', {frame: 0, width: 8, height: 8}),
+			pos(-6, 5),
+			anchor('center')
+		]);
+
+		const helpBtn = this.controlPanel.add([
+			sprite('button', {frame: 0, width: 12, height: 12}),
+			pos(-15, -26),
+			anchor('topright')
+		]);
+		const soundBtn = this.controlPanel.add([
+			sprite('button', {frame: 0, width: 12, height: 12}),
+			pos(-5, -16),
+			anchor('topright')
+		]);
 	},
 
 	drawDungeonName(){
@@ -48,6 +79,7 @@ export const hud = ()=>({
 			fixed: true
 		})
 	},
+
 	drawWeapon(){
 		
 		if(this.damageAmount-1 < 0) return;
