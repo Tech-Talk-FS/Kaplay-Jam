@@ -1,3 +1,9 @@
+const combinator = (srcFn, tileFn) => ()=>{
+	const src = srcFn();
+	for(const t of tilesFn()){
+
+	}
+}
 /**
  * Combine two complists 
  * currently this is quick and dirty it does not like duplicate keys. 
@@ -5,10 +11,10 @@
  * @param {...import("kaplay").CompList} args
  */
 export const combine = (sheet, tiles) => {
+	
 	for(const k in tiles){
 		if(k in sheet.tiles) {
 			const s = sheet.tiles[k];
-			
 			sheet.tiles[k] = () => {
 				const src = s();
 				

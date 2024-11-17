@@ -1,4 +1,4 @@
-import { interact } from "../objects";
+import { hazard, interact } from "../objects";
 
 const cLevel1 = {
 	title: "Dungeon - C0",
@@ -16,7 +16,7 @@ const cLevel1 = {
 		"[=====(=====]",
 		"[l    ~    l]",
 		"[           ]",
-		"[  z        ]",
+		"[  z  !     ]",
 		"[           ]",
 		"[           ]",
 		"[         z ]",
@@ -49,6 +49,11 @@ How did I get here?`);
 		],
 		"l": ()=>[
 			interact(player => DM.player?.dialog(`Doesn't seem like it's been lit in years.`))
+		],
+		"!": ()=>[
+			state('idle', ['idle', 'attack']),
+			area(),
+			hazard(1,1, 1.5)
 		]
 	}
 }
