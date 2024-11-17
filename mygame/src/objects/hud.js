@@ -29,9 +29,41 @@ export const hud = ()=>({
 			if(this.messageQueue.length) this.messageQueue.shift();
 			if(!this.messageQueue.length) DM.paused = false;
 		});
+
+		//add interactive buttons to panel on the right side. 
+		this.controlPanel = this.hud.add([
+			sprite('panel', {width: 32, height: 32}),
+			anchor('botright'),
+			pos(width(), height()),
+			fixed()
+		]);
+
+		const infoBtn = this.controlPanel.add([
+			sprite('button', {frame: 0, width: 12, height: 12}),
+			pos(-5, -26),
+			anchor('topright')
+		]);
+
+		infoBtn.add([
+			sprite('info', {frame: 0, width: 8, height: 8}),
+			pos(-6, 5),
+			anchor('center')
+		]);
+
+		const helpBtn = this.controlPanel.add([
+			sprite('button', {frame: 0, width: 12, height: 12}),
+			pos(-15, -26),
+			anchor('topright')
+		]);
+		const soundBtn = this.controlPanel.add([
+			sprite('button', {frame: 0, width: 12, height: 12}),
+			pos(-5, -16),
+			anchor('topright')
+		]);
 	},
 
 	drawDungeonName(){
+		if(!DM.dungeonName) return;
 		drawSprite({
 			sprite: 'panel',
 			width: 64,
@@ -48,6 +80,7 @@ export const hud = ()=>({
 			fixed: true
 		})
 	},
+
 	drawWeapon(){
 		
 		if(this.damageAmount-1 < 0) return;
@@ -120,10 +153,11 @@ export const hud = ()=>({
 		});
 	},
 
-	dialog(msg, pause){
+	dialog(msg, pause=true, timeout){
+		if(timeout) return setTimeout(()=>this.dialog(msg, pause), timeout);
 		//split the msg by new lines and by characters
 		const lines = splitByLengthAndNewLine(msg, 32);
-		DM.paused = true;
+		DM.paused = pause
 		this.messageQueue = [];
 		for(let i = 0; i<lines.length; i+=3){
 			this.messageQueue.push(lines.slice(i,i+3).join('\n'))

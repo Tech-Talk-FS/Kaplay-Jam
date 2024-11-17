@@ -7,7 +7,7 @@ const DIRECTIONS = [
 	["Down", 0, 1]
 ]
 export const controlled = () => {
-	debug.inspect = true;
+	// debug.inspect = true;
 	return {
 		id: 'controlled',
 		require: ['mobile', 'damage'],
@@ -23,6 +23,12 @@ export const controlled = () => {
 			this.onDestroy(()=>{
 				if(this.hp() <= 0) go("main", 0)
 			});
+			this.onHurt(()=>{
+				const hp = this.hp();
+				if(hp > 0){
+					DM.locals.health = hp;
+				}
+			})
 		},
 		update(){
 			camPos(this.pos);
@@ -33,13 +39,16 @@ export const controlled = () => {
 				this.do('idle')
 			}
 		},
+
 		increaseHealth(amt){
 			this.heal(amt);
 			DM.locals.health = this.hp();
 		},
 
 		increaseDamage(){
+			console.log(DM.locals);
 			DM.locals.damageAmount++;
+			console.log(DM.locals);
 			this.damageAmount = DM.locals.damageAmount
 		}
 	}

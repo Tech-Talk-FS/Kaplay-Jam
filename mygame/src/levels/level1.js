@@ -1,4 +1,6 @@
-import { interact, hazard } from "../objects";
+
+import { hazard, interact } from "../objects";
+
 const level1 = {
 	title:"Dungeon - 0",
 	floor:[
@@ -33,15 +35,18 @@ const level1 = {
 		"          W ",
 		"           X",
 	],
-	async setup(){
+	setup(){
 		DM.player.dialog(`What... 
 			Where am I? 
 			How Long have I been here?
 A faint voice can be heard 
-"Only the penatant can rise from the depths"`)
+"Only the penatant can rise from the depths"`, true, 1e2);
 	},
 	tiles: {
 			l:()=>[
+				state('idle', ['idle', 'attack']),
+				area(),
+				hazard(1, 10, 2),
 				interact(player=>player.dialog("This hasn't been\nlit in years"))
 			],
 "(": () => [
@@ -58,14 +63,18 @@ A faint voice can be heard
 				interact(player=>{
 					player.dialog('Not all is as it seems"\n... ')
 					const web = DM.ornaments.get('web')[0];
-					web.destroy();
+					if(web)web.destroy();
 					player.unlockedLvl1 = true;
+					player.increaseDamage();
+					player.increaseHealth();
 				})
 			],
 			V:()=>[
 				interact(player=>{
+					const goblins = DM.dungeon.get('goblin-statue')
 					if(player.unlockedLvl1){ 
-						DM.dungeon.get('goblin-statue').forEach(g=>g.enterState('idle'));
+						if(goblins.length) DM.dungeon.get('goblin-statue').forEach(g=>g.enterState('idle'));
+						DM.go(1);
 					}
 				})
 			],
