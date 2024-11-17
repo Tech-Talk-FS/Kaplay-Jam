@@ -7,7 +7,7 @@ const DIRECTIONS = [
 	["Down", 0, 1]
 ]
 export const controlled = () => {
-	debug.inspect = true;
+	// debug.inspect = true;
 	return {
 		id: 'controlled',
 		require: ['mobile', 'damage'],
