@@ -22,6 +22,9 @@ export class DungeonMaster {
 		return this.dungeon.paused;
 	}
 	set paused(v){
+		if(this.currentTrack){
+			this.currentTrack[v ? 'stop': 'play']();
+		}
 		this.dungeon.paused = v;
 		this.ornaments.paused = v;
 	}
@@ -40,6 +43,7 @@ export class DungeonMaster {
 			attackSpeed: 1,
 			destination: 1
 		};
+		this.currentTrack = undefined
 		this.loadResources();
 		scene("main",this.loadDungeon.bind(this));
 		go("main", 0);
@@ -67,6 +71,7 @@ export class DungeonMaster {
 		this.dungeon = addLevel(dungeon, this.sheet);
 		this.ornaments = addLevel(ornaments, this.sheet);
 		this.player = this.ornaments?.get('player')[0] ?? this.dungeon.get('player')[0];
+		this.currentTrack = play('dungeon1', {loop: true});
 		//move the player if necessary.
 		const destination = this.locals.destination === undefined ? undefined:this.dungeon.get('destination')[this.locals.destination];
 		if(destination){

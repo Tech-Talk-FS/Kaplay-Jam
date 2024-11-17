@@ -55,14 +55,18 @@ A faint voice can be heard
 				interact(player=>{
 					player.dialog('Not all is as it seems"\n... ')
 					const web = DM.ornaments.get('web')[0];
-					web.destroy();
+					if(web)web.destroy();
 					player.unlockedLvl1 = true;
+					player.increaseDamage();
+					player.increaseHealth();
 				})
 			],
 			V:()=>[
 				interact(player=>{
+					const goblins = DM.dungeon.get('goblin-statue')
 					if(player.unlockedLvl1){ 
-						DM.dungeon.get('goblin-statue').forEach(g=>g.enterState('idle'));
+						if(goblins.length) DM.dungeon.get('goblin-statue').forEach(g=>g.enterState('idle'));
+						DM.go(1);
 					}
 				})
 			],

@@ -11,3 +11,4 @@ export * from './enemy';
 export * from './petrified';
 export * from './hazard';
 export * from './hazardous';
+export * from './soundfx';

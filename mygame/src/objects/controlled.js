@@ -26,7 +26,7 @@ export const controlled = () => {
 			this.onHurt(()=>{
 				const hp = this.hp();
 				if(hp > 0){
-					this.locals.health = hp;
+					DM.locals.health = hp;
 				}
 			})
 		},
