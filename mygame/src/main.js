@@ -55,7 +55,7 @@ onKeyRelease(Object.keys(isPressed), (key) => {
 
 // Loading a multi-frame sprite
 // Each row is 9 cells wide, count for empty cells
-loadSprite("dino", "/assests/Soldier/Soldier/Soldier.png", {
+loadSprite("dino", "/sprites/Soldier/Soldier/Soldier.png", {
   // The image contains 9 frames layed out horizontally, slice it into individual frames
   sliceX: 9,
   sliceY: 7,
