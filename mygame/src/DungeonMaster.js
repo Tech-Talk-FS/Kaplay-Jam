@@ -18,6 +18,8 @@ export class DungeonMaster {
 	//	this.instance = new DungeonMaster();
 	//}
 
+
+
 	get paused(){
 		return this.dungeon.paused;
 	}
@@ -53,6 +55,8 @@ export class DungeonMaster {
 		for(const k of Object.values(loaders)) k();
 	}
 
+
+
 	loadDungeon(index){
 		this.currentLevel = index;
 		const {title, floor, dungeon, ornaments=[], setup, tiles} = DUNGEONS[index];
@@ -61,6 +65,8 @@ export class DungeonMaster {
 			setup = ornaments;
 			ornaments = [];
 		}
+
+
 		this.addFloor(floor);
 		this.dungeonName = title;
 		this.sheet = tiles ? combine(MAIN_SHEET, tiles):MAIN_SHEET;
@@ -68,6 +74,8 @@ export class DungeonMaster {
 		this.ornaments = addLevel(ornaments, this.sheet);
 		this.player = this.ornaments?.get('player')[0] ?? this.dungeon.get('player')[0];
 		if(setup) setup();
+		// Play dungeon music
+		play("dungeon1", { loop: true, volume: 0.5 });
 	}
 
 	/**

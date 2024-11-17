@@ -6,7 +6,10 @@ export function soundLoader () {
 
    // SOUND EFFECTS BELOW
    loadSound("playerWalking", "assests/Sounds/footstep_carpet_001.ogg") // walking sound
-   loadSound("swordHit", "assests/Sounds/impactPlate_heavy_000.ogg") // sword slashing sound
+   loadSound("swordHit", "assests/Sounds/Woosh_Sound_Effect.mp3") // sword slashing sound
    loadSound("interact", "assests/Sounds/impactBell_heavy_002.ogg") // interacting with object sound
+   loadSound("skeletonDeath", "enter route here") // no sound chosen
+   loadSound("playerDeath", "enter route here") // no sound chosen
+   loadSound("healthIncrease", "enter route here") // no sound chosen
 }
 
