@@ -46,9 +46,7 @@ export const controlled = () => {
 		},
 
 		increaseDamage(){
-			console.log(DM.locals);
 			DM.locals.damageAmount++;
-			console.log(DM.locals);
 			this.damageAmount = DM.locals.damageAmount
 		}
 	}

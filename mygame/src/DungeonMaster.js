@@ -22,7 +22,7 @@ export class DungeonMaster {
 	}
 	set paused(v){
 		if(this.currentTrack){
-			this.currentTrack[v ? 'stop': 'play']();
+			this.currentTrack.paused = v;
 		}
 		this.dungeon.paused = v;
 		this.ornaments.paused = v;
@@ -47,12 +47,13 @@ export class DungeonMaster {
 			attackSpeed: 1,
 			destination: 1
 		};
-		this.currentTrack = undefined;
+		
 		this._muted = false;
 		this.loadResources();
 		scene("main",this.loadDungeon.bind(this));
 		go("main", 0);
 		//DungeonMaster.instance = this; (this does not make instance available in separate files. as such it will just be dungeon masters responsibility to delcare itself on each entity that needs to know of its existance)
+		this.currentTrack = play('dungeon1', {loop: true, paused: true})
 	}
 	
 	/**
@@ -76,15 +77,20 @@ export class DungeonMaster {
 		this.dungeon = addLevel(dungeon, this.sheet);
 		this.ornaments = addLevel(ornaments, this.sheet);
 		this.player = this.ornaments?.get('player')[0] ?? this.dungeon.get('player')[0];
-		this.currentTrack = play('dungeon1', {loop: true});
+		
 		//move the player if necessary.
 		const destination = this.locals.destination === undefined ? undefined:this.dungeon.get('destination')[this.locals.destination];
 		if(destination){
 			this.player.pos = destination.pos
 		}
 		if(setup) setup();
-
-		console.log(DM.locals);
+		
+		onResize(()=>{
+			if(!this.player) return;
+			this.player.hud.height = height();
+			this.player.hud.width = width();
+			this.player.controlPanel.pos = vec2(width(), height());
+		})
 	}
 
 	/**

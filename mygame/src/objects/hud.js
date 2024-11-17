@@ -14,14 +14,11 @@ export const hud = ()=>({
 	isInfoActive: false,
 	//its beginning to look a lot like... a state machine
 	add(){
-		this.hud = addLevel(['#'], {tileWidth: width(), tileHeight: height(), tiles: {
-			"#": ()=>[
-				rect(width(), height(), {fill:false}),
-				anchor('topleft'),
-				//outline(1, Color.fromHex(0xffff00)),
-				fixed()
-			]
-		}});
+		this.hud = add([
+			rect(width(), height(), {fill: false}),
+			outline(1, Color.fromHex(0xffff00)),
+			fixed()
+		]);
 		this.hud.onDraw(()=>{
 			this.drawWeapon();
 			this.drawHealth();
@@ -39,7 +36,7 @@ export const hud = ()=>({
 			sprite('panel', {width: 32, height: 32}),
 			anchor('botright'),
 			pos(width(), height()),
-			fixed()
+			
 		]);
 
 		const infoBtn = this.controlPanel.add([
@@ -93,7 +90,6 @@ export const hud = ()=>({
 			soundIcon.frame = DM.mute ? 5:4;
 			await wait(0.05);
 			const f = Number(soundBtn.isHovering())*2 + Number(DM.mute);
-			console.log(f);
 			soundIcon.frame = f;
 		});
 
@@ -219,13 +215,20 @@ export const hud = ()=>({
 			]);
 			this.modal.add([
 				text(`Meet the creators of ... 
-what our name again?
 
 Brad Beltowski,
 Bradley Matera,
 Carlos Mendez,
 James Irwin,
-Level Lawrence`, {size: 5, align: 'center'}),
+Level Lawrence
+
+Honorable mentions
+
+Gerald Burke - Geralds keys
+MedievalMore - Weapon Icons
+Elv Games - inventory assets
+Kenmi - cute fantasy rpg
+PixelPoem - dungeon asset pack`, {size: 4, align: 'center'}),
 				anchor('center'),
 				pos(0,0)
 			])
