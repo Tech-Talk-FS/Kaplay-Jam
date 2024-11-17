@@ -9,6 +9,10 @@ export const hud = ()=>({
 	id: 'hud',
 	require: ['damage', 'health'],
 	messageQueue: [],
+	shouldUnpause: false,
+	isHelpActive: false,
+	isInfoActive: false,
+	//its beginning to look a lot like... a state machine
 	add(){
 		this.hud = addLevel(['#'], {tileWidth: width(), tileHeight: height(), tiles: {
 			"#": ()=>[
@@ -41,10 +45,11 @@ export const hud = ()=>({
 		const infoBtn = this.controlPanel.add([
 			sprite('button', {frame: 0, width: 12, height: 12}),
 			pos(-5, -26),
-			anchor('topright')
+			anchor('topright'),
+			area()
 		]);
 
-		infoBtn.add([
+		const infoIcon = infoBtn.add([
 			sprite('info', {frame: 0, width: 8, height: 8}),
 			pos(-6, 5),
 			anchor('center')
@@ -53,13 +58,179 @@ export const hud = ()=>({
 		const helpBtn = this.controlPanel.add([
 			sprite('button', {frame: 0, width: 12, height: 12}),
 			pos(-15, -26),
-			anchor('topright')
+			anchor('topright'),
+			area()
 		]);
+
+		const helpIcon = helpBtn.add([
+			sprite('help', {frame: 0, width: 8, height: 8}),
+			pos(-6, 5),
+			anchor('center')
+		]);
+
 		const soundBtn = this.controlPanel.add([
 			sprite('button', {frame: 0, width: 12, height: 12}),
 			pos(-5, -16),
-			anchor('topright')
+			anchor('topright'),
+			area()
 		]);
+
+		const soundIcon = soundBtn.add([
+			sprite('sound', {frame: 0, width: 8, height: 8}),
+			pos(-6, 5),
+			anchor('center')
+		]);
+
+		soundBtn.onHover(()=>{
+			soundIcon.frame = Number(DM.mute)+2
+		});
+		soundBtn.onHoverEnd(()=>{
+			soundIcon.frame = Number(DM.mute)
+		});
+		
+		soundBtn.onClick(async ()=>{
+			DM.mute = !DM.mute;
+			soundIcon.frame = DM.mute ? 5:4;
+			await wait(0.05);
+			const f = Number(soundBtn.isHovering())*2 + Number(DM.mute);
+			console.log(f);
+			soundIcon.frame = f;
+		});
+
+		helpBtn.onClick(async () => {
+			if(this.isHelpActive){
+				this.isHelpActive = false;
+				if(this.shouldUnpause) DM.paused = false;
+				this.modal?.destroy()
+				return;
+			} else {
+				this.isHelpActive = true;
+			}
+			this.shouldUnpause = !DM.paused
+			DM.paused = true;
+			helpIcon.frame = 2;
+			await wait(0.05);
+			helpIcon.frame = Number(soundBtn.isHovering());
+			
+			if(this.modal){
+				this.modal.destroy();
+			}
+			this.modal = this.hud.add([
+				sprite('panel', {width: 128, height: 128}),
+				pos(center()),
+				anchor('center')
+			]);
+			this.hud.paused = false
+			this.modal.add([
+				sprite('spaceBar', {width: 32, height: 16, anim:'move'}),
+				anchor('center'),
+				pos(-28,-32)
+			]);
+			this.modal.add([
+				text("Attack", {size: 8}),
+				anchor('right'),
+				pos(42,-30)
+			]);
+			this.modal.add([
+				sprite('w', {width: 16, height:16, anim:'move'}),
+				anchor('center'),
+				pos(-22, -16)
+			]);
+			this.modal.add([
+				sprite('a', {width: 16, height: 16, anim:'move'}),
+				anchor('center'),
+				pos(-36,-4)
+			]);
+			this.modal.add([
+				sprite('s', {width: 16, height: 16, anim:'move'}),
+				anchor('center'),
+				pos(-22, -4)
+			]);
+			this.modal.add([
+				sprite('d', {width: 16, height: 16, anim:'move'}),
+				anchor('center'),
+				pos(-8, -4)
+			]);
+			this.modal.add([
+				text("Move", {size: 8}),
+				anchor('right'),
+				pos(42, -8)
+			]);
+			this.modal.add([
+				sprite('shift', {width: 24, height: 16, anim:'move'}),
+				anchor('center'),
+				pos(-32, 14)
+			]);
+			this.modal.add([
+				text("Run", {size: 8}),
+				anchor('right'),
+				pos(42, 14)
+			]);
+			this.modal.add([
+				sprite('f', {width: 16, height: 16, anim:'move'}),
+				anchor('center'),
+				pos(-36, 32)
+			]);
+			this.modal.add([
+				text("Interact", {size: 8}),
+				anchor('right'),
+				pos(42, 34)
+			]);
+		});
+
+		helpBtn.onHover(()=>{
+			helpIcon.frame = 1;
+		})
+		
+		helpBtn.onHoverEnd(()=>{
+			helpIcon.frame = 0;
+		});
+
+		infoBtn.onHover(()=>{
+			infoBtn.frame = 1;
+		});
+
+		infoBtn.onHoverEnd(()=>{
+			infoBtn.frame = 0;
+		});
+
+
+		infoBtn.onClick(async ()=>{
+			if(this.isInfoActive){
+				this.isInfoActive = false;
+				if(this.shouldUnpause) DM.paused = false;
+				this.modal?.destroy()
+				return;
+			} else {
+				this.isInfoActive = true;
+			}
+			this.shouldUnpause = !DM.paused
+			DM.paused = true;
+			infoIcon.frame = 2;
+			await wait(0.05);
+			infoIcon.frame = Number(soundBtn.isHovering());
+			if(this.modal){
+				this.modal.destroy();
+			}
+			this.modal = this.hud.add([
+				sprite('panel', {width: 128, height: 128}),
+				pos(center()),
+				anchor('center')
+			]);
+			this.modal.add([
+				text(`Meet the creators of ... 
+what our name again?
+
+Brad Beltowski,
+Bradley Matera,
+Carlos Mendez,
+James Irwin,
+Level Lawrence`, {size: 5, align: 'center'}),
+				anchor('center'),
+				pos(0,0)
+			])
+		})
+		
 	},
 
 	drawDungeonName(){

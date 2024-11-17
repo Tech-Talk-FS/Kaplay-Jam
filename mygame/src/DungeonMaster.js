@@ -17,7 +17,6 @@ export class DungeonMaster {
 	//static {
 	//	this.instance = new DungeonMaster();
 	//}
-
 	get paused(){
 		return this.dungeon.paused;
 	}
@@ -29,6 +28,11 @@ export class DungeonMaster {
 		this.ornaments.paused = v;
 	}
 
+	get mute(){ return this._muted; }
+	set mute(v){
+		volume(v?0:1);
+		this._muted = v;
+	}
 	get tiles(){
 		if(!this.sheet) return {};
 		return this.sheet.tiles;
@@ -43,7 +47,8 @@ export class DungeonMaster {
 			attackSpeed: 1,
 			destination: 1
 		};
-		this.currentTrack = undefined
+		this.currentTrack = undefined;
+		this._muted = false;
 		this.loadResources();
 		scene("main",this.loadDungeon.bind(this));
 		go("main", 0);
@@ -89,20 +94,31 @@ export class DungeonMaster {
 	 */
 	addFloor(lvl){
 		const l = addLevel([], {tileHeight: 16, tileWidth: 16});
+		this.drawLevel(lvl, {
+			' ': {
+				sprite: 'tiles',
+				frame: FLOOR_TILES,	
+			}
+		}, l);
+	}
+
+	drawLevel(lvl, kit, el){
 		const sp = [];
 		for(let y = 0; y<lvl.length; y++){
 			for(let x = 0; x<lvl[y].length; x++){
-				if(lvl[y][x] !== ' ') continue;
-				sp.push([vec2(x*16-8, y*16-8), ~~rand(...FLOOR_TILES)])
+				const char = lvl[y][x];
+				if(!(char in kit)) continue;
+				const {frame, ...ops} = kit[char];
+				ops.pos = vec2(x*16-8, y*16-8)
+				if(Array.isArray(frame)) ops.frame = ~~rand(...frame);
+				else ops.frame = frame;
+				sp.push(ops);
 			}
 		}
-		l.onDraw(()=>{
-			for(const [pos,frame] of sp){
-				drawSprite({
-					sprite: 'tiles',
-					frame,
-					pos  
-				});
+		el.onDraw(()=>{
+			for(const {type="sprite", ...ops} of sp){
+				drawSprite(ops);
+
 			}
 		})
 	}
@@ -116,4 +132,6 @@ export class DungeonMaster {
 		this.locals.destination = destination;
 		go("main", level)
 	}
+
+
 }

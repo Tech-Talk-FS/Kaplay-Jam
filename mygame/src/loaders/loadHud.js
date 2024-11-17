@@ -54,6 +54,109 @@ export const loadHUD = () => loadSpriteAtlas("assests/hud-ui.png", {
 		sliceX: 2,
 		width: 64,
 		height: 32
-	}
+	},
+	spaceBar: {
+		x: 64,
+		y: 224,
+		width: 128,
+		height: 32,
+		sliceX:2,
+		anims: {
+			move: {
+				from: 0,
+				to: 1,
+				loop: true
+			}
+		}
+	},
 
+	f:{
+		x: 0,
+		y: 224,
+		width: 64,
+		height: 32,
+		sliceX: 2,
+		anims: {
+			move: {
+				from: 0,
+				to: 1,
+				loop: true
+			}
+		}
+	},
+
+	w: {
+		x: 0,
+		y: 256,
+		width: 64,
+		height: 32,
+		sliceX: 2,
+		anims: {
+			move: {
+				from: 0,
+				to: 1,
+				loop: true
+			}
+		}
+	},
+
+	a: {
+		x: 64,
+		y: 256,
+		width: 64,
+		height: 32,
+		sliceX: 2,
+		anims: {
+			move: {
+				from: 0,
+				to: 1,
+				loop: true
+			}
+		}
+	},
+
+	s: {
+		x: 128,
+		y: 256,
+		width: 64,
+		height: 32,
+		sliceX: 2,
+		anims: {
+			move: {
+				from: 0,
+				to: 1,
+				loop: true
+			}
+		}
+	},
+
+	d: {
+		x: 0,
+		y: 288,
+		width: 64,
+		height: 32,
+		sliceX: 2,
+		anims: {
+			move: {
+				from: 0,
+				to: 1,
+				loop: true
+			}
+		}
+	},
+
+	shift: {
+		x: 64,
+		y: 288,
+		width: 96,
+		height: 32,
+		sliceX: 2,
+		anims: {
+			move: {
+				from: 0,
+				to: 1,
+				loop: true
+			}
+		}
+	}
 });
