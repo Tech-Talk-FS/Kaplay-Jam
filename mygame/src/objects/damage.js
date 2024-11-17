@@ -35,6 +35,7 @@ export function damage({
 		},
 
 		attack(){
+            console.log(this.damageAmount);
             if(this.state === 'attack' || !this.damageAmount) return;
             this.enterState('attack');
 		},

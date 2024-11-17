@@ -63,6 +63,7 @@ export const hud = ()=>({
 	},
 
 	drawDungeonName(){
+		if(!DM.dungeonName) return;
 		drawSprite({
 			sprite: 'panel',
 			width: 64,

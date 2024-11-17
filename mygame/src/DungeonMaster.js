@@ -39,7 +39,7 @@ export class DungeonMaster {
 		this.currentLevel = 0;
 		this.locals = {
 			health: 10,
-			damageAmount: 1,
+			damageAmount: 0,
 			attackSpeed: 1,
 			destination: 1
 		};
@@ -59,7 +59,7 @@ export class DungeonMaster {
 
 	loadDungeon(index){
 		this.currentLevel = index;
-		const {title, floor, dungeon, ornaments=[], setup, tiles} = DUNGEONS[index];
+		const {title="", floor, dungeon, ornaments=[], setup, tiles} = DUNGEONS[index];
 		if(typeof ornaments === 'function'){
 			sheet = setup;
 			setup = ornaments;
@@ -78,6 +78,8 @@ export class DungeonMaster {
 			this.player.pos = destination.pos
 		}
 		if(setup) setup();
+
+		console.log(DM.locals);
 	}
 
 	/**
