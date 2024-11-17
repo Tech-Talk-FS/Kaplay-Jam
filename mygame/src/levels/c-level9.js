@@ -48,18 +48,21 @@ const cLevel9 = {
 		}
 
 		const [chest] = DM.dungeon.get("large-chest-1");
+		const skeletons = DM.dungeon.get("skeleton");
 
 		if (DM.locals.lvl9ChestCollected) {
 			chest.destroy();
-		} else {
+		}
+		else if(DM.locals.skeletonLvl9Killed?.length !== skeletons.length) {
 			chest.hidden = true;
 			chest.paused = true;
-			chest.interact = (player) => {
-				DM.player?.dialog(`Another sword! Looks sturider.`);
-				DM.locals.lvl9ChestCollected = true;
-				chest.destroy();
-				player.increaseDamage();
-			}
+		}
+
+		chest.interact = (player) => {
+			DM.player?.dialog(`Another sword! Looks sturider.`);
+			DM.locals.lvl9ChestCollected = true;
+			chest.destroy();
+			player.increaseDamage();
 		}
 
 		const [banner] = DM.ornaments.get("banner");
@@ -67,8 +70,6 @@ const cLevel9 = {
 		banner.interact = (player) => {
 			DM.player?.dialog(`"The fearless are rewarded for their efforts."`);
 		}
-
-		const skeletons = DM.dungeon.get("skeleton");
 
 		skeletons.forEach((skeleton, index) => {
 			if (DM.locals.skeletonLvl9Killed?.includes(index)) {
