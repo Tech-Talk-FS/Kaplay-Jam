@@ -1,4 +1,4 @@
-import { interact } from "../objects";
+import { interact, hazard } from "../objects";
 import { MAIN_SHEET } from "../charSheets";
 
 const level2 = {
@@ -24,7 +24,7 @@ const level2 = {
 		"[        ]",
 		"[        ]",
 		"[        ]",
-		",________."
+		",___(____."
 	],
 	ornaments:[
 		"  b    b  "
@@ -38,7 +38,7 @@ const level2 = {
 		}
 	},
 	tiles: {
-		b:()=>[
+		/*b:()=>[
 			interact(player => {
 				if(!player.interacts) player.interacts = 1;
 				else player.interacts++;
@@ -57,7 +57,19 @@ const level2 = {
 					}, true)
 				])
 			})
-		]
+		],
+*/
+"(": () => [
+    interact(player => {
+
+            DM.player?.dialog("The door smells of death and decay");
+            const desiredLevel = 2;  // Ensure that the desired level index exists
+            DM.go(desiredLevel);  // Move to the next level (ensure DM.go is properly implemented)
+        }
+    )
+]
+
+
 	}
 
 };
