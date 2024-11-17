@@ -25,7 +25,6 @@ export const combine = (sheet, tiles) => {
 							if(k === "health" && sr.id === "health"){
 								sr.setHP(t[k]);
 								found = true;
-								console.log(sr.hp());
 								break;
 							} if (k in sr) {
 								
@@ -34,7 +33,6 @@ export const combine = (sheet, tiles) => {
 								break;
 							}
 						}
-						if(!found) console.log(src, k);
 					}
 				}
 				return src;
