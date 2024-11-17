@@ -16,6 +16,7 @@ export const hazard = (damageAmount, knockback=0, attackDelay=1) => ({
 	knockback,
 
 	add(){
+		console.log("Adding");
 		this.onStateUpdate('idle', ()=>{
 			for(const c of this.getCollisions()){
 				if(c.target.is('player')) return this.enterState('attack');
@@ -29,5 +30,8 @@ export const hazard = (damageAmount, knockback=0, attackDelay=1) => ({
 			await wait(attackDelay);
 			this.enterState('idle');
 		})
+	},
+	destroy(){
+		
 	}
 })
