@@ -1,4 +1,4 @@
-export const loadDungeonTiles = () => loadSpriteAtlas("/Dungeon_Tileset.png", {
+export const loadDungeonTiles = () => loadSpriteAtlas("./dungeontileset.png", {
 	//treating all the tiles as the same type of entity at this level allows less lookups during render. why use two arrays when I can use one.
 	tiles: {
 		x: 0,

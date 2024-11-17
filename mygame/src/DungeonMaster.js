@@ -76,7 +76,7 @@ export class DungeonMaster {
 		this.dungeon = addLevel(dungeon, this.sheet);
 		this.ornaments = addLevel(ornaments, this.sheet);
 		this.player = this.ornaments?.get('player')[0] ?? this.dungeon.get('player')[0];
-		this.currentTrack = play('dungeon1', {loop: true});
+		
 		//move the player if necessary.
 		const destination = this.locals.destination === undefined ? undefined:this.dungeon.get('destination')[this.locals.destination];
 		if(destination){
@@ -84,7 +84,6 @@ export class DungeonMaster {
 		}
 		if(setup) setup();
 
-		console.log(DM.locals);
 	}
 
 	/**

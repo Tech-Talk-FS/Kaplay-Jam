@@ -2,7 +2,7 @@ import { directionalAnimationGenerator } from "./directionalAnimationGenerator";
 
 export const loadGoblinStatus = () => loadSprite(
 	'goblin-statue', 
-	'/enemies/goblin-statue.png', 
+	'./enemies/goblinstatue.png', 
 	directionalAnimationGenerator(
 		['idlestone', 0, {loop: true}], //not sure why I made this animated
 		['idle', 3, {loop: true}],

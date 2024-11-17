@@ -3,7 +3,7 @@ import "kaplay/global";
 import { DungeonMaster } from "./DungeonMaster";
 
 // Start a kaboom game
-const k = kaplay({
+kaplay({
   // Scale the whole game up
   debug: true,
   scale: 4,
