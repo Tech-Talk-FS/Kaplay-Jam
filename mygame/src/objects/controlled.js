@@ -23,6 +23,12 @@ export const controlled = () => {
 			this.onDestroy(()=>{
 				if(this.hp() <= 0) go("main", 0)
 			});
+			this.onHurt(()=>{
+				const hp = this.hp();
+				if(hp > 0){
+					this.locals.health = hp;
+				}
+			})
 		},
 		update(){
 			camPos(this.pos);
@@ -33,6 +39,7 @@ export const controlled = () => {
 				this.do('idle')
 			}
 		},
+
 		increaseHealth(amt){
 			this.heal(amt);
 			DM.locals.health = this.hp();

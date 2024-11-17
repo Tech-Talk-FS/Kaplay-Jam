@@ -1,4 +1,4 @@
-import { interact } from "../objects";
+import { hazard, interact } from "../objects";
 
 const level1 = {
 	title:"Dungeon - 0",
@@ -34,15 +34,18 @@ const level1 = {
 		"          W ",
 		"           X",
 	],
-	async setup(){
+	setup(){
 		DM.player.dialog(`What... 
 			Where am I? 
 			How Long have I been here?
 A faint voice can be heard 
-"Only the penatant can rise from the depths"`)
+"Only the penatant can rise from the depths"`, true, 1e2);
 	},
 	tiles: {
 			l:()=>[
+				state('idle', ['idle', 'attack']),
+				area(),
+				hazard(1, 10, 2),
 				interact(player=>player.dialog("This hasn't been\nlit in years"))
 			],
 			"(":()=>[
