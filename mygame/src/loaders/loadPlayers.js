@@ -12,6 +12,6 @@ const anims = [
 export const loadPlayers = () =>{
 	const directionalAnimations = directionalAnimationGenerator(...anims); //only need to make this once.
 	for(let i = 0; i<6; i++){
-		loadSprite(`player-${i}`, `public/Player/player-${i}.png`, directionalAnimations);
+		loadSprite(`player-${i}`, `/Player/player-${i}.png`, directionalAnimations);
 	}
 }

@@ -11,7 +11,7 @@ const anims = [
 export const loadSkeletons = () => {
 	loadSprite(
 		"skeleton",
-		"public/enemies/skeleton.png",
+		"/enemies/skeleton.png",
 		directionalAnimationGenerator(...anims)
 	);
 }
