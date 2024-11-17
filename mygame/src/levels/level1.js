@@ -34,12 +34,12 @@ const level1 = {
 		"          W ",
 		"           X",
 	],
-	async setup(){
+	setup(){
 		DM.player.dialog(`What... 
 			Where am I? 
 			How Long have I been here?
 A faint voice can be heard 
-"Only the penatant can rise from the depths"`)
+"Only the penatant can rise from the depths"`, true, 1e2);
 	},
 	tiles: {
 			l:()=>[

@@ -152,10 +152,11 @@ export const hud = ()=>({
 		});
 	},
 
-	dialog(msg, pause){
+	dialog(msg, pause=true, timeout){
+		if(timeout) return setTimeout(()=>this.dialog(msg, pause), timeout);
 		//split the msg by new lines and by characters
 		const lines = splitByLengthAndNewLine(msg, 32);
-		DM.paused = true;
+		DM.paused = pause
 		this.messageQueue = [];
 		for(let i = 0; i<lines.length; i+=3){
 			this.messageQueue.push(lines.slice(i,i+3).join('\n'))
