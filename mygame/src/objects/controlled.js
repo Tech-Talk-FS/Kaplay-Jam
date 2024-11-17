@@ -7,7 +7,7 @@ const DIRECTIONS = [
 	["Down", 0, 1]
 ]
 export const controlled = () => {
-	debug.inspect = true;
+	// debug.inspect = true;
 	return {
 		id: 'controlled',
 		require: ['mobile', 'damage'],
@@ -26,7 +26,7 @@ export const controlled = () => {
 			this.onHurt(()=>{
 				const hp = this.hp();
 				if(hp > 0){
-					this.locals.health = hp;
+					DM.locals.health = hp;
 				}
 			})
 		},
@@ -46,7 +46,9 @@ export const controlled = () => {
 		},
 
 		increaseDamage(){
+			console.log(DM.locals);
 			DM.locals.damageAmount++;
+			console.log(DM.locals);
 			this.damageAmount = DM.locals.damageAmount
 		}
 	}

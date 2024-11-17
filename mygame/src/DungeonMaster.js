@@ -22,6 +22,9 @@ export class DungeonMaster {
 		return this.dungeon.paused;
 	}
 	set paused(v){
+		if(this.currentTrack){
+			this.currentTrack[v ? 'stop': 'play']();
+		}
 		this.dungeon.paused = v;
 		this.ornaments.paused = v;
 	}
@@ -36,10 +39,11 @@ export class DungeonMaster {
 		this.currentLevel = 0;
 		this.locals = {
 			health: 10,
-			damageAmount: 1,
+			damageAmount: 0,
 			attackSpeed: 1,
 			destination: 1
 		};
+		this.currentTrack = undefined
 		this.loadResources();
 		scene("main",this.loadDungeon.bind(this));
 		go("main", 0);
@@ -55,7 +59,7 @@ export class DungeonMaster {
 
 	loadDungeon(index){
 		this.currentLevel = index;
-		const {title, floor, dungeon, ornaments=[], setup, tiles} = DUNGEONS[index];
+		const {title="", floor, dungeon, ornaments=[], setup, tiles} = DUNGEONS[index];
 		if(typeof ornaments === 'function'){
 			sheet = setup;
 			setup = ornaments;
@@ -67,12 +71,15 @@ export class DungeonMaster {
 		this.dungeon = addLevel(dungeon, this.sheet);
 		this.ornaments = addLevel(ornaments, this.sheet);
 		this.player = this.ornaments?.get('player')[0] ?? this.dungeon.get('player')[0];
+		this.currentTrack = play('dungeon1', {loop: true});
 		//move the player if necessary.
 		const destination = this.locals.destination === undefined ? undefined:this.dungeon.get('destination')[this.locals.destination];
 		if(destination){
 			this.player.pos = destination.pos
 		}
 		if(setup) setup();
+
+		console.log(DM.locals);
 	}
 
 	/**
