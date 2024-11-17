@@ -37,7 +37,6 @@ const cLevel9 = {
 		"",
 	],
 	async setup() {
-		DM.player.increaseDamage();
 		const [topDoor, leftDoor] = DM.dungeon.get("door");
 
 		topDoor.interact = (player) => {
