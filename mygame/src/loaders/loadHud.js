@@ -1,4 +1,4 @@
-export const loadHUD = () => loadSpriteAtlas("assests/hud-ui.png", {
+export const loadHUD = () => loadSpriteAtlas("public/hud-ui.png", {
 	heart: {
 		x: 0,
 		y: 0,

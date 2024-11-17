@@ -2,7 +2,7 @@ import { directionalAnimationGenerator } from "./directionalAnimationGenerator";
 
 export const loadSlimeBall = () => loadSprite(
 	'slime-ball', 
-	'assests/enemies/slime.png',
+	'public/enemies/slime.png',
 	directionalAnimationGenerator(
 		['idle', 3, {loop: true}],
 		['walk', 5, {loop: true}],
