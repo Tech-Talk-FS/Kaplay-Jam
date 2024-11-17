@@ -83,7 +83,13 @@ export class DungeonMaster {
 			this.player.pos = destination.pos
 		}
 		if(setup) setup();
-
+		onResize(()=>{
+			if(!this.player) return;
+			this.player.hud.height = height();
+			this.player.hud.width = width();
+			this.player.controlPanel.pos = vec2(width(), height());
+			console.log(this.player.hud);
+		})
 	}
 
 	/**

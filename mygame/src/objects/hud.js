@@ -14,14 +14,11 @@ export const hud = ()=>({
 	isInfoActive: false,
 	//its beginning to look a lot like... a state machine
 	add(){
-		this.hud = addLevel(['#'], {tileWidth: width(), tileHeight: height(), tiles: {
-			"#": ()=>[
-				rect(width(), height(), {fill:false}),
-				anchor('topleft'),
-				//outline(1, Color.fromHex(0xffff00)),
-				fixed()
-			]
-		}});
+		this.hud = add([
+			rect(width(), height(), {fill: false}),
+			outline(1, Color.fromHex(0xffff00)),
+			fixed()
+		]);
 		this.hud.onDraw(()=>{
 			this.drawWeapon();
 			this.drawHealth();
@@ -39,7 +36,7 @@ export const hud = ()=>({
 			sprite('panel', {width: 32, height: 32}),
 			anchor('botright'),
 			pos(width(), height()),
-			fixed()
+			
 		]);
 
 		const infoBtn = this.controlPanel.add([
