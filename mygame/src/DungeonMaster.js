@@ -49,6 +49,7 @@ export class DungeonMaster {
 		};
 		
 		this._muted = false;
+		this.sheets = {};
 		this.loadResources();
 		scene("main",this.loadDungeon.bind(this));
 		go("main", 0);
@@ -73,7 +74,8 @@ export class DungeonMaster {
 		}
 		this.addFloor(floor);
 		this.dungeonName = title;
-		this.sheet = tiles ? combine(MAIN_SHEET, tiles):MAIN_SHEET;
+		if(!this.sheets[index]) this.sheets[index] = tiles ? combine(MAIN_SHEET, tiles):MAIN_SHEET;
+		this.sheet = this.sheets[index];
 		this.dungeon = addLevel(dungeon, this.sheet);
 		this.ornaments = addLevel(ornaments, this.sheet);
 		this.player = this.ornaments?.get('player')[0] ?? this.dungeon.get('player')[0];
