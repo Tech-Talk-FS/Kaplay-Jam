@@ -19,7 +19,7 @@ const cLevel5 = {
 		",_________.",
 	],
 	ornaments: [
-		"",
+		"      !   ",
 		"     $    ",
 		"   @     X",
 		"",
@@ -45,17 +45,38 @@ const cLevel5 = {
 			skeleton.paused = true;
 		}
 
+		const [torch] = DM.ornaments.get("torch");
+
+		if (DM.locals.torchUnlocked) {
+			torch.destroy();
+		}
+
+		torch.interact = (player) => {
+			DM.player?.dialog(`I can use this torch to burn the web.`);
+			DM.locals.torchUnlocked = true;
+			torch.destroy();
+		}
+
+		const [web] = DM.ornaments.get("web");
+
 		const [ironKey] = DM.dungeon.get('iron-key')
+
 		if (DM.locals.ironKey) {
 			ironKey.destroy();
+			web.destroy();
 		} else {
 			ironKey.interact = (player) => {
-				DM.player?.dialog(`An iron key... I can use this for the other door.`);
-				DM.locals.ironKey = true;
-				ironKey.destroy();
-
-				skeleton.hidden = false;
-				skeleton.paused = false;
+				if (!DM.locals.torchUnlocked) {
+					DM.player?.dialog(`There's a key here, but I can't get it out.`);
+				} else {
+					DM.player?.dialog(`An iron key... I can use this for the other door.`);
+					DM.locals.ironKey = true;
+					ironKey.destroy();
+					web.destroy();
+	
+					skeleton.hidden = false;
+					skeleton.paused = false;
+				}
 			}
 		}
 	},
