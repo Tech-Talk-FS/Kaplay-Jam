@@ -1,5 +1,4 @@
-import { interact } from "../objects";
-
+import { interact, hazard } from "../objects";
 const level1 = {
 	title:"Dungeon - 0",
 	floor:[
@@ -45,9 +44,16 @@ A faint voice can be heard
 			l:()=>[
 				interact(player=>player.dialog("This hasn't been\nlit in years"))
 			],
-			"(":()=>[
-				interact(player=>player.dialog("The door\nis stuck"))
-			],
+"(": () => [
+    interact(player => {
+
+            DM.player?.dialog("Door wLevel 0");
+            const desiredLevel = 1;  // Ensure that the desired level index exists
+            DM.go(desiredLevel);  // Move to the next level (ensure DM.go is properly implemented)
+        }
+    )
+],
+
 			b:()=>[
 				interact(player=>{
 					player.dialog('Not all is as it seems"\n... ')
