@@ -44,7 +44,7 @@ const cLevel4 = {
 	async setup() {
 		const [topDoor, leftMiddleDoor, rightMiddleDoor, trapDoor, bottomDoor] = DM.dungeon.get('door');
 		
-		topDoor.interact = (player) => {DM.go(5,0)}
+		topDoor.interact = (player) => {DM.go(5)}
 		
 		rightMiddleDoor.interact = (player) => {
 			if (!DM.locals.ironKey) {
