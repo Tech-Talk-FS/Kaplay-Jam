@@ -90,7 +90,6 @@ export const hud = ()=>({
 			soundIcon.frame = DM.mute ? 5:4;
 			await wait(0.05);
 			const f = Number(soundBtn.isHovering())*2 + Number(DM.mute);
-			console.log(f);
 			soundIcon.frame = f;
 		});
 
@@ -216,13 +215,20 @@ export const hud = ()=>({
 			]);
 			this.modal.add([
 				text(`Meet the creators of ... 
-what our name again?
 
 Brad Beltowski,
 Bradley Matera,
 Carlos Mendez,
 James Irwin,
-Level Lawrence`, {size: 5, align: 'center'}),
+Level Lawrence
+
+Honorable mentions
+
+Gerald Burke - Geralds keys
+MedievalMore - Weapon Icons
+Elv Games - inventory assets
+Kenmi - cute fantasy rpg
+PixelPoem - dungeon asset pack`, {size: 4, align: 'center'}),
 				anchor('center'),
 				pos(0,0)
 			])

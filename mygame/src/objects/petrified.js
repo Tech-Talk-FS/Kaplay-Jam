@@ -5,7 +5,6 @@ export const petrified = () => ({
 	add(){
 		this.onStateEnter('sleep', ()=>{
 			this.collisionIgnore = ['hitbox'];
-			console.log("Im petrified");
 		});
 		
 		this.onStateEnter('idle', ()=>{
