@@ -38,10 +38,12 @@ What items could it mean, I wonder.`)
 
 		leftDoor.interact = (player) => {
 			// TODO: Decide which level to send to
+			DM.go(11);
 		}
 
 		rightDoor.interact = (player) => {
 			// TODO: Decide which level to send to
+			DM.go(10);
 		};
 
 		bottomDoor.interact = (player) => {
