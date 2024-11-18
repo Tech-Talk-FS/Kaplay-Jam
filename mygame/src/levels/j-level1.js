@@ -63,6 +63,7 @@ export const jLevel1 = {
 		],
 		"?":()=>[
 			interact(player=>{
+				if(DM.locals.servantTilePressed) DM.go(15);
 				player.dialog("Not ready yet check back later");
 			})
 		]
