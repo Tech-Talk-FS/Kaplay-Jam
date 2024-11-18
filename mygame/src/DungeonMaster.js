@@ -13,20 +13,19 @@ Ultimately to combine the current behaviors we have into a more maintainable eco
  * Start me up to begin the game
  */
 export class DungeonMaster {
-  justLoaded = true;
-  //this causes resource to be loaded prior to kaplay existing.
-  //static {
-  //	this.instance = new DungeonMaster();
-  //}
-  get paused() {
-    return this.dungeon.paused;
-  }
-  set paused(v) {
-    if (this.currentTrack) this.currentTrack.paused = v;
-    else this.currentTrack = play("dungeon1", { loop: true, paused: true });
-    if (this.dungeon) this.dungeon.paused = v;
-    if (this.ornaments) this.ornaments.paused = v;
-  }
+  justLoaded = true
+	//this causes resource to be loaded prior to kaplay existing. 
+	//static {
+	//	this.instance = new DungeonMaster();
+	//}
+	get paused(){
+		return this.dungeon.paused;
+	}
+	set paused(v){
+		if(this.dungeon) this.dungeon.paused = v;
+		if(this.ornaments) this.ornaments.paused = v;
+	}
+
 
   get mute() {
     return this._muted;
@@ -40,74 +39,62 @@ export class DungeonMaster {
     return this.sheet.tiles;
   }
 
-  constructor() {
-    if ("instance" in DungeonMaster)
-      throw new Error("Game has already been started");
-    this.currentLevel = 0;
-    this.locals = {
-      health: 10,
-      damageAmount: 2,
-      attackSpeed: 1,
-      destination: 1,
-    };
+	constructor(){
+		if('instance' in DungeonMaster) throw new Error("Game has already been started");
+		this.currentLevel = 0;
+		this.locals = {
+			health: 10,
+			damageAmount: 0,
+			attackSpeed: 1,
+			destination: 1
+		};
+		
+		this._muted = false;
+		this.sheets = {};
+		this.loadResources();
+		scene("main",this.loadDungeon.bind(this));
+		this.go(2, 0);
+		//DungeonMaster.instance = this; (this does not make instance available in separate files. as such it will just be dungeon masters responsibility to delcare itself on each entity that needs to know of its existance)
+		
+	}
+	
+	/**
+	 * Load all resources from the loaders module.
+	 */
+	loadResources(){
+		for(const k of Object.values(loaders)) k();
+	}
 
-    this._muted = false;
-    this.sheets = {};
-    this.loadResources();
-    scene("main", this.loadDungeon.bind(this));
-    this.go(0);
-    //DungeonMaster.instance = this; (this does not make instance available in separate files. as such it will just be dungeon masters responsibility to delcare itself on each entity that needs to know of its existance)
-  }
-
-  /**
-   * Load all resources from the loaders module.
-   */
-  loadResources() {
-    for (const k of Object.values(loaders)) k();
-  }
-
-  loadDungeon(index) {
-    this.currentLevel = index;
-    const {
-      title = "",
-      floor,
-      dungeon,
-      ornaments = [],
-      setup,
-      tiles,
-    } = DUNGEONS[index];
-    if (typeof ornaments === "function") {
-      sheet = setup;
-      setup = ornaments;
-      ornaments = [];
-    }
-    this.addFloor(floor);
-    this.dungeonName = title;
-    if (!this.sheets[index])
-      this.sheets[index] = tiles ? combine(MAIN_SHEET, tiles) : MAIN_SHEET;
-    this.sheet = this.sheets[index];
-    this.dungeon = addLevel(dungeon, this.sheet);
-    this.ornaments = addLevel(ornaments, this.sheet);
-    this.player =
-      this.ornaments?.get("player")[0] ?? this.dungeon.get("player")[0];
-
-    //move the player if necessary.
-    const destination =
-      this.locals.destination === undefined
-        ? undefined
-        : this.dungeon.get("destination")[this.locals.destination];
-    if (destination) {
-      this.player.pos = destination.pos;
-    }
-    if (setup) setup();
-
-    onResize(() => {
-      if (!this.player) return;
-      this.player.hud.height = height();
-      this.player.hud.width = width();
-      this.player.controlPanel.pos = vec2(width(), height());
-    });
-  }
+	loadDungeon(index){
+		this.currentLevel = index;
+		const {title="", floor, dungeon, ornaments=[], setup, tiles} = DUNGEONS[index];
+		if(typeof ornaments === 'function'){
+			sheet = setup;
+			setup = ornaments;
+			ornaments = [];
+		}
+		this.addFloor(floor);
+		this.dungeonName = title;
+		if(!this.sheets[index]) this.sheets[index] = tiles ? combine(MAIN_SHEET, tiles):MAIN_SHEET;
+		this.sheet = this.sheets[index];
+		this.dungeon = addLevel(dungeon, this.sheet);
+		this.ornaments = addLevel(ornaments, this.sheet);
+		this.player = this.ornaments?.get('player')[0] ?? this.dungeon.get('player')[0];
+		
+		//move the player if necessary.
+		const destination = this.locals.destination === undefined ? undefined:this.dungeon.get('destination')[this.locals.destination];
+		if(destination){
+			this.player.pos = destination.pos
+		}
+		if(setup) setup();
+		
+		onResize(()=>{
+			if(!this.player) return;
+			this.player.hud.height = height();
+			this.player.hud.width = width();
+			this.player.controlPanel.pos = vec2(width(), height());
+		})
+	}
 
   loadDungeon(index) {
     this.currentLevel = index;
