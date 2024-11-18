@@ -12,7 +12,7 @@ export const damagable = () => {
 		add(){
 			this.onHurt((amt)=>{
 				const hp = this.hp();
-				if(hp < 0) this.destroy();
+				//if(hp < 0) this.destroy();
 				this.enterState(hp > 0 ? "damage":"death");
 			});
 
@@ -21,11 +21,13 @@ export const damagable = () => {
 			});
 
 			this.onStateEnter('damage', ()=>{
-				this.do('damage')
+				this.do('damage')	
 			});
 
-			this.onStateEnter('death', ()=>{
-				this.do('death')
+			this.onStateEnter('death', async ()=>{
+				this.do('death');
+				await wait(0.25);
+				return this.destroy();
 			})
 
 			this.onAnimEnd(anim=>{
