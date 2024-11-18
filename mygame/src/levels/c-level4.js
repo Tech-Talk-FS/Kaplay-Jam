@@ -17,15 +17,15 @@ const cLevel4 = {
 	],
 	dungeon: [
 		"[==(==]",
-		"[  ~  ]",
+		"[J ~ J]",
 		"[     ]",
-		"[     ]",
+		"[   z ]",
 		"[     ]",
 		"[3   #____________]",
-		"[       ]  [      ]",
+		"[J   z J]  [J   zJ]",
 		"[      ~?  /~     ]",
 		"[       ]  [   ~h ]",
-		"[       ]  [      ]",
+		"[Jz$   J]  [J    J]",
 		",_____________(___.",
 	],
 	ornaments: [
@@ -48,7 +48,7 @@ const cLevel4 = {
 		
 		rightMiddleDoor.interact = (player) => {
 			if (!DM.locals.ironKey) {
-				DM.player?.dialog(`"Without the Iron Key, you will not escape."`);
+				DM.player?.dialog(`"Without the kingdom's first key, you will not make it far."`);
 			} else {
 				DM.go(3, 1);
 			}

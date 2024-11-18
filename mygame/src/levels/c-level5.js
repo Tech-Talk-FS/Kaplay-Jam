@@ -52,26 +52,31 @@ const cLevel5 = {
 		}
 
 		torch.interact = (player) => {
-			DM.player?.dialog(`I can use this torch to burn the web.`);
+			DM.player?.dialog(`With this torch, the web should pose no trouble.`);
 			DM.locals.torchUnlocked = true;
 			torch.destroy();
 		}
 
 		const [web] = DM.ornaments.get("web");
 
-		const [ironKey] = DM.dungeon.get('iron-key')
+		const [silverKey] = DM.dungeon.get('iron-key')
 
-		if (DM.locals.ironKey) {
-			ironKey.destroy();
+		if (DM.locals.silverKey) {
+			silverKey.destroy();
 			web.destroy();
 		} else {
-			ironKey.interact = (player) => {
+			silverKey.interact = (player) => {
 				if (!DM.locals.torchUnlocked) {
-					DM.player?.dialog(`There's a key here, but I can't get it out.`);
+					DM.player?.dialog(`There's a key here, but the web's hold is too strong.`);
 				} else {
-					DM.player?.dialog(`An iron key... I can use this for the other door.`);
-					DM.locals.ironKey = true;
-					ironKey.destroy();
+					DM.player?.dialog(`A silver key...
+Within my grasp, I can't help but
+feel something stir.
+Could I have used it before?
+Was it to lock something in
+or keep something out?`);
+					DM.locals.silverKey = true;
+					silverKey.destroy();
 					web.destroy();
 	
 					skeleton.hidden = false;

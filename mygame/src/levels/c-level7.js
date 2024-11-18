@@ -25,7 +25,7 @@ const cLevel7 = {
 	],
 	async setup() {
 		if (!DM.locals.visitLvl7) {
-			DM.player?.dialog(`Torches have been recklessly placed. I better be careful.`);
+			DM.player?.dialog(`Torches are haphazardly left about. I best be careful.`);
 			DM.locals.visitLvl7 = true;
 		}
 

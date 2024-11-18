@@ -46,7 +46,7 @@ const cLevel8 = {
 			if (collidingWith.length) {
 				DM.go(8);
 			} else {
-				DM.player?.dialog(`A strange mechanism is on the door. I can't open it.`);
+				DM.player?.dialog(`A strange mechanism is on the door. I can't open by hand.`);
 			}
 		}
 

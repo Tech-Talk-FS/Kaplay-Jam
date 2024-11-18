@@ -31,7 +31,9 @@ const cLevel10 = {
 
 		topDoor.interact = (player) => {
 			//TODO: Decide which level to send to
-			DM.player?.dialog(`"The kingdom's symbols will lead the path. With all five in tow, you will awaken."`)
+			DM.player?.dialog(`"The kingdom's symbols will lead the path.
+With all five in tow, you will awaken."
+What items could it mean, I wonder.`)
 		}
 
 		leftDoor.interact = (player) => {

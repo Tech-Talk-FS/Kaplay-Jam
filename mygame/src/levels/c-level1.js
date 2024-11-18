@@ -1,59 +1,66 @@
-import { hazard, interact } from "../objects";
+import { interact } from "../objects";
 
 const cLevel1 = {
 	title: "Dungeon - C0",
 	floor: [
-		"             ",
-		"             ",
-		"             ",
-		"             ",
-		"             ",
-		"             ",
-		"             ",
-		"             ",
+		"         ",
+		"         ",
+		"         ",
+		"         ",
+		"         ",
+		"         ",
 	],
 	dungeon: [
-		"[=====(=====]",
-		"[l    ~    l]",
-		"[           ]",
-		"[  z  !     ]",
-		"[           ]",
-		"[           ]",
-		"[         z ]",
-		"[lz        l]",
-		",___________."
+		"[===(===]",
+		"[J  ~  J]",
+		"[  z    ]",
+		"[       ]",
+		"[   m z ]",
+		"[Jzmmm J]",
+		",_______."
 	],
 	ornaments: [
-		"            ",
-		"            ",
-		"            ",
-		"            ",
-		"            ",
-		"            ",
-		"            ",
-		"      @     ",
+		"  b     ",
+		"        ",
+		"        ",
+		"        ",
+		"        ",
+		"    @   ",
 	],
 	async setup() {
-		if (!DM.locals.visitedLvl1) {
+		if (!DM.locals.adventureBegins) {
 			DM.player?.dialog(`...
 ...
 ...
-What?... Where am I?
-How did I get here?`);
-			DM.locals.visitedLvl1 = true;
+Huh..? Where am I?
+How did I get here?
+I must find a way out.
+Hmm... This necklace...
+And its design...
+What does it mean?`);
+			DM.locals.adventureBegins = true;
 		}
+
+		const [door] = DM.dungeon.get("door");
+		door.interact = (player) => {
+			DM.go(1);
+		}
+
+		const banners = DM.ornaments.get("banner");
+		banners.forEach(banner => {
+			banner.interact = (player) => {
+				DM.player?.dialog(`The symbol on this banner
+looks familiar... I feel
+compelled to hold my necklace.`);
+			}
+		});
 	},
 	tiles: {
-		"(": () => [
-			interact(player=>DM.go(1))
-		],
 		"l": ()=>[
 			interact(player => DM.player?.dialog(`Doesn't seem like it's been lit in years.`))
 		],
-		"!": ()=>[
-			state('idle', ['idle', 'attack']),
-			area(),
-			hazard(1,1, 1.5)
+		"J": () =>[
+			interact(player => DM.player?.dialog(`The fires hold strong in spite of its condition.`))
 		]
 	}
 }

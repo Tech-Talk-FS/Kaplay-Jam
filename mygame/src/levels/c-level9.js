@@ -58,7 +58,9 @@ const cLevel9 = {
 		}
 
 		chest.interact = (player) => {
-			DM.player?.dialog(`Another sword! Looks sturider.`);
+			DM.player?.dialog(`The materials laid within allow
+me to repair the sword. It
+slowly returns to its former glory.`);
 			DM.locals.lvl9ChestCollected = true;
 			chest.destroy();
 			player.increaseDamage();

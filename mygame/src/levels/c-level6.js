@@ -7,7 +7,6 @@ const cLevel6 = {
 		"      XXXXXXXXXXX",
 		"      XXXXXXXXXXX",
 		"      XXXXXXXXXXX",
-		"      XXXXXXXXXXX",
 		"                 ",
 		"                 ",
 		"                 ",
@@ -17,20 +16,18 @@ const cLevel6 = {
 	],
 	dungeon: [
 		"[=====]",
-		"[  D  ]",
+		"[J D J]",
+		"[     ]",
 		"[W    ]",
-		"[     ]",
-		"[     ]",
 		"[     __________]",
-		"[          %    ]",
+		"[          %   J]",
 		"[         %     ]",
 		"[        %     ~?",
 		"[         %     ]",
-		"[          %    ]",
+		"[J         %   J]",
 		",__(____________.",
 	],
 	ornaments: [
-		"",
 		"",
 		"",
 		"",
@@ -47,7 +44,11 @@ const cLevel6 = {
 		const [rightDoor, bottomDoor] = DM.dungeon.get('door');
 
 		rightDoor.interact = (player) => {
-			DM.go(6);
+			if (!DM.tutorialSwordChest) {
+				DM.player?.dialog(`I don't want to miss out on the chest in this room.`)
+			} else {
+				DM.go(6);
+			}
 		};
 
 		bottomDoor.interact = (player) => {
@@ -60,7 +61,15 @@ const cLevel6 = {
 			chest.destroy();
 		} else {
 			chest.interact = (player) => {
-				DM.player?.dialog(`A sword! This will be useful.`);
+				DM.player?.dialog(`This rusted sword...
+Its age speaks its value.
+With this in hand...
+It feels as though
+I've reconnected with
+an old friend.
+Alongside it rests a scroll.
+It bears an oath once spoken.
+An oath I swore not to forget.`);
 				DM.locals.tutorialSwordChest = true;
 				chest.destroy();
 				player.increaseDamage();
