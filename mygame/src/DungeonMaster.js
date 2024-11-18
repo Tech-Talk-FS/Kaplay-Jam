@@ -47,7 +47,7 @@ export class DungeonMaster {
 		this.currentLevel = 0;
 		this.locals = {
 			health: 10,
-			damageAmount: 0,
+			damageAmount: 2,
 			attackSpeed: 1,
 			destination: 1
 		};
@@ -56,7 +56,7 @@ export class DungeonMaster {
 		this.sheets = {};
 		this.loadResources();
 		scene("main",this.loadDungeon.bind(this));
-		go("main", 0);
+		go("main", 9);
 		//DungeonMaster.instance = this; (this does not make instance available in separate files. as such it will just be dungeon masters responsibility to delcare itself on each entity that needs to know of its existance)
 		this.currentTrack = play('dungeon1', {loop: true, paused: true})
 	}

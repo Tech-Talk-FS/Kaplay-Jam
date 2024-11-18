@@ -7,70 +7,41 @@ const level2 = {
 		"XXXXXXXXX",
 		"X        ",
 		"X        ",
-		"X        ",
-		"X        ",
-		"X        ",
-		"X        ",
-		"X        ",
-		"X        ",
+		"X        "
+
 	],
 	dungeon:[
-		"[========]",
-		"[   @    ]",
-		"[zZz     ]",
-		"[        ]",
-		"[        ]",
-		"[        ]",
-		"[        ]",
-		"[        ]",
-		"[        ]",
-		",___(____."
+		"[=(======]",
+		"[ ~  Z   ]",
+		"[ Z    ~ ?",
+		"[  Z     ]"
 	],
 	ornaments:[
-		"  b    b  "
+		"",
+		"       @"
 	],
 	setup(){
-		const [b1, b2] = DM.ornaments.get('banner');
-		const [i1, i2] = [b1.interact, b2.interact]
-		b1.interact = player => {
-			player.dialog("You were sealed in this tomb for a reason");
-			i1(player);
-		}
+		DM.locals.jlvl2 = 0;
 	},
 	tiles: {
-		/*b:()=>[
-			interact(player => {
-				if(!player.interacts) player.interacts = 1;
-				else player.interacts++;
-				if(player.interacts === 2) DM.dungeon.add([
-					sprite('sword', {frame: player.damageAmount, width: 16, height: 16}),
-					pos(64, 64),
-					area(),
-					interact(async (player) => {
-						player.increaseDamage();
-						console.log(player.damageAmount);
-						await wait(1);
-						for(const s of DM.dungeon.get('skel')){
-							DM.dungeon.add([...MAIN_SHEET.tiles.$(), pos(s.pos)])
-							s.destroy()
-						}
-					}, true)
-				])
+		"/": ()=>[
+			interact(() => DM.go(9, 1))
+		],
+		"(": ()=>[
+			interact(player=>{
+				if(DM.locals.jlvl2 === 3) return DM.go(12);
+				player.dialog("This door wont budge...\nWhats that!");
+				for(const skel of DM.dungeon.get('skel')){
+					DM.dungeon.add([...DM.tiles.$(), pos(skel.pos)]);
+					skel.destroy();
+				}
 			})
 		],
-*/
-"(": () => [
-    interact(player => {
-
-            DM.player?.dialog("The door smells of death and decay");
-            const desiredLevel = 2;  // Ensure that the desired level index exists
-            DM.go(desiredLevel);  // Move to the next level (ensure DM.go is properly implemented)
-        }
-    )
-]
-
-
+		"$": ()=>[
+			{onDied: ()=>{
+				DM.locals.jlvl2++;	
+			}}
+		]
 	}
-
 };
 export default level2;
