@@ -25,7 +25,6 @@ export const damagable = () => {
       });
 
       this.onStateEnter("death", () => {
-        play("playerDeath");
         this.do("death");
       });
 
