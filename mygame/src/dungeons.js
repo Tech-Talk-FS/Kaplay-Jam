@@ -14,6 +14,7 @@ import Level3 from "./levels/level3";
 import { jLevel1 } from "./levels/j-level1";
 import { jLevel2 } from "./levels/j-level2";
 import { jLevel3 } from "./levels/j-level3";
+import { jLevel4 } from "./levels/j-level4";
 
 export const DUNGEONS = [
 	cLevel1,
@@ -31,5 +32,6 @@ export const DUNGEONS = [
 	Level3,
 	jLevel1,
 	jLevel2,
-	jLevel3
+	jLevel3,
+	jLevel4
 ]

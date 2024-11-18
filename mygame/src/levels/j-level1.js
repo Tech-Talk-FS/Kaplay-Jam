@@ -60,7 +60,12 @@ export const jLevel1 = {
 ...
 The statues mouth slowly opens.
 Revealing an ornate ring.
-`,false);
+...
+"Do you swear to protect the people of these lands"
+...
+"I do!"
+...
+It cant be... am I... a Knight?`,false);
 					obj.destroy();
 					
 				}
