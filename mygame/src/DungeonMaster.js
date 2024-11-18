@@ -44,9 +44,10 @@ export class DungeonMaster {
 		this.currentLevel = 0;
 		this.locals = {
 			health: 10,
-			damageAmount: 0,
+			damageAmount: 1,
 			attackSpeed: 1,
-			destination: 1
+			destination: 1,
+      
 		};
 		
 		this._muted = false;

@@ -1,3 +1,5 @@
+import { interact } from "../objects";
+
 export const jLevel3 = {
 	title: "Guard Tower",
 	floor: [
@@ -16,5 +18,13 @@ export const jLevel3 = {
 	ornaments: [
 		"",
 		" @"
-	]
+	],
+	tiles: {
+		"/":()=>[
+			interact(()=>DM.go(13, 1))
+		],
+		"H":()=>[
+			interact(()=>DM.go(16))
+		]
+	}
 }
