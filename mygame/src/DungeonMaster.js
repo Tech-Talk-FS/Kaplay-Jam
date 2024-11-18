@@ -22,9 +22,6 @@ export class DungeonMaster {
 		return this.dungeon.paused;
 	}
 	set paused(v){
-    
-    if(this.currentTrack) this.currentTrack.paused = v;
-    else this.currentTrack = play('dungeon1', {loop: true, paused: true});
 		if(this.dungeon) this.dungeon.paused = v;
 		if(this.ornaments) this.ornaments.paused = v;
 	}
@@ -47,7 +44,7 @@ export class DungeonMaster {
 		this.currentLevel = 0;
 		this.locals = {
 			health: 10,
-			damageAmount: 2,
+			damageAmount: 0,
 			attackSpeed: 1,
 			destination: 1
 		};
