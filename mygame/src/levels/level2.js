@@ -21,7 +21,7 @@ const level2 = {
 		"       @"
 	],
 	setup(){
-		DM.locals.jlvl2 = 0;
+		DM.locals.jlvl2 = DM.locals.jlvl2 ?? 0;
 	},
 	tiles: {
 		"/": ()=>[
@@ -41,6 +41,9 @@ const level2 = {
 			{onDied: ()=>{
 				DM.locals.jlvl2++;	
 			}}
+		],
+		"M": ()=>[
+			area({collisionIgnore: 'enemy'}),
 		]
 	}
 };

@@ -1,7 +1,12 @@
 import { interact, hazard } from "../objects";
-
+const AMULET_DIALOG = `This amulet
+I know this amulet.
+Flashes of memories of an ancient battle came crashing back as you pick up the amulet. 
+Your sword changes taking on a more lethal form. 
+...
+Who am I?... Do I want to know?`;
 const Level3 = {
-    title: "Dungeon - 2",
+    title: "Scorched Ball Room",
 
     floor: [
         "XXXXXXXXXXXXXXX",
@@ -17,21 +22,21 @@ const Level3 = {
 
     dungeon: [
         "[=====)======]",
-        "[  z         ]",
-        "[ !!     !   ]",
-        "[  !    !!   ]",
+        "[  z  ~      ]",
+        "[ !!     ! $ ]",
+        "[  !  $ !! n ]",
         "[  !!  z  !  ]",
-        "[  !      !  ]",
+        "[  !  $   !  ]",
         "[  !!    Z   ]",
-        "[     zz     ]",
-        "[(,__________."
+        "[     zz   $ ]",
+        "[(___________."
     ],
 
     ornaments: [
-        "             ",
         "              ",
         "              ",
         "              ",
+        "           M  ",
         "              ",
         "              ",
         " @            ",
@@ -39,48 +44,41 @@ const Level3 = {
     ],
 
     async setup() {
-        try {
-            if (DM.player?.dialog) {
-                DM.player.dialog(
-                    `I can smell smoke... 
-                    Where am I? 
-                    What is happening? 
-                    Is this... FIRE!?`
-                );
-            }
-        } catch (error) {
-            console.error("Error during setup of Fire Level 1:", error);
-        }
+        if(DM.locals.destination !== undefined) return;
+        DM.player.dialog(
+`I can smell smoke... 
+Where am I? 
+What is happening? 
+Is this... FIRE!?`, false);
     },
 
     tiles: {
         "!": () => [
             area(),
             state('idle', ['idle', 'attack']),
-    //        hazard(1, 0, 3)
+            hazard(1, 0, 3)
         ],
 
-"(": () => [
-    interact(player => {
-        if (player && player.dialog) {
-            player.dialog("This door leads back the way i came");
-            const desiredLevel = 2;  // Ensure that the desired level index exists
-            DM.go(desiredLevel);  // Move to the next level (ensure DM.go is properly implemented)
-        }
-    })
-],
-//door player spawns away from
-")": () => [
-    interact(player => {
-        if (player && player.dialog) {
-            player.dialog("This door leads down");
-            const desiredLevel = 0;  // Ensure that the desired level index exists
-            DM.go(desiredLevel);  // Move to the next level (ensure DM.go is properly implemented)
-        }
-    })
-]
+        "(": () => [
+            interact(player => {
+                DM.go(11, 0);
+            })
+        ],
+        //door player spawns away from
+        ")": () => [
+            interact(player => {
+                DM.go(13)
+            })
+        ],
+        "n": () => [
+            interact(player => {
+                if(DM.locals.gotScorchedAmulet) return;
+                DM.locals.gotScorchedAmulet = true;
+                player.dialog(AMULET_DIALOG);
+                player.increaseDamage();
 
-
+            }, true)
+        ]
     }
 };
 
