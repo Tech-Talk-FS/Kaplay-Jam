@@ -30,19 +30,20 @@ const cLevel10 = {
 		const [topDoor, leftDoor, rightDoor, bottomDoor] = DM.dungeon.get('door');
 
 		topDoor.interact = (player) => {
-			//TODO: Decide which level to send to
-			DM.player?.dialog(`"The kingdom's symbols will lead the path.
+			//TODO: Provide index
+			//DM.go();
+			DM.player?.dialog(`"The kingdom's symbols
+will reveal
+the path.
 With all five in tow, you will awaken."
-What items could it mean, I wonder.`)
+What items could it mean...`)
 		}
 
 		leftDoor.interact = (player) => {
-			// TODO: Decide which level to send to
 			DM.go(11);
 		}
 
 		rightDoor.interact = (player) => {
-			// TODO: Decide which level to send to
 			DM.go(10);
 		};
 
