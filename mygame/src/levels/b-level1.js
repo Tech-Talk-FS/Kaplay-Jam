@@ -35,12 +35,10 @@ const level17 = {
     const [nDoor, wDoor] = DM.dungeon.get("door");
 
     nDoor.interact = (player) => {
-        console.log("n");
           DM.go(14, 0);
     };
 
     wDoor.interact = (player) => {
-        console.log("w");
        //   DM.go(9, 0);
     };
 
