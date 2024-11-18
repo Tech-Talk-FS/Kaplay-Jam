@@ -11,6 +11,6 @@ export function soundLoader() {
   loadSound("upgrade", "./sounds/swordUpgrade.mp3"); // item upgrade sounds
   loadSound("onHitOnEnemy", "./sounds/onHit.mp3"); // on hit
   //loadSound("enemyAttack", "enter route here") // no sound chosen
-  //loadSound("slimeAttack", "enter route here") // no sound chosen
-  //loadSound("healthIncrease", "enter route here") // no sound chosen
+  loadSound("slimeAttack", "./sounds/slimeAttack.mp3"); // slime sound
+  loadSound("healthIncrease", "./sounds/healthPotion.mp3"); // healing
 }
