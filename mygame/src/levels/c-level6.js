@@ -44,7 +44,7 @@ const cLevel6 = {
 		const [rightDoor, bottomDoor] = DM.dungeon.get('door');
 
 		rightDoor.interact = (player) => {
-			if (!DM.tutorialSwordChest) {
+			if (!DM.locals.tutorialSwordChest) {
 				DM.player?.dialog(`I don't want to miss out on the chest in this room.`)
 			} else {
 				DM.go(6);
