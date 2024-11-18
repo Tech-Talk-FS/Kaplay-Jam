@@ -62,14 +62,15 @@ const cLevel6 = {
 		} else {
 			chest.interact = (player) => {
 				DM.player?.dialog(`This rusted sword...
-Its age speaks its value.
-With this in hand...
-It feels as though
-I've reconnected with
-an old friend.
-Alongside it rests a scroll.
-It bears an oath once spoken.
-An oath I swore not to forget.`);
+Its worn blade tells a story
+of battles long past.
+As I grasp it, a strange
+familiarity washes over me --
+a reunion with an old friend.
+Beside it lies a scroll, its
+parchment fragile with age.
+It carries an oath once spoken.
+An oath I vowed never to forget.`);
 				DM.locals.tutorialSwordChest = true;
 				chest.destroy();
 				player.increaseDamage();

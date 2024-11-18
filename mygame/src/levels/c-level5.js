@@ -70,11 +70,11 @@ const cLevel5 = {
 					DM.player?.dialog(`There's a key here, but the web's hold is too strong.`);
 				} else {
 					DM.player?.dialog(`A silver key...
-Within my grasp, I can't help but
-feel something stir.
+Its cool touch stirs
+something deep within.
 Could I have used it before?
-Was it to lock something in
-or keep something out?`);
+Was it to keep something safe
+or lock something out?`);
 					DM.locals.silverKey = true;
 					silverKey.destroy();
 					web.destroy();
