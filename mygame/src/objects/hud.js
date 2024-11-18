@@ -17,7 +17,7 @@ export const hud = ()=>({
 		if(!DM) return;
 		this.hud = add([
 			rect(width(), height(), {fill: false}),
-			outline(1, Color.fromHex(0xffff00)),
+			//outline(1, Color.fromHex(0xffff00)),
 			fixed()
 		]);
 		this.hud.onDraw(()=>{

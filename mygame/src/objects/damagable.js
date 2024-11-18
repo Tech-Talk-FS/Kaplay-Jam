@@ -3,30 +3,32 @@
  * @returns
  */
 export const damagable = () => {
-  return {
-    id: "damagable",
-    require: ["health", "sprite", "state", "pos"],
-    /**
-     * When the entity is added I will need to watch the on hurt
-     */
-    add() {
-      this.onHurt((amt) => {
-        const hp = this.hp();
-        if (hp < 0) this.destroy();
-        this.enterState(hp > 0 ? "damage" : "death");
-      });
+	return {
+		id: 'damagable',
+		require: ['health', 'sprite', 'state', 'pos'],
+		/**
+		 * When the entity is added I will need to watch the on hurt
+		 */
+		add(){
+			this.onHurt((amt)=>{
+				const hp = this.hp();
+				//if(hp < 0) this.destroy();
+				this.enterState(hp > 0 ? "damage":"death");
+			});
 
       this.onStateEnter("idle", () => {
         this.do("idle");
       });
 
-      this.onStateEnter("damage", () => {
-        this.do("damage");
-      });
+			this.onStateEnter('damage', ()=>{
+				this.do('damage')	
+			});
 
-      this.onStateEnter("death", () => {
-        this.do("death");
-      });
+			this.onStateEnter('death', async ()=>{
+				this.do('death');
+				await wait(0.25);
+				return this.destroy();
+			})
 
       this.onAnimEnd((anim) => {
         if (anim.startsWith("death")) return this.destroy();
