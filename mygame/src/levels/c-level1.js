@@ -60,7 +60,7 @@ compelled to hold my necklace.`);
 			interact(player => DM.player?.dialog(`Doesn't seem like it's been lit in years.`))
 		],
 		"J": () =>[
-			interact(player => DM.player?.dialog(`The fires hold strong in spite of its condition.`))
+			interact(player => DM.player?.dialog(`The fire burns with a steadfast brilliance, as if untouched by the passage of time.`))
 		]
 	}
 }

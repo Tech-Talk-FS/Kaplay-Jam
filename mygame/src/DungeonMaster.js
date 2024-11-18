@@ -54,7 +54,7 @@ export class DungeonMaster {
 		this.sheets = {};
 		this.loadResources();
 		scene("main",this.loadDungeon.bind(this));
-		this.go(11);
+		go("main", 0);
 		//DungeonMaster.instance = this; (this does not make instance available in separate files. as such it will just be dungeon masters responsibility to delcare itself on each entity that needs to know of its existance)
 		
 	}

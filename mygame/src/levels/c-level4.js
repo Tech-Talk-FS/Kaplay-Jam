@@ -47,7 +47,7 @@ const cLevel4 = {
 		topDoor.interact = (player) => {DM.go(5)}
 		
 		rightMiddleDoor.interact = (player) => {
-			if (!DM.locals.ironKey) {
+			if (!DM.locals.silverKey) {
 				DM.player?.dialog(`"Without the kingdom's first key, you will not make it far."`);
 			} else {
 				DM.go(3, 1);

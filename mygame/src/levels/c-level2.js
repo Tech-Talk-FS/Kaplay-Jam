@@ -42,7 +42,7 @@ const cLevel2 = {
 		const torch = DM.dungeon.get('torch')[0];
 		torch.interact = (player) => {
 			if (!DM.locals.unlockedLvl2) {
-				DM.player?.dialog(`Oh? A button at the base. Might as well press it.`)
+				DM.player?.dialog(`Hmm, a button at the base. No harm in pressing it, I suppose.`)
 				DM.locals.unlockedLvl2 = true;
 			}
 			else {
