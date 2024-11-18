@@ -44,6 +44,9 @@ const level2 = {
 		],
 		"M": ()=>[
 			area({collisionIgnore: 'enemy'}),
+		],
+		"?": ()=>[
+			interact(()=>DM.go(9, 1))
 		]
 	}
 };

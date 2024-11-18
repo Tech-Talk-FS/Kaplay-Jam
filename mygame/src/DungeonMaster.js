@@ -46,14 +46,15 @@ export class DungeonMaster {
 			health: 10,
 			damageAmount: 1,
 			attackSpeed: 1,
-			destination: 1
+			destination: 1,
+      
 		};
 		
 		this._muted = false;
 		this.sheets = {};
 		this.loadResources();
 		scene("main",this.loadDungeon.bind(this));
-		this.go(8);
+		this.go(11);
 		//DungeonMaster.instance = this; (this does not make instance available in separate files. as such it will just be dungeon masters responsibility to delcare itself on each entity that needs to know of its existance)
 		
 	}
