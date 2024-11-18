@@ -14,6 +14,7 @@ export const hud = ()=>({
 	isInfoActive: false,
 	//its beginning to look a lot like... a state machine
 	add(){
+		if(!DM) return;
 		this.hud = add([
 			rect(width(), height(), {fill: false}),
 			outline(1, Color.fromHex(0xffff00)),
@@ -31,6 +32,26 @@ export const hud = ()=>({
 			if(!this.messageQueue.length) DM.paused = false;
 		});
 
+		if(DM.justLoaded){
+			DM.paused = true;
+			const startButton = this.hud.add([
+				sprite('button', {width: 48, height: 32}),
+				pos(width()/2, height()/2),
+				anchor('center'),
+				area()
+			]);
+			startButton.add([
+				text("Start!", {size: 6}),
+				anchor('center'),
+			]).color = Color.fromHex(0x0);
+			startButton.onHover(()=>startButton.frame = 1);
+			startButton.onHoverEnd(()=>startButton.frame = 0);
+			startButton.onClick(()=>{
+				DM.justLoaded = false;
+				startButton.destroy();
+				DM.paused = false;
+			})
+		}
 		//add interactive buttons to panel on the right side. 
 		this.controlPanel = this.hud.add([
 			sprite('panel', {width: 32, height: 32}),

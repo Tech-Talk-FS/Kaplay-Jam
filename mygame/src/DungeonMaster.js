@@ -13,7 +13,7 @@ Ultimately to combine the current behaviors we have into a more maintainable eco
  * Start me up to begin the game
  */
 export class DungeonMaster {
-
+  justLoaded = true
 	//this causes resource to be loaded prior to kaplay existing. 
 	//static {
 	//	this.instance = new DungeonMaster();
@@ -22,11 +22,11 @@ export class DungeonMaster {
 		return this.dungeon.paused;
 	}
 	set paused(v){
-		if(this.currentTrack){
-			this.currentTrack.paused = v;
-		}
-		this.dungeon.paused = v;
-		this.ornaments.paused = v;
+    
+    if(this.currentTrack) this.currentTrack.paused = v;
+    else this.currentTrack = play('dungeon1', {loop: true, paused: true});
+		if(this.dungeon) this.dungeon.paused = v;
+		if(this.ornaments) this.ornaments.paused = v;
 	}
 
 
@@ -58,7 +58,7 @@ export class DungeonMaster {
 		scene("main",this.loadDungeon.bind(this));
 		go("main", 0);
 		//DungeonMaster.instance = this; (this does not make instance available in separate files. as such it will just be dungeon masters responsibility to delcare itself on each entity that needs to know of its existance)
-		this.currentTrack = play('dungeon1', {loop: true, paused: true})
+		
 	}
 	
 	/**
