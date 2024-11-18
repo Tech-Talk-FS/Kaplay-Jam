@@ -13,10 +13,10 @@ const cLevel18 = {
 		"                 ",
 	],
 	dungeon: [
-		"[===============]",
+		"[===(===========]",
 		"[ $        ]    ]",
 		"[   $      ]    ]",
-		"/         $     ]",
+		"[         $     ]",
 		"[          D    ]",
 		"[  $  $    ]    ]",
 		"[  $       ]    ]",
@@ -36,12 +36,12 @@ const cLevel18 = {
 		const [wDoor, sDoor] = DM.dungeon.get("door");
 
 		wDoor.interact = (player) => {
-			// DM.go(9);
+			DM.go(15);
             console.log("here");
             
 		}
 		sDoor.interact = (player) => {
-			// DM.go(7, 0);
+			DM.go(13);
             console.log("there");
 		}
 
