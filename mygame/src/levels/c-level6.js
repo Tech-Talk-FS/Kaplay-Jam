@@ -51,11 +51,11 @@ const cLevel6 = {
 			}
 		};
 
-		bottomDoor.interact = (player) => {
-			DM.go(3, 0);
-		};
+    bottomDoor.interact = (player) => {
+		DM.go(3, 0);
+    };
 
-		const [chest] = DM.dungeon.get('large-chest-1');
+    const [chest] = DM.dungeon.get("large-chest-1");
 
 		if (DM.locals.tutorialSwordChest) {
 			chest.destroy();
