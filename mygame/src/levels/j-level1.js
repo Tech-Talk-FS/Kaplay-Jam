@@ -54,10 +54,15 @@ export const jLevel1 = {
 			passedCollision([
 				'goblin-statue', 
 				(_, __, obj) => {
-					
-					DM.locals.servantTilePressed = true;
-					DM.player.dialog(`*KACHUNK*`,false);
+					DM.locals.hasOathRing = true;
+					DM.player.dialog(`*KACHUNK*
+...
+...
+The statues mouth slowly opens.
+Revealing an ornate ring.
+`,false);
 					obj.destroy();
+					
 				}
 			],[
 				'player',
@@ -66,7 +71,7 @@ export const jLevel1 = {
 		],
 		"?":()=>[
 			interact(player=>{
-				if(DM.locals.servantTilePressed) DM.go(15);
+				if(DM.locals.hasOathRing) DM.go(15);
 				player.dialog("This door is stuck");
 			})
 		]
