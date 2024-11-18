@@ -3,21 +3,24 @@ import { interact } from "../objects";
 export const jLevel3 = {
 	title: "Guard Tower",
 	floor: [
-		"XXXX",
-		"X   ",
-		"X   ",
-		"X   ",
+		"XXXXXX",
+		"X     ",
+		"X     ",
+		"X     ",
+		"X     ",
 	],
 	dungeon: [
-		"[===]",
-		"/   ]",
-		"[ H ]",
-		"[   ]",
-		",___."
+		"[=====]",
+		"/     ]",
+		"[     ]",
+		"[  H  ]",
+		"[     ]",
+		",_____."
 	],
 	ornaments: [
 		"",
-		" @"
+		"",
+		"  @"
 	],
 	tiles: {
 		"/":()=>[

@@ -15,8 +15,8 @@ export const jLevel4 = {
 
     dungeon: [
        "[======]",
-	   "[      ]",
-	   "[   h V]",
+	   "/      ]",
+	   "[     V]",
 	   "[      ]",
 	   "[v    V]",
 	   "[      ]",
@@ -26,7 +26,7 @@ export const jLevel4 = {
 
     ornaments: [
 		"",
-       	"    @"
+       	"   @"
     ],
 
     setup(){

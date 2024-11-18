@@ -69,6 +69,7 @@ export class DungeonMaster {
 	loadDungeon(index){
 		this.currentLevel = index;
 		const {title="", floor, dungeon, ornaments=[], setup, tiles} = DUNGEONS[index];
+    console.log("Loading dungeon", index, title);
 		if(typeof ornaments === 'function'){
 			sheet = setup;
 			setup = ornaments;
@@ -97,46 +98,7 @@ export class DungeonMaster {
 		})
 	}
 
-  loadDungeon(index) {
-    this.currentLevel = index;
-    const {
-      title = "",
-      floor,
-      dungeon,
-      ornaments = [],
-      setup,
-      tiles,
-    } = DUNGEONS[index];
-    if (typeof ornaments === "function") {
-      sheet = setup;
-      setup = ornaments;
-      ornaments = [];
-    }
-    this.addFloor(floor);
-    this.dungeonName = title;
-    this.sheet = tiles ? combine(MAIN_SHEET, tiles) : MAIN_SHEET;
-    this.dungeon = addLevel(dungeon, this.sheet);
-    this.ornaments = addLevel(ornaments, this.sheet);
-    this.player =
-      this.ornaments?.get("player")[0] ?? this.dungeon.get("player")[0];
-
-    //move the player if necessary.
-    const destination =
-      this.locals.destination === undefined
-        ? undefined
-        : this.dungeon.get("destination")[this.locals.destination];
-    if (destination) {
-      this.player.pos = destination.pos;
-    }
-    if (setup) setup();
-    onResize(() => {
-      if (!this.player) return;
-      this.player.hud.height = height();
-      this.player.hud.width = width();
-      this.player.controlPanel.pos = vec2(width(), height());
-      console.log(this.player.hud);
-    });
-  }
+  
 
   /**
    * KAPLAY warns that GameObjects can be memory intensive yet addLevel offers no alternative then to create a game object for each item.
@@ -183,6 +145,7 @@ export class DungeonMaster {
    * @param {number} [destination] - The index of the destination to replace
    */
   go(level, destination) {
+    console.log("The requested dungeon is", level, destination);
     this.locals.destination = destination;
     go("main", level);
   }

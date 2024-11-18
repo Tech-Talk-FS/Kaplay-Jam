@@ -37,8 +37,8 @@ export const bLevel3 = {
 	],
 	async setup() {
 		const [topDoor, bottomDoor] = DM.dungeon.get('door');
-		topDoor.interact = (player) => {DM.go(3)}
-		bottomDoor.interact = (player) => {DM.go(1,0)}
+		topDoor.interact = (player) => {DM.go(12)}
+		bottomDoor.interact = (player) => {DM.go(10,0)}
 
 		const smallPotion = DM.dungeon.get("small-health")[0];
 		const largePotion = DM.dungeon.get("large-health")[0];

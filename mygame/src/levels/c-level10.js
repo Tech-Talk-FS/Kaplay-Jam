@@ -33,7 +33,7 @@ const cLevel10 = {
 		topDoor.interact = (player) => {
 			//TODO: Provide index
 			//DM.go();
-			if(DM.locals.silverKey && DM.locals.goldenKey && DM.locals.hasOathRing) return DM.go(22)
+			if(DM.locals.silverKey && DM.locals.goldenKey && DM.locals.hasOathRing) return DM.go(21)
 			DM.player?.dialog(`"The kingdom's symbols
 will reveal
 the path.

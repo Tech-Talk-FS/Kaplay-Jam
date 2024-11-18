@@ -32,16 +32,6 @@ const level11 = {
     "                                ",
   ],
   async setup() {
-    const [rightVDoor, rightRDoor] = DM.dungeon.get("door");
-
-    rightVDoor.interact = (player) => {
-      DM.go(11);
-    };
-
-    rightRDoor.interact = (player) => {
-      DM.go(9, 0);
-    };
-
     const [chest] = DM.dungeon.get("large-chest-1");
 
     if (DM.locals.level11tutorialSwordChest) {
@@ -57,6 +47,16 @@ const level11 = {
       };
     }
   },
-  tiles: {},
+  tiles: {
+    ")": ()=>[
+      interact(()=>{
+        console.log("TIme to go to 11")
+        DM.go(11)
+      })
+    ],
+    "/": ()=>[
+      interact(()=>DM.go(9))
+    ]
+  },
 };
 export default level11;

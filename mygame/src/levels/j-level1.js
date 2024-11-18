@@ -76,7 +76,7 @@ It cant be... am I... a Knight?`,false);
 		],
 		"?":()=>[
 			interact(player=>{
-				if(DM.locals.hasOathRing) DM.go(19);
+				if(DM.locals.hasOathRing) DM.go(20);
 				player.dialog("This door is stuck");
 			})
 		]
