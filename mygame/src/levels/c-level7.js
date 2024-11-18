@@ -1,62 +1,50 @@
-import { damage, interact } from "../objects";
+import { hazard, interact } from "../objects";
 
 const cLevel7 = {
-  title: "Dungeon - C7",
-  floor: [
-    "XXXXXXXXXXXXXXXXXXXXXXXXX               ",
-    "XXXXXXXXXXXXXXXXXXXXXXXXX               ",
-    "                                        ",
-    "                                        ",
-    "                                        ",
-    "XXXXXXXXXXXXXXXXXXXXXXXXX               ",
-    "XXXXXXXXXXXXXXXXXXXXXXXXX               ",
-  ],
-  dungeon: [
-    "                         [=======)=====]",
-    "                         [        %    ]",
-    "[========================,          $$$]",
-    "/@            %        $              S]",
-    "[    %    %        $                $$$]",
-    ",________________________<   M         ]",
-    "                         [ M         % ]",
-    "                         ,_____________.",
-  ],
-  ornaments: [
-    "                            b   b b  b  ",
-    "                                        ",
-    "      lbl lbl lbl lbl                   ",
-    "                                        ",
-    "                                        ",
-    "                                        ",
-    "                                        ",
-    "                                        ",
-  ],
-  async setup() {
-    const [rightVDoor, rightRDoor] = DM.dungeon.get("door");
+	title: "Dungeon - C6",
+	floor: [
+		"           ",
+		"           ",
+		"           ",
+		"           ",
+		"           ",
+	],
+	dungeon: [
+		"[_________]",
+		"[  !      ]",
+		"/        ~?",
+		"[       ! ]",
+		",_________.",
+	],
+	ornaments: [
+		"",
+		"",
+		" @",
+		"",
+		"",
+	],
+	async setup() {
+		if (!DM.locals.visitLvl7) {
+			DM.player?.dialog(`Torches have been recklessly placed. I better be careful.`);
+			DM.locals.visitLvl7 = true;
+		}
 
-    rightVDoor.interact = (player) => {
-      DM.go(1, 0);
-    };
+		const [leftDoor, rightDoor] = DM.dungeon.get('door');
 
-    rightRDoor.interact = (player) => {
-      DM.go(5, 0);
-    };
+		leftDoor.interact = (player) => {
+			DM.go(5, 0);
+		};
 
-    const [chest] = DM.dungeon.get("large-chest-1");
-
-    if (DM.locals.tutorialSwordChest) {
-      chest.destroy();
-    } else {
-      chest.interact = (player) => {
-        DM.player?.dialog(`Just what i needed! \n 
-			
-			Player gained new sword.`);
-        DM.locals.tutorialSwordChest = true;
-        chest.destroy();
-        player.increaseDamage();
-      };
-    }
-  },
-  tiles: {},
+		rightDoor.interact = (player) => {
+			DM.go(7);
+		};
+	},
+	tiles: {
+        "!": () => [
+            area(),
+            state('idle', ['idle', 'attack']),
+			hazard(1, 10, 1.5)
+        ],
+	}
 };
 export default cLevel7;

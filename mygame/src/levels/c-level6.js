@@ -1,4 +1,4 @@
-import { damage, interact } from "../objects";
+import { interact } from "../objects";
 
 const cLevel6 = {
   title: "Dungeon - C5",
