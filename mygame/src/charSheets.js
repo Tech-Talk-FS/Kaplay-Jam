@@ -7,6 +7,7 @@ const OBSTACLE = () => [...STATIC(), area()]
 const PASSTHROUGH = () => [...STATIC(), area({collisionIgnore: ['player']})]
 const rnd = (range)=>({frame: ~~rand(...range)});
 const sp = (tile) => sprite('tiles', Array.isArray(tile) ? rnd(tile):{frame: tile});
+const DROP = [["w", 0.25],["W", 0.05]];
 export const FLOOR_SHEET = {
 	...TILE_DIM,
 	tiles: {
@@ -49,7 +50,7 @@ export const MAIN_SHEET = {
 			health(5),
 			body(),
 			enemy({
-				drops: [["w", 0.5],["W", 0.1]]
+				drops: DROP
 			}),
 			area({shape: new Rect(vec2(0,0), 12, 15)}),
 			directional(),
@@ -66,7 +67,7 @@ export const MAIN_SHEET = {
 			health(5),
 			body(),
 			enemy({
-				drops: [["w", 0.5],["W", 0.1]]
+				drops: DROP
 			}),
 			area({shape: new Rect(vec2(0,0), 12, 15)}),
 			directional(),
@@ -84,7 +85,7 @@ export const MAIN_SHEET = {
 			health(5),
 			body(),
 			enemy({
-				drops: [["w", 0.5],["W", 0.1]]
+				drops: DROP
 			}),
 			area({shape: new Rect(vec2(0,0), 12, 15)}),
 			directional(),
@@ -102,7 +103,7 @@ export const MAIN_SHEET = {
 			health(5),
 			body(),
 			enemy({
-				drops: [["w", 0.5],["W", 0.1]]
+				drops: DROP
 			}),
 			area({shape: new Rect(vec2(0,0), 12, 15)}),
 			directional(),
@@ -120,7 +121,7 @@ export const MAIN_SHEET = {
 			health(5),
 			body(),
 			enemy({
-				drops: [["w", 0.5],["W", 0.1]]
+				drops: DROP
 			}),
 			area({shape: new Rect(vec2(0,0), 12, 15)}),
 			directional(),
@@ -138,7 +139,7 @@ export const MAIN_SHEET = {
 			health(5),
 			body(),
 			enemy({
-				drops: [["w", 0.5],["W", 0.1]]
+				drops: DROP
 			}),
 			area({shape: new Rect(vec2(0,0), 16, 16)}),
 			directional(),
@@ -283,7 +284,7 @@ export const MAIN_SHEET = {
 			sp(SMALL_HEALTH),
 			...PASSTHROUGH(),
 			interact(player=>{
-				player.increaseHealth(1);
+				player.increaseHealth(2);
 			}, true),
 			'small-health'
 		],
@@ -291,7 +292,7 @@ export const MAIN_SHEET = {
 			sp(LARGE_HEALTH),
 			...PASSTHROUGH(),
 			interact(player=>{
-				player.increaseHealth(10)
+				player.increaseHealth(8);
 			}, true),
 			'large-health'
 		],

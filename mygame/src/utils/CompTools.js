@@ -10,8 +10,8 @@ const combinator = (srcFn, tileFn) => ()=>{
  * @param {import('kaplay').LevelOpt} sheet - The tiles object will combine any duplicates
  * @param {...import("kaplay").CompList} args
  */
-export const combine = (oldSheet, tiles) => {
-	const sheet = {...oldSheet};
+export const combine = ({tiles: tils, ...addt}, tiles) => {
+	const sheet = {...addt, tiles:{...tils}};
 	for(const k in tiles){
 		if(k in sheet.tiles) {
 			const s = sheet.tiles[k];

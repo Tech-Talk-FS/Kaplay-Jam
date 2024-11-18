@@ -12,10 +12,10 @@ const cLevel3 = {
 	],
 	dungeon: [
 		"[==(==]",
-		"[  ~  ]",
+		"[J ~ J]",
 		"[w   W]",
-		"[     ]",
-		"[l   l]",
+		"[ z   ]",
+		"[J   J]",
 		",__(__."
 	],
 	ornaments: [
@@ -37,8 +37,8 @@ const cLevel3 = {
 			smallPotion.destroy();
 		} else {
 			smallPotion.interact = (player) => {
-				DM.player?.dialog(`A small potion. Tastes good.`);
-				player.increaseHealth(1);
+				DM.player?.dialog(`This scent... This taste... I feel refreshed.`);
+				player.increaseHealth(2);
 				DM.locals.tutorialSmallPotion = true;
 				smallPotion.destroy();
 			}
@@ -48,8 +48,8 @@ const cLevel3 = {
 			largePotion.destroy();
 		} else {
 			largePotion.interact = (player) => {
-				DM.player?.dialog(`A larger potion. I feel so much better now.`);
-				player.increaseHealth(10);
+				DM.player?.dialog(`Such a potent mixture. I feel incredible!`);
+				player.increaseHealth(8);
 				DM.locals.tutorialLargePotion = true;
 				largePotion.destroy();
 			}
