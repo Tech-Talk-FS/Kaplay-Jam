@@ -39,19 +39,19 @@ const level11 = {
     };
 
     rightRDoor.interact = (player) => {
-      DM.go(5, 0);
+      DM.go(9, 0);
     };
 
     const [chest] = DM.dungeon.get("large-chest-1");
 
-    if (DM.locals.tutorialSwordChest) {
+    if (DM.locals.level11tutorialSwordChest) {
       chest.destroy();
     } else {
       chest.interact = (player) => {
         DM.player?.dialog(`Just what i needed! \n 
 			
 			Player gained new sword.`);
-        DM.locals.tutorialSwordChest = true;
+        DM.locals.level11tutorialSwordChest = true;
         chest.destroy();
         player.increaseDamage();
       };

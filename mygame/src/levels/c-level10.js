@@ -40,6 +40,7 @@ const cLevel10 = {
 
 		rightDoor.interact = (player) => {
 			// TODO: Decide which level to send to
+			DM.go(10);
 		};
 
 		bottomDoor.interact = (player) => {
