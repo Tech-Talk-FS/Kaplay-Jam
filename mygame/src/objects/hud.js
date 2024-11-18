@@ -50,6 +50,7 @@ export const hud = ()=>({
 				DM.justLoaded = false;
 				startButton.destroy();
 				DM.paused = false;
+				DM.currentTrack = play('dungeon1', {loop: true});
 			})
 		}
 		//add interactive buttons to panel on the right side. 

@@ -47,6 +47,9 @@ export const jLevel1 = {
 		"(":()=>[
 			interact(()=>DM.go(12, 0))
 		],
+		"9":()=>[
+			interact(()=>DM.go(14,0))
+		],
 		"M":()=>[
 			passedCollision([
 				'goblin-statue', 
@@ -64,7 +67,7 @@ export const jLevel1 = {
 		"?":()=>[
 			interact(player=>{
 				if(DM.locals.servantTilePressed) DM.go(15);
-				player.dialog("Not ready yet check back later");
+				player.dialog("This door is stuck");
 			})
 		]
 	}
