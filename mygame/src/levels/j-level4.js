@@ -38,7 +38,14 @@ export const jLevel4 = {
 			interact(player=>{
 				DM.locals.guardTowerSwitches++
 				if(DM.locals.guardTowerSwitches < 3) return player.dialog("So much dust... I'd hate to have to clean this place");
-				DM.go(11);
+				DM.go(15);
+			})
+		],
+		v: ()=>[
+			interact(player=>{
+				DM.locals.guardTowerSwitches++
+				if(DM.locals.guardTowerSwitches < 3) return player.dialog("So much dust... I'd hate to have to clean this place");
+				DM.go(15);
 			})
 		]
 	}

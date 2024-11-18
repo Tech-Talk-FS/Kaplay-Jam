@@ -1,6 +1,6 @@
 import { interact } from "../objects";
 
-const cLevel18 = {
+export const bLevel2 = {
 	title: "Dungeon - C18",
 	floor: [
 		"                 ",
@@ -13,14 +13,14 @@ const cLevel18 = {
 		"                 ",
 	],
 	dungeon: [
-		"[===(===========]",
-		"[ $        ]    ]",
+		"[===============]",
+		"/ $        ]    ]",
 		"[   $      ]    ]",
 		"[         $     ]",
 		"[          D    ]",
 		"[  $  $    ]    ]",
-		"[  $       ]    ]",
-		"[____________)__]",
+		"[  $       ]    ?",
+		"[_______________]",
 	],
 	ornaments: [
 		" b",
@@ -34,24 +34,21 @@ const cLevel18 = {
 	],
 	async setup() {
 		const [wDoor, sDoor] = DM.dungeon.get("door");
-
+		DM.locals.lvl14Skels = 0;
 		wDoor.interact = (player) => {
-			DM.go(15);
-            console.log("here");
-            
+			DM.go(9, 3);
 		}
 		sDoor.interact = (player) => {
 			DM.go(13);
-            console.log("there");
 		}
 
 		const [chest] = DM.dungeon.get("large-chest-1");
 		const skeletons = DM.dungeon.get("skeleton");
 
-		if (DM.locals.lvl9ChestCollected) {
+		if (DM.locals.lvl14ChestCollected) {
 			chest.destroy();
 		}
-		else if(DM.locals.skeletonLvl9Killed?.length !== skeletons.length) {
+		else if(DM.locals.lvl14Skels !== skeletons.length) {
 			chest.hidden = true;
 			chest.paused = true;
 		}
@@ -60,7 +57,7 @@ const cLevel18 = {
 			DM.player?.dialog(`The materials laid within allow
 me to repair the sword. It
 slowly returns to its former glory.`);
-			DM.locals.lvl9ChestCollected = true;
+			DM.locals.lvl14ChestCollected = true;
 			chest.destroy();
 			player.increaseDamage();
 		}
@@ -72,16 +69,12 @@ slowly returns to its former glory.`);
 		}
 
 		skeletons.forEach((skeleton, index) => {
-			if (DM.locals.skeletonLvl9Killed?.includes(index)) {
+			if (DM.locals.lvl14Skels>index) {
 				skeleton.destroy();
 			}
 			skeleton.onDeath(action => {
-				if (!DM.locals.skeletonLvl9Killed) {
-					DM.locals.skeletonLvl9Killed = [];
-				}
-				DM.locals.skeletonLvl9Killed.push(index);
-
-				if (DM.locals.skeletonLvl9Killed.length === skeletons.length) {
+				DM.locals.lvl14Skels++;
+				if (DM.locals.lvl14Skels === skeletons.length) {
 					chest.hidden = false;
 					chest.paused = false;
 				}
@@ -91,4 +84,3 @@ slowly returns to its former glory.`);
 	tiles: {
 	}
 };
-export default cLevel18;

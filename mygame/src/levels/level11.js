@@ -3,39 +3,39 @@ import { damage, interact } from "../objects";
 const level11 = {
   title: "Dungeon - C7",
   floor: [
-    "XXXXXXXXXXXXXXXXXXXXXXXXX               ",
-    "XXXXXXXXXXXXXXXXXXXXXXXXX               ",
-    "                                        ",
-    "                                        ",
-    "                                        ",
-    "XXXXXXXXXXXXXXXXXXXXXXXXX               ",
-    "XXXXXXXXXXXXXXXXXXXXXXXXX               ",
+    "XXXXXXXXXXXXXXXXX               ",
+    "XXXXXXXXXXXXXXXXX               ",
+    "                                ",
+    "                                ",
+    "                                ",
+    "XXXXXXXXXXXXXXXXX               ",
+    "XXXXXXXXXXXXXXXXX               ",
   ],
   dungeon: [
-    "                         [=======)=====]",
-    "                         [        %    ]",
-    "[========================,          $$$]",
-    "/@            %        $              S]",
-    "[    %    %        $                $$$]",
-    ",________________________<   M         ]",
-    "                         [ M         % ]",
-    "                         ,_____________.",
+    "                 [=======)=====]",
+    "                 [        %    ]",
+    "[================,            $]",
+    "/@        %    $              S]",
+    "[    % %   $                  $]",
+    ",________________<   M         ]",
+    "                 [ M         % ]",
+    "                 ,_____________.",
   ],
   ornaments: [
-    "                            b   b b  b  ",
-    "                                        ",
-    "      lbl lbl lbl lbl                   ",
-    "                                        ",
-    "                                        ",
-    "                                        ",
-    "                                        ",
-    "                                        ",
+    "                    b   b b  b  ",
+    "                                ",
+    "      lbl lbl lbl               ",
+    "                                ",
+    "                                ",
+    "                                ",
+    "                                ",
+    "                                ",
   ],
   async setup() {
     const [rightVDoor, rightRDoor] = DM.dungeon.get("door");
 
     rightVDoor.interact = (player) => {
-      DM.go(1, 0);
+      DM.go(11);
     };
 
     rightRDoor.interact = (player) => {

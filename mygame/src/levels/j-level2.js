@@ -46,10 +46,10 @@ export const jLevel2 = {
 			hazard(1, 10, 1.5)
 		],
 		"(": ()=>[
-			interact(()=>DM.go(13, 1))
+			interact(()=>DM.go(17, 1))
 		],
 		")": ()=>[
-			interact(()=>{DM.go(13, 0)})
+			interact(()=>{DM.go(17, 0)})
 		]
 	},
 	setup(){

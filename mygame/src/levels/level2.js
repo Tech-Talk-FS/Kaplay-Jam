@@ -14,7 +14,8 @@ const level2 = {
 		"[=(======]",
 		"[ ~  Z   ]",
 		"[ Z    ~ ?",
-		"[  Z     ]"
+		"[  Z     ]",
+		",________."
 	],
 	ornaments:[
 		"",
@@ -29,7 +30,7 @@ const level2 = {
 		],
 		"(": ()=>[
 			interact(player=>{
-				if(DM.locals.jlvl2 === 3) return DM.go(12);
+				if(DM.locals.jlvl2 === 3) return DM.go(16);
 				player.dialog("This door wont budge...\nWhats that!");
 				for(const skel of DM.dungeon.get('skel')){
 					DM.dungeon.add([...DM.tiles.$(), pos(skel.pos)]);

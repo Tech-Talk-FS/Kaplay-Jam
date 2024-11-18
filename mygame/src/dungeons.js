@@ -16,24 +16,32 @@ import { jLevel1 } from "./levels/j-level1";
 import { jLevel2 } from "./levels/j-level2";
 import { jLevel3 } from "./levels/j-level3";
 import { jLevel4 } from "./levels/j-level4";
+import { bLevel3 } from "./levels/b-level3";
+import { blevel1 } from "./levels/b-level1";
+import { bLevel4 } from "./levels/b-level4";
+import { bLevel2 } from "./levels/b-level2";
 
 export const DUNGEONS = [
-	cLevel1,
-	cLevel2,
-	cLevel3,
-	cLevel4,
-	cLevel5,
-	cLevel6,
-	cLevel7,
-	cLevel8,
-	cLevel9,
-	cLevel10,
-	level11,
-	level2,
-	Level3,
-	jLevel1,
-	jLevel2,
-	jLevel3,
-  jLevel4,
-	cFinalLevel,
+	cLevel1, //0
+	cLevel2, //1
+	cLevel3, //2
+	cLevel4, //3
+	cLevel5, //4
+	cLevel6, //5
+	cLevel7, //6
+	cLevel8, //7
+	cLevel9, //8
+	cLevel10,//9
+	level11, //10
+	bLevel3, //11
+	blevel1, //12
+	bLevel4, //13
+	bLevel2, //14
+	level2,  //15
+	Level3,  //16
+	jLevel1, //17
+	jLevel2, //18
+	jLevel3, //19
+  	jLevel4, //20
+	cFinalLevel, //21
 ]

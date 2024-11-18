@@ -42,13 +42,13 @@ export const jLevel1 = {
 	],
 	tiles: {
 		")": ()=>[
-			interact(()=>DM.go(14, 1))
+			interact(()=>DM.go(18, 1))
 		],
 		"(":()=>[
-			interact(()=>DM.go(12, 0))
+			interact(()=>DM.go(16, 0))
 		],
 		"9":()=>[
-			interact(()=>DM.go(14,0))
+			interact(()=>DM.go(18,0))
 		],
 		"M":()=>[
 			passedCollision([
@@ -76,7 +76,7 @@ It cant be... am I... a Knight?`,false);
 		],
 		"?":()=>[
 			interact(player=>{
-				if(DM.locals.hasOathRing) DM.go(15);
+				if(DM.locals.hasOathRing) DM.go(19);
 				player.dialog("This door is stuck");
 			})
 		]

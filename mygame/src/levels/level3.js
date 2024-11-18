@@ -61,13 +61,13 @@ Is this... FIRE!?`, false);
 
         "(": () => [
             interact(player => {
-                DM.go(11, 0);
+                DM.go(15, 0);
             })
         ],
         //door player spawns away from
         ")": () => [
             interact(player => {
-                DM.go(13)
+                DM.go(17)
             })
         ],
         "n": () => [

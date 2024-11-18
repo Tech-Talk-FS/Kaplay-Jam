@@ -1,6 +1,6 @@
 import { damage, interact } from "../objects";
 
-const level17 = {
+export const blevel1 = {
   title: "Dungeon - C7",
   floor: [
     "               XXXXXXXXXXXXXXXXXXXXXXXXX",
@@ -8,18 +8,18 @@ const level17 = {
     "                                        ",
     "                                        ",
     "                                        ",
-    "               XXXXXXXXXXXXXXXXXXXXXXXXX",
-    "               XXXXXXXXXXXXXXXXXXXXXXXXX",
+    "             XXXXXXXXXXXXXXXXXXXXXXXX   ",
+    "             XXXXXXXXXXXXXXXXXXXXXXXX   ",
   ],
   dungeon: [
-    "[=======)=====]                        ]",
-    "[ E       E   ]                         ",
-    "[ $       $  ,=========================]",
-    "/                  %    %        @    0]",
+    "[=======)=====]                         ",
+    "[ e     ~ e   ]                         ",
+    "[ $       $   =========================]",
+    "/ ~                %    %              ]",
     "[                  %       %           ]",
-    "[ $       $  ,________________________<]",
-    "[ E    $  E  ]                         ]",
-    ",____________.                         ]",
+    "[ $       $  >______________________<  ]",
+    "[ E    $  E  ]                      [ @]",
+    ",____________.                      ,_(.",
   ],
   ornaments: [
     "                                        ",
@@ -31,32 +31,15 @@ const level17 = {
     "                                        ",
     "                                        ",
   ],
-  async setup() {
-    const [nDoor, wDoor] = DM.dungeon.get("door");
-
-    nDoor.interact = (player) => {
-          DM.go(14, 0);
-    };
-
-    wDoor.interact = (player) => {
-       //   DM.go(9, 0);
-    };
-
-    // const [chest] = DM.dungeon.get("large-chest-1");
-
-    // if (DM.locals.level11tutorialSwordChest) {
-    //   chest.destroy();
-    // } else {
-    //   chest.interact = (player) => {
-    //     DM.player?.dialog(`Just what i needed! \n 
-			
-	// 		Player gained new sword.`);
-    //     DM.locals.level11tutorialSwordChest = true;
-    //     chest.destroy();
-    //     player.increaseDamage();
-    //   };
-    // }
-  },
-  tiles: {},
+  tiles: {
+    ")": ()=>[
+      interact(()=>DM.go(13))
+    ],
+    "/": ()=>[
+      interact(()=>DM.go(14))
+    ],
+    "(": ()=>[
+      interact(()=>DM.go(11))
+    ]
+  }
 };
-export default level17;

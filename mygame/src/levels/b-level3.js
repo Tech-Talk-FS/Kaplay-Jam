@@ -1,6 +1,6 @@
 import { interact } from "../objects";
 
-const cLevel3 = {
+export const bLevel3 = {
 	title: "Dungeon - C2",
 	floor: [
 		"       ",
@@ -67,4 +67,3 @@ const cLevel3 = {
 	tiles: {
 	}
 };
-export default cLevel3;

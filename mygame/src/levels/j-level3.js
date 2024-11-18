@@ -21,10 +21,10 @@ export const jLevel3 = {
 	],
 	tiles: {
 		"/":()=>[
-			interact(()=>DM.go(13, 1))
+			interact(()=>DM.go(17, 1))
 		],
 		"H":()=>[
-			interact(()=>DM.go(16))
+			interact(()=>DM.go(20))
 		]
 	}
 }

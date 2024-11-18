@@ -1,6 +1,6 @@
 import { interact } from "../objects";
 
-const level19 = {
+export const bLevel4 = {
 	title: "Dungeon - C4",
 	floor: [
 		"           ",
@@ -13,8 +13,8 @@ const level19 = {
 	],
 	dungeon: [
 		"[=========]",
-		"[E   S   E]",
-		"[         ]",
+		"[e   S   e]",
+		"[ e  e  e ]",
 		"[         ]",
 		"[         ]",
 		"[         ]",
@@ -22,7 +22,7 @@ const level19 = {
 	],
 	ornaments: [
 		"  !     !  ",
-		"     $     ",
+		"           ",
 		"          ",
 		"",
 		"",
@@ -30,38 +30,29 @@ const level19 = {
 		"",
 	],
 	async setup() {
-		const [door] = DM.dungeon.get('door');
-		
-		door.interact = (player) => {DM.go(15)}
-
-		const [skeleton] = DM.ornaments.get('skeleton');
-
-		skeleton.onDeath(() => {
-			DM.locals.tutorialSkeletonDead = true;
-		})
-
-		if (DM.locals.tutorialSkeletonDead) {
-			skeleton.destroy();
-		}
-		else if (!DM.locals.ironKey) {
-			skeleton.hidden = true;
-			skeleton.paused = true;
-		}
-
-		const [torch] = DM.ornaments.get("torch");
-
-		if (DM.locals.torchUnlocked) {
-			torch.destroy();
-		}
-
-		torch.interact = (player) => {
-			DM.player?.dialog(`With this torch, the web should pose no trouble.`);
-			DM.locals.torchUnlocked = true;
-			torch.destroy();
+		await wait(3)
+		shake(10);
+		for(const stat of DM.dungeon.get('goblin-statue')){
+			stat.wakeUp();
 		}
 	},
 	tiles: {
+		")": ()=>[
+			interact(()=>DM.go(12, 0))
+		],
+		"S": ()=>[
+			interact(player=>{
+				DM.locals.goldenKey = true;
+				player.dialog(`A Golden Key...
+I can feel it weigh down on me.
+Visions of turning it stir
+within me-- perhaps a hidden
+door or a secret chamber?
+Along with it, another
+sword upgrade. My resolve
+strengthens further.`)
+			})
+		]
 
 	}
 };
-export default level19;
